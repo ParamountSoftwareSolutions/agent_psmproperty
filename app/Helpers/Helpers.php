@@ -289,6 +289,7 @@ class Helpers
         } else {
             $sale->user_id = $request->sale_person_id;
         }
+
         $sale->save();
 
         if(isset($status) && $status == 'new'){

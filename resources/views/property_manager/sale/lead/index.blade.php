@@ -328,12 +328,13 @@
                                                 <a href="{{ route('property_manager.sale.lead.edit',['panel' => (new App\Helpers\Helpers)->user_login_route()['panel'], 'lead' => $data->id]) }}" class="btn btn-primary btn-sm px-1 py-0" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-												
+
                                                 <button type="button" title="Delete" data-url="{{ route('property_manager.sale.lead.destroy', ['panel' => (new App\Helpers\Helpers)->user_login_route()['panel'], 'lead' => $data->id]) }}" data-token="{!! csrf_token() !!}" class="btn btn-danger btn-sm px-1 py-0 deleteBtn">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
 												<?php } ?>
                                                 <a href="{{route('property_manager.sale.lead.comments',['panel' => (new App\Helpers\Helpers)->user_login_route()['panel'], 'id' => $data->id])}}" class="btn btn-info btn-sm px-1 py-0"><i class="fa fa-comments"></i></a>
+                                                     <button type="button" class="btn btn-info btn-sm px-1 py-0 connect_call" data-id="{{$data->id}}"><i class="fa-sharp fa-solid fa-phone"></i></button>
                                             </td>
                                         </tr>
                                         @endif
@@ -371,6 +372,60 @@
                         <div class="form-group col-md-12">
                             <label>Date</label>
                             <input type="datetime-local" name="date" class="form-control" required>
+                            @error('date')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Comment</label>
+                            <textarea class="form-control" name="comment" id="comment" cols="30" rows="10" required></textarea>
+                            @error('comment')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- call connect modal -->
+<form id="callConnectForm">
+    @csrf
+    <div class="modal fade" id="callConnectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Connect Call</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="call_id">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Date</label>
+                            <input type="date" name="date" class="form-control" required>
+                            @error('date')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Start Time</label>
+                            <input type="time" id="start_time" name="start_time" class="form-control" required>
+                            @error('date')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>End Time</label>
+                            <input type="time" name="end_time" class="form-control" required>
                             @error('date')
                             <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
@@ -468,6 +523,19 @@
             $('#statusForm').attr('action', "{{route('property_manager.sale.lead.change_status', ['panel' => (new App\Helpers\Helpers)->user_login_route()['panel']])}}");
             $('#statusModal').modal('show');
         });
+
+        $("body").on("click", ".connect_call", function() {
+            var id = $(this).data('id')
+            $('#call_id').val(id)
+            $('#callConnectForm').attr('action', "{{route('property_manager.sale.lead.connect_call', ['panel' => Helpers::user_login_route()['panel']])}}");
+            $('#callConnectForm').attr('method', "post");
+            $('#callConnectModal').modal('show');
+        });
+
+        $('#start_time').change(function () {
+            var startTime = $(this).val();
+            $('input[name="end_time"]').attr('min',startTime);
+        })
 
         $('#statusForm').submit(function(e) {
             e.preventDefault();

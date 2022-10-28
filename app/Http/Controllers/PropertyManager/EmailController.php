@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PropertyManager;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\BuildingSale;
+use App\Models\BuildingSaleHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -71,32 +72,23 @@ class EmailController extends Controller
             foreach($images as $img){
                 $ext = $img->getClientOriginalExtension();
                 $name = time().'-'.rand().'.'.$ext;
-                $path = 'mail-media/images';
+                $path = 'mail-media';
                 $img->move(public_path($path),$name);
                 $data['image'][] = 'public/'.$path."/".$name;
-            }
-        }
-        if(isset($request->videos)){
-            $videos = $request->videos;
-            foreach($videos as $vid){
-                $ext = $vid->getClientOriginalExtension();
-                $name = time().'-'.rand().'.'.$ext;
-                $path = 'mail-media/videos';
-                $vid->move(public_path($path),$name);
-                $data['video'][] = 'public/'.$path."/".$name;
             }
         }
         try {
             foreach($data['emails'] as $email){
                 $data['email'] = $email;
-                Mail::send('mail.email_template', $data, function($message) use ($data) {
+                Mail::send('mail.email_template', $data, function($message) use($data) {
                     $message->to($data['email'])->subject($data['subject']);
                 });
+//                Mail::send('mail.email_template')->send(new SendMailable($data));
             }
-            return redirect()->route('property_manager.email.compose')->with($this->message('Email Sent Successfully', 'success'));
+            return redirect()->route('property_manager.email.compose',Helpers::user_login_route()['panel'])->with($this->message('Email Sent Successfully', 'success'));
         }
         catch(Exception $e) {
-            return redirect()->route('property_manager.email.compose')->with($this->message('Something went Wrong....', 'danger'));
+            return redirect()->back()->with($this->message('Email Sent Error', 'danger'));
         }
     }
 }

@@ -274,6 +274,7 @@ Route::group(['as' => 'property.'], function () {
         Route::post('inventory/filter', 'InventoryController@filter')->name('inventory.filter');
         Route::resource('size', 'SizeController');
         Route::resource('category', 'CategoryController');
+        //Route::resource('category', 'CategoryController');
 
         /* Building Manager */
         Route::post('property_manager/password/update/{manager}', 'ManagerController@updatePassword')->name('manager.password.update');
@@ -316,24 +317,19 @@ Route::group(['as' => 'property.'], function () {
         //});
         Route::get('hrm', 'HRMController@index');
         Route::resource('payment_plan', 'PaymentPlanController');
-        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
-            /*Route::get('/{type}', 'ReportController@index')->name('index');
-            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
-            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
-            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
-        });
-
+//        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
+//            /*Route::get('/{type}', 'ReportController@index')->name('index');
+//            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
+//            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
+//            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
+//        });
     });
     //=============//
     /* Sales Route */
     //=============//
     Route::group(['middleware' => ['auth:web', 'isAuthType'], 'namespace' => 'PropertyManager', 'prefix' => '{panel}'], function () {
         Route::group(['prefix' => 'sale', 'as' => 'sale.'], function () {
-            //dd($panel);
-            //Route::group(['prefix' => $panel], function () {
             Route::resource('lead', 'LeadController');
-
-            //New Routes Added
             Route::get('lead/building_info/{building_id}', 'LeadController@buildinginfo')->name('lead.building_info');
             Route::post('lead/filter', 'LeadController@filter')->name('lead.filter');
             Route::post('lead/search', 'LeadController@search')->name('lead.search');
@@ -345,10 +341,8 @@ Route::group(['as' => 'property.'], function () {
             Route::get('is-read/', 'LeadController@isread')->name('lead.isread');
             Route::get('meeting-read/', 'LeadController@meetingread')->name('lead.meetingread');
             Route::get('follow-up/', 'LeadController@followup')->name('lead.followup');
-            //End New Routes
+            Route::post('connect-call/', 'LeadController@connect_call')->name('lead.connect_call');
             Route::resource('client', 'ClientController');
-
-            //New Routes Addedx
             Route::get('old-client/data/{id}', 'ClientController@old_client')->name('old_client');
             Route::post('client/filter', 'ClientController@filter')->name('client.filter');
             Route::post('client/search', 'ClientController@search')->name('client.search');
@@ -357,10 +351,9 @@ Route::group(['as' => 'property.'], function () {
             Route::post('client/change_status', 'ClientController@changestatus')->name('client.change_status');
             Route::get('sale/history', 'ClientController@history')->name('client.history');
             Route::get('client/comments/{id}', 'ClientController@comments')->name('client.comments');
-            //End New Routes
-
             Route::post('client/installment/edit/{id}', 'ClientController@installment_edit')->name('client.installment.edit');
             //Route::get('client/installment/un-paid/{id}', 'ClientController@un_paid')->name('client.installment.un_paid');
+
             Route::get('/online_booking/index', 'OnlineBookingController@index')->name('online_booking.index');
             Route::get('/online_booking/delete', 'OnlineBookingController@destroy')->name('online_booking.destroy');
 
@@ -430,7 +423,7 @@ Route::group(['as' => 'property.'], function () {
         Route::resource('term', 'TermController');
 
         //====================//
-        /* Task Targets Route */
+        // Task Targets Route //
         //====================//
         Route::get('my-targets', 'TargetController@my_targets')->name('my_targets');
         Route::get('staff-targets', 'TargetController@staff_targets')->name('staff_targets');
@@ -443,10 +436,20 @@ Route::group(['as' => 'property.'], function () {
         Route::get('task/get-report/{id}', 'TargetController@get_report')->name('get_report');
 
         //==============//
-        /* Income Route */
+        // Income Route //
         //==============//
-        Route::get('income/report', 'IncomeController@incomeSummary')->name('income.report');
+        Route::get('income/report', 'IncomeController@incomesummary')->name('income.report');
         Route::resource('income', 'IncomeController');
+
+        //===============//
+        // Reports Route //
+        //===============//
+        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
+            /*Route::get('/{type}', 'ReportController@index')->name('index');
+            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
+            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
+            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
+        });
     });
 });
 
@@ -509,7 +512,6 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::resource('privacyPolicy', 'PrivacyPolicyController')->except(['show']);
         Route::resource('faq', 'FaqController');
         Route::resource('term', 'TermController');
-
     });
     //=============//
     /* Sales Route */
@@ -532,6 +534,7 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
             Route::get('is-read/', 'LeadController@isread')->name('lead.isread');
             Route::get('meeting-read/', 'LeadController@meetingread')->name('lead.meetingread');
             Route::get('follow-up/', 'LeadController@followup')->name('lead.followup');
+            Route::post('connect-call/', 'LeadController@connect_call')->name('lead.connect_call');
             //End New Routes
             Route::resource('client', 'ClientController');
 
@@ -607,7 +610,6 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::get('building-detail/edit/{id}', 'BuildingDetailController@edit')->name('building_details.edit');
         Route::put('building-detail/update/{id}', 'BuildingDetailController@update')->name('building_details.update');
         Route::post('banner-detail/payment-image/remove', 'BuildingDetailController@remove_image_payment')->name('building_detail/payment_image/remove');
-
 
         //==============//
         // Email Route //

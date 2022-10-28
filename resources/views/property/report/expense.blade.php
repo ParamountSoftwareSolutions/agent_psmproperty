@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title',  'Expense')
 @section('content')
     <div class="main-content">
@@ -38,7 +38,7 @@
                                    style="margin-left: auto; display: block;">Add New</a>--}}
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('property_manager.report.expense_report') }}" method="get">
+                                <form action="{{ route('property.report.expense_report',['panel'=> Helpers::user_login_route()['panel']]) }}" method="get">
                                     @csrf
                                     <div class="row mt-3 mb-5">
                                         <div class="col-md-3 mt-sm-2">

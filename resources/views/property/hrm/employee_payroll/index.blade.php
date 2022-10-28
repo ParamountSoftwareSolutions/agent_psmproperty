@@ -9,7 +9,6 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4>Employee Pay List</h4>
-                                {{--<a href="{{ route('property.employee_payroll.create') }}" class="btn btn-primary" style="margin-left: auto; display: block;">Add New</a>--}}
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">

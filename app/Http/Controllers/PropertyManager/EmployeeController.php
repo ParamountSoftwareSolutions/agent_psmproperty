@@ -195,7 +195,6 @@ class EmployeeController extends Controller
         }
         $employee_detail->save();
         $assign = BuildingAssignUser::where('user_id', $employee->id)->first();
-
         if (!empty($assign->building_id) == $request->building_id) {
             $assign->update(
                 [

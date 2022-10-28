@@ -20,7 +20,12 @@ class FaqController extends Controller
     public function index()
     {
         $faqs = BuildingFaq::get();
+<<<<<<< HEAD
         return view('property.faq.index', compact('faqs'));
+=======
+        $building = Helpers::building_detail();
+        return view('property_manager.faq.index', compact('faqs', 'building'));
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
     }
 
     /**
@@ -30,7 +35,12 @@ class FaqController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
         return view('property.faq.create');
+=======
+        $building = Helpers::building_detail();
+        return view('property_manager.faq.create', compact('building'));
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
     }
 
     /**
@@ -41,6 +51,7 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
 //        dd(Helpers::building_assign_user());
         $request->validate([
             'description' => 'required',
@@ -53,6 +64,21 @@ class FaqController extends Controller
             return redirect()->route('property.faq.index',Helpers::user_login_route()['panel'])->with($this->message('Faq Create Successfully','success'));
         } else{
             return redirect()->back()->with($this->message('Faq Create Error','error'));
+=======
+        $request->validate([
+            'building_id' => 'required',
+            'description' => 'required',
+        ]);
+        $faq = new BuildingFaq();
+        $faq->property_admin_id = Helpers::building_assign_user()->property_admin_id;
+        $faq->building_id = json_encode($request->building_id);
+        $faq->description = $request->description;
+        $faq->save();
+        if($faq){
+            return redirect()->route('property_manager.faq.index')->with(['success' => 'Faq Create Successfully']);
+        } else{
+            return redirect()->back()->with(['error' => 'Faq Create Error']);
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
         }
     }
 
@@ -62,7 +88,11 @@ class FaqController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function show($panel,$id)
+=======
+    public function show($id)
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
     {
         //
     }
@@ -73,10 +103,18 @@ class FaqController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
+<<<<<<< HEAD
     public function edit($panel,$id)
     {
         $faq = BuildingFaq::findOrFail($id);
         return view('property.faq.edit', compact('faq'));
+=======
+    public function edit($id)
+    {
+        $faq = BuildingFaq::findOrFail($id);
+        $building = Helpers::building_detail();
+        return view('property_manager.faq.edit', compact('building', 'faq'));
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
     }
 
     /**
@@ -86,6 +124,7 @@ class FaqController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
+<<<<<<< HEAD
     public function update(Request $request,$panel, $id)
     {
         $request->validate([
@@ -98,6 +137,23 @@ class FaqController extends Controller
             return redirect()->route('property.faq.index',Helpers::user_login_route()['panel'])->with($this->message('Faq Update Successfully','success'));
         } else{
             return redirect()->back()->with($this->message('Faq Update Error','error'));
+=======
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'building_id' => 'required',
+            'description' => 'required',
+        ]);
+        $faq = BuildingFaq::findOrFail($id);
+        $faq->property_admin_id = Helpers::building_assign_user()->property_admin_id;
+        $faq->building_id = json_encode($request->building_id);
+        $faq->description = $request->description;
+        $faq->save();
+        if($faq){
+            return redirect()->route('property_manager.faq.index')->with(['success' => 'Faq Update Successfully']);
+        } else{
+            return redirect()->back()->with(['error' => 'Faq Update Error']);
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
         }
     }
 
@@ -107,14 +163,24 @@ class FaqController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
+<<<<<<< HEAD
     public function destroy($panel,$id)
+=======
+    public function destroy($id)
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
     {
         $faq = BuildingFaq::findOrFail($id);
         $faq->delete();
         if($faq){
+<<<<<<< HEAD
             return response()->json(['status'=>'success','message' => 'Faq Delete Successfully']);
         } else {
             return response()->json(['status'=>'error','message' => 'Faq Delete Error']);
+=======
+            return redirect()->route('property_manager.faq.index')->with(['success' => 'Faq Delete Successfully']);
+        } else{
+            return redirect()->back()->with(['error' => 'Faq Delete Error']);
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
         }
     }
 }
