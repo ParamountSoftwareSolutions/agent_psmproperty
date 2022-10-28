@@ -5,9 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BuildingBlock extends Model
+class BuildingExpenseCategory extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
 }

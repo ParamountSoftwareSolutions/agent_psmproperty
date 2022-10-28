@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Property;
 
-use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
-use App\Models\Building;
-use App\Models\BuildingBlock;
+use App\Models\BuildingCategory;
+use App\Models\BuildingExpenseCategory;
 use Illuminate\Http\Request;
 
-class BlockController extends Controller
+class ExpesneCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +16,8 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $block = BuildingBlock::get();
-        return view('property.block.index', compact('block'));
+        $category = BuildingExpenseCategory::get();
+        return view('property.office_expense.category.index', compact('category'));
     }
 
     /**
@@ -28,8 +27,7 @@ class BlockController extends Controller
      */
     public function create()
     {
-        $buildings = Helpers::building_detail();
-        return view('property.block.index', compact('buildings'));
+        return view('property.office_expense.category.index');
     }
 
     /**
@@ -41,17 +39,16 @@ class BlockController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'block' => 'required',
+            'category' => 'required',
         ]);
-        $block = new BuildingBlock();
-        $block->project_id = $request->project_id;
-        $block->name = $request->name;
-        $block->save();
-        if ($block) {
+        $category = new BuildingCategory();
+        $category->category = $request->category;
+        $category->save();
+        if ($category) {
             //NotificationHelper::web_panel_notification('property_create', 'property_id', $building->id);
-            return redirect()->route('property.block.index')->with($this->message('Block Create SuccessFully', 'success'));
+            return redirect()->route('property.office_expense.category.index')->with($this->message('Category Create SuccessFully', 'success'));
         } else {
-            return redirect()->back()->with($this->message("Block Create Error", 'error'));
+            return redirect()->back()->with($this->message("Category Create Error", 'error'));
         }
     }
 
@@ -74,8 +71,8 @@ class BlockController extends Controller
      */
     public function edit($id)
     {
-        $block = BuildingBlock::findOrFail($id);
-        return view('property.block.edit', compact('block'));
+        $category = BuildingCategory::findOrFail($id);
+        return view('property.office_expense.category.edit', compact('category'));
     }
 
     /**
@@ -88,16 +85,15 @@ class BlockController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'block' => 'required',
+            'category' => 'required',
         ]);
-        $block = BuildingBlock::findOrFail($id);
-        $block->project_id = $request->project_id;
-        $block->name = $request->name;
-        $block->save();
-        if ($block) {
-            return redirect()->route('property.block.index')->with($this->message('Building update SuccessFully', 'success'));
+        $category = BuildingExpenseCategory::findOrFail($id);
+        $category->category = $request->category;
+        $category->save();
+        if ($category) {
+            return redirect()->route('property.office_expense.category.index')->with($this->message('Category update SuccessFully', 'success'));
         } else {
-            return redirect()->back()->with($this->message("Building update Error", 'error'));
+            return redirect()->back()->with($this->message("Category update Error", 'error'));
         }
     }
 
@@ -109,10 +105,10 @@ class BlockController extends Controller
      */
     public function destroy($id)
     {
-        $block = BuildingBlock::findOrFail($id);
-        $block->delete();
-        if ($block) {
-            return redirect()->route('property.block.index')->with($this->message('Block delete SuccessFully', 'success'));
+        $category = BuildingCategory::findOrFail($id);
+        $category->delete();
+        if ($category) {
+            return redirect()->route('property.office_expense.category.index')->with($this->message('Category delete SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Building delete Error", 'error'));
         }

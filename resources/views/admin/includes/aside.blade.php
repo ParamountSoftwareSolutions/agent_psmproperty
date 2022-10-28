@@ -55,13 +55,13 @@
                         {{--<li><a class="nav-link" href="{{ route('property_manager.building.detail_form') }}">Add Project Details</a></li>--}}
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.size.*')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property.size.*', 'property.category.*', 'property.block.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-building-columns"></i><span>Extra Data</span></a>
                     <ul class="dropdown-menu">
+                        <li><a class="nav-link" href="{{ route('property.block.index') }}">Block</a></li>
                         <li><a class="nav-link" href="{{ route('property.size.index') }}">Size</a></li>
                         <li><a class="nav-link" href="{{ route('property.category.index') }}">Category</a></li>
-                        {{--<li><a class="nav-link" href="{{ route('property.building.detail_form') }}">Add Project Details</a></li>--}}
                     </ul>
                 </li>
                 <li class="dropdown @if (request()->routeIs('property.manager.*')) active @endif">
@@ -80,18 +80,17 @@
                         <li><a class="nav-link" href="{{ route('property.setting.push_notification', ['panel' => $panel]) }}">Push Notification</a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.expense.*', 'property.office_expense.*')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property.expense.*', 'property.office_expense.*', 'property.office_expense.category.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-sack-dollar"></i>
                         <span>Expense</span></a>
                     <ul class="dropdown-menu">
+                        <li><a class="nav-link" href="{{ route('property.office_expense.category.index') }}">Expense Category</a></li>
                         <li><a class="nav-link" href="{{ route('property.office_expense.index') }}">Office Expense</a></li>
                         <li><a class="nav-link" href="{{ route('property.expense.index') }}">Construction Expense</a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.employee.index', 'property.employee.create', 'property.employee.edit',
-                'property_manager
-                .employee_payroll.index', 'property.employee_payroll.create', 'property.employee_payroll.edit')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property.employee.*', 'property_manager.employee_payroll.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-solid fa-users"></i>
                         <span>HRM</span></a>

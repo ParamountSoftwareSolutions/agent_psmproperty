@@ -274,7 +274,7 @@ Route::group(['as' => 'property.'], function () {
         Route::post('inventory/filter', 'InventoryController@filter')->name('inventory.filter');
         Route::resource('size', 'SizeController');
         Route::resource('category', 'CategoryController');
-        //Route::resource('category', 'CategoryController');
+        Route::resource('block', 'BlockController');
 
         /* Building Manager */
         Route::post('property_manager/password/update/{manager}', 'ManagerController@updatePassword')->name('manager.password.update');
