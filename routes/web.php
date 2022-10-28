@@ -442,9 +442,9 @@ Route::group(['as' => 'property.'], function () {
         //==============//
         // Income Route //
         //==============//
-        Route::get('income/report', 'IncomeController@incomesummary')->name('income.report');
+        Route::get('income/report', 'IncomeController@incomeSummary')->name('income.report');
         Route::resource('income', 'IncomeController');
-
+        
         //===============//
         // Reports Route //
         //===============//
