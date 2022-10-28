@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
+=======
 @extends('property_manager.layout.app')
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
 @section('title', 'All Building List')
 @section('content')
     <div class="main-content">
@@ -31,8 +35,13 @@
                                 </div>
                                 <div class="row form_area">
                                     <div class="col-lg-12">
+<<<<<<< HEAD
+                                        <form class="composeForm" action="{{ route('property_manager.email.compose.send',['panel' => Helpers::user_login_route()['panel']]) }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+=======
                                      <form class="composeForm" action="{{ route('property_manager.email.compose.send') }}" method="post" enctype="multipart/form-data">
                                          @csrf
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <label>FROM</label>
@@ -45,7 +54,11 @@
                                                     <input type="text" class="form-control to" placeholder="TO">
                                                     <input type="hidden" name="email" class="email">
                                                 </div>
+<<<<<<< HEAD
+                                                @error('email')
+=======
                                             @error('email')
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -90,7 +103,11 @@
 @endsection
 @section('script')
     <script>
+<<<<<<< HEAD
+        ClassicEditor
+=======
      ClassicEditor
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
             .create(document.querySelector('#body'))
             .then(editor => {
                 editor.ui.view.editable.element.style.height = '55px';

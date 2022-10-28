@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\PropertyManager;
+namespace App\Http\Controllers\Property;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
@@ -29,7 +29,7 @@ class EmployeePayrollController extends Controller
                 $q->WhereIn('name', ['sale_person', 'office_staff', 'accountant']);
             })
             ->get();
-        return view('property_manager.hrm.employee_payroll.index', compact('employee'));
+        return view('property.hrm.employee_payroll.index', compact('employee'));
     }
 
     /**
@@ -81,7 +81,7 @@ class EmployeePayrollController extends Controller
                 $q->WhereIn('name', ['sale_person', 'office_staff', 'accountant']);
             })
             ->findOrFail($id);
-        return view('property_manager.hrm.employee_payroll.edit', compact('employee'));
+        return view('property.hrm.employee_payroll.edit', compact('employee'));
     }
 
     /**
@@ -114,7 +114,7 @@ class EmployeePayrollController extends Controller
             'payment_mode' => $request->payment_mode,
         ]);
         if ($employee_payroll) {
-            return redirect()->route('property_manager.employee_payroll.index')->with($this->message('Employee Pay Update Successfully', 'success'));
+            return redirect()->route('property.employee_payroll.index')->with($this->message('Employee Pay Update Successfully', 'success'));
         } else {
             return redirect()->back()->with($this->message('Employee Pay Update Error', 'danger'));
         }
@@ -140,9 +140,9 @@ class EmployeePayrollController extends Controller
         $employee_payroll = BuildingEmployeePayRoll::where('user_id', $employee->id)->first();
         $employee_payroll->delete();
         if ($employee) {
-            return redirect()->route('property_manager.employee.index')->with($this->message('Employee Delete Successfully', 'success'));
+            return response()->json(['status' => 'success', 'message' => 'Employee Delete Successfully']);
         } else {
-            return redirect()->back()->with($this->message('Employee Delete Error', 'danger'));
+            return response()->json(['status' => 'error', 'message' => 'Employee Delete Error']);
         }
     }
 }

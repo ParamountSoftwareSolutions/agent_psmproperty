@@ -383,7 +383,7 @@ class LeadController extends Controller
 		   if ($status == 'unassigned') {
             $unassigned = $request->status;
         }else{
-            $unassigned = ""; 
+            $unassigned = "";
         }
         $filter_date = $request->filter_date;
         $building = Helpers::building_detail()->pluck('id')->toArray();
@@ -394,7 +394,6 @@ class LeadController extends Controller
         //shahbaz
         //shahbaz
         if ($sales_manager) {
-			
             $sales = BuildingSale::with('customer')->whereIn('order_type',['facebook' , 'lead'])->where('user_id', $request->sales_manager);
             // if (Auth::user()->hasRole('sale_manager')) {
             //     $sales->where('user_id', Auth::id());
@@ -410,13 +409,11 @@ class LeadController extends Controller
             $sales = $sales->get();
         }
 		    if ($unassigned) {
-          
             $sales = BuildingSale::with('customer')->whereIn('building_id', $building)->where('user_id', Null);
             if (Auth::user()->hasRole('sale_person')) {
                 $sales->where('user_id', Auth::id());
             }
             $sales = $sales->get();
-           
         }
         if ($status != "unassigned" && $status != "") {
             $sales = BuildingSale::with('customer')->whereIn('building_id', $building)->where(['order_type' => 'lead'])->where('order_status', $request->status);
@@ -424,9 +421,7 @@ class LeadController extends Controller
                 $sales->where('user_id', Auth::id());
             }
             $sales = $sales->get();
-           
         }
-    
         //shahbaz
         if ($fb_lead) {
             $sales = BuildingSale::with('customer')->where(['order_type' => 'facebook'])->orderBy('id', 'desc');
@@ -594,7 +589,6 @@ class LeadController extends Controller
             $sales = BuildingSale::with('floor_detail', 'customer')
              ->whereIn('building_id', $building->pluck('id')->toArray())
              ->where('order_type', 'lead');
-		
            // $sales = BuildingSale::with('floor_detail', 'customer');
             if ($id) {
                 $sales->whereHas('floor_detail', function ($q) use ($id) {
@@ -740,7 +734,20 @@ class LeadController extends Controller
 		 $history->comment = $request->comment;
         $history->data = json_encode($data);
         $history->save();
-		if ($request->status == 'follow_up') {
+
+        if ($request->status == 'arrange_meeting') {
+            $task_type = 'meeting';
+        } elseif ($request->status == 'mature') {
+            $task_type = 'conversion';
+        } else {
+            $task_type = null;
+        }
+        if($task_type !== null){
+            Helpers::task_count_increment($task_type);
+        }
+
+
+        if ($request->status == 'follow_up') {
             $key = 'lead_follow_up';
         }  elseif ($request->status == 'arrange_meeting') {
             $key = 'lead_discussion';
@@ -796,7 +803,6 @@ class LeadController extends Controller
     public function comments($panel, $id)
     {
         $comments = BuildingSaleHistory::where('building_sale_id', $id)->where('key', 'lead')->get();
-		
         return view('property_manager.sale.lead.comments', compact('comments'));
     }
 
@@ -945,7 +951,6 @@ class LeadController extends Controller
             $sales->where('user_id', Auth::id());
         }
         $sales = $sales->get();
-	
         //dd($pushed, $pushed_data, $salesCount);
 
         return view('property_manager.sale.lead.index', compact('sales', 'building', 'sale_person', 'payment_plan', 'arrange', 'pushed', 'sale_manager'));
@@ -990,7 +995,6 @@ class LeadController extends Controller
             $sales->where('user_id', Auth::id());
         }
         $sales = $sales->get();
-		
         //        dd($arrange, $arrange_data);
         return view('property_manager.sale.lead.index', compact('sales', 'building', 'sale_person', 'payment_plan', 'arrange', 'pushed', 'sale_manager'));
     }
@@ -1043,14 +1047,12 @@ class LeadController extends Controller
     {
         $building = Helpers::building_detail();
         $current_date = Carbon::now();
-		
         $sales = BuildingSale::with('customer')->where(['order_status' => 'follow_up'])->whereHas('building_sale_history', function ($q) use ($current_date) {
             $q->whereDate('data->date', $current_date);
         });
 		if (Auth::user()->hasRole('sale_person')) {
             $sales->where('user_id', Auth::id());
         }
-		
         $sales = $sales->get();
 
         $sale_person = Helpers::sales_person();
@@ -1078,5 +1080,37 @@ class LeadController extends Controller
         $pushed = count($pushed_data);
 
         return view('property_manager.sale.lead.index', compact('sales', 'building', 'sale_person', 'arrange', 'pushed', 'sale_manager'));
+    }
+    public function connect_call(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ]);
+        $history = null;
+        if($request->start_time < $request->end_time){
+            $data = json_encode([
+                'date' => $request->date,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'status' => 'call',
+                'user_id' => Auth::user()->id,
+            ]);
+            $history = new BuildingSaleHistory();
+            $history->key = 'lead';
+            $history->building_sale_id = $request->id;
+            $history->data = $data;
+            $history->comment = $request->comment;
+            $history->save();
+            Helpers::task_count_increment('call');
+        }
+        if($history){
+            return redirect()->route('property_manager.sale.lead.index', (new Helpers)->user_login_route()['panel'])->with($this->message('Call History Created Successfully', 'success'));
+        }
+        else{
+            return redirect()->back()->with($this->message('Call History Created Error', 'error'));
+        }
     }
 }

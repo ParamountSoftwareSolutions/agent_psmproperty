@@ -99,17 +99,18 @@
                         <li><a class="nav-link" href="{{ route('property.employee_payroll.index') }}">Payroll</a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.report.sale', 'property.report.edit')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property.report.sale', 'property.report.edit','property.income.report','property.task_reports')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-solid fa-user"></i>
-                        <span>Accounts</span></a>
+                        <span>Reports</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="">Sales Report</a></li>
-                        <li><a class="nav-link" href="{{ route('property.report.expense_report') }}">Expenses Report</a></li>
+                        <li><a class="nav-link" href="{{ route('property.report.expense_report',$panel) }}">Expenses Report</a></li>
                         <li><a class="nav-link" href="">Employee</a></li>
+                        <li><a class="nav-link" href="{{ route('property.income.report',Helpers::user_login_route()['panel']) }}">Income Report</a></li>
+                        <li><a class="nav-link" href="{{ route('property.task_reports', Helpers::user_login_route()) }}">Task Reports </a></li>
                     </ul>
                 </li>
-
             @elseif(Helpers::isPropertyManager())
                 <li class="dropdown @if (request()->routeIs('property_manager.dashboard')) active @endif">
                     <a href="{{ route('property_manager.dashboard') }}" class="nav-link"><i class="fa-solid fa-tv"></i>
@@ -127,8 +128,7 @@
                         </ul>
                     </li>
                 @endif
-                <li class="dropdown @if (request()->routeIs('property_manager.property.index', 'property_manager.property.create', 'property_manager.property.edit'))
-                    active @endif">
+                <li class="dropdown @if (request()->routeIs('property_manager.property.index', 'property_manager.property.create', 'property_manager.property.edit')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-house-chimney"></i>
                         <span>Property</span></a>
@@ -215,7 +215,7 @@
                         <i class="fa-solid fa-user"></i>
                         <span>Accounts</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="">Sales Report</a></li>
+                         <li><a class="nav-link" href="">Sales Report</a></li>
                         <li><a class="nav-link" href="{{ route('property_manager.report.expense_report') }}">Expenses Report</a></li>
                         <li><a class="nav-link" href="">Employee</a></li>
                     </ul>
@@ -287,8 +287,6 @@
                         <span>Sales</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link " href="{{ route('property_manager.sale.lead.index', App\Helpers\Helpers::user_login_route()) }}">Leads</a></li>
-                        <li><a class="nav-link " href="{{ route('property_manager.sale.online_booking.index', App\Helpers\Helpers::user_login_route()) }}">Online
-                                Booking</a></li>
                         <li><a class="nav-link " href="{{ route('property_manager.sale.client.index', App\Helpers\Helpers::user_login_route()) }}">Client</a></li>
                         <li><a class="nav-link " href="{{ route('property_manager.sale.client.history', App\Helpers\Helpers::user_login_route()) }}">Sale
                                 History</a></li>
@@ -371,20 +369,6 @@
                         <li><a class="nav-link" href="">Sales Report</a></li>
                         <li><a class="nav-link" href="{{ route('accountant.report.expense_report') }}">Expenses Report</a></li>
                         <li><a class="nav-link" href="">Employee</a></li>
-                    </ul>
-                </li>
-            @endif
-
-            @if(Helpers::isPropertyManager() || Helpers::isPropertyAdmin())
-                <li class="dropdown @if (request()->routeIs('property.about.*', 'property.privacyPolicy.*','property.term.*', 'property.faq.*')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-solid fa-caret-right"></i>
-                        <span>More</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link " href="{{ route('property.about.index',['panel'=>$panel]) }}">About</a></li>
-                        <li><a class="nav-link " href="{{ route('property.privacyPolicy.index',['panel'=>$panel]) }}">Privacy & Policy</a></li>
-                        <li><a class="nav-link " href="{{ route('property.term.index',['panel'=>$panel]) }}">Term & Condition</a></li>
-                        <li><a class="nav-link " href="{{ route('property.faq.index',['panel'=>$panel]) }}">Faqs</a></li>
                     </ul>
                 </li>
             @endif

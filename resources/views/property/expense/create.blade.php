@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+@extends('property_manager.layout.app')
+=======
 @extends('property.layout.app')
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
 @section('title', 'Expense Create')
 @section('content')
     <div class="main-content">
@@ -7,7 +11,11 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
+<<<<<<< HEAD
+                            <form method="post" action="{{ route('property_manager.expense.store') }}">
+=======
                             <form method="post" action="{{ route('property.expense.store') }}">
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                 @csrf
                                 <div class="card-header">
                                     <h4>Basic Information</h4>

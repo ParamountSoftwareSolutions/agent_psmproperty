@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\PropertyManager;
+namespace App\Http\Controllers\Property;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
@@ -46,7 +46,7 @@ class EmployeeController extends Controller
             })
             ->where('property_admin_id', Helpers::user_admin())
             ->get();
-        return view('property_manager.hrm.employee.create', compact('building', 'sale_manager'));
+        return view('property.hrm.employee.create', compact('building', 'sale_manager'));
     }
 
     /**
@@ -106,7 +106,7 @@ class EmployeeController extends Controller
         $employee->assignRole($request->job_title);
         if ($employee_detail) {
            // (new NotificationHelper)->web_panel_notification('employee_create');
-            return redirect()->route('property_manager.employee.index')->with($this->message('Employee Create Successfully', 'success'));
+            return redirect()->route('property.employee.index')->with($this->message('Employee Create Successfully', 'success'));
         } else {
             return redirect()->back()->with($this->message('Employee Create Error', 'danger'));
         }
@@ -141,7 +141,7 @@ class EmployeeController extends Controller
             })
             ->where('property_admin_id', Helpers::user_admin())
             ->get();
-        return view('property_manager.hrm.employee.edit', compact('building', 'employee', 'sale_manager'));
+        return view('property.hrm.employee.edit', compact('building', 'employee', 'sale_manager'));
     }
 
     /**
@@ -216,7 +216,7 @@ class EmployeeController extends Controller
 
         $employee->assignRole($request->job_title);
         if ($employee_detail) {
-            return redirect()->route('property_manager.employee.index')->with($this->message('Employee Update Successfully', 'success'));
+            return redirect()->route('property.employee.index')->with($this->message('Employee Update Successfully', 'success'));
         } else {
             return redirect()->back()->with($this->message('Employee Update Error', 'danger'));
         }
@@ -243,9 +243,9 @@ class EmployeeController extends Controller
             $employee_payroll->delete();
         }
         if ($employee) {
-            return redirect()->route('property_manager.employee.index')->with($this->message('Employee Delete Successfully', 'success'));
+            return response()->json(['status' => 'success', 'message' => 'Employee Delete Successfully']);
         } else {
-            return redirect()->back()->with($this->message('Employee Delete Error', 'danger'));
+            return response()->json(['status' => 'error', 'message' => 'Employee Delete Error']);
         }
 
     }

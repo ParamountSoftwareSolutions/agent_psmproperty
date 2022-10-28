@@ -178,7 +178,9 @@ class Helpers
     {
         //dd($request->interested_in, $request->source);
         if ($id == null || $id == '') {
+            $status = 'new';
             $sale = new BuildingSale();
+            $sale->created_by = Auth::user()->id;
             if ($order_type == 'lead') {
                 $request->client_type = 'new';
                 $sale->order_status = 'new';
@@ -289,6 +291,21 @@ class Helpers
         }
 
         $sale->save();
+
+        if(isset($status) && $status == 'new'){
+            if($sale->order_type == 'lead'){
+                $task_type = 'lead';
+            }elseif($sale->order_type == 'sale'){
+                $task_type = 'client';
+            } else {
+                $task_type = null;
+            }
+
+            if($task_type !== null){
+                Helpers::task_count_increment($task_type);
+            }
+        }
+
         return [
             'sale' => $sale,
             'customer' => $customer
@@ -431,5 +448,49 @@ class Helpers
             })->get();
         return $sales_manager;
     }
-
+    public static function check_target_assign($assign_to)
+    {
+        switch ($assign_to){
+            case 'all_property_manager': $role = 'property_manager';
+                break;
+            case 'all_sale_manager': $role = 'sale_manager';
+                break;
+            case 'all_sales_person': $role = 'sale_person';
+                break;
+            default: $role = '';
+        }
+        $arr = ['all_property_manager','all_sale_manager','all_sales_person'];
+        if($assign_to == 'self'){
+            $assign_to_list = [Auth::user()->id];
+        }
+        elseif(in_array($assign_to,$arr)){
+            $buildings = Helpers::building_detail()->pluck('id')->toArray();
+            $users = BuildingAssignUser::whereIn('building_id',$buildings)->pluck('user_id')->toArray();
+            $assign_to_list = User::whereIn('id',$users)->with('roles')
+                ->whereHas('roles', function ($q) use ($role) {
+                    $q->Where('name', $role);
+                })
+                ->pluck('id')->toArray();
+        }
+        elseif(is_numeric($assign_to)){
+            $assign_to_list = [$assign_to];
+        }else{
+            $assign_to_list = $assign_to;
+        }
+        return $assign_to_list;
+    }
+    public static function task_count_increment($type)
+    {
+        $date = Carbon::now()->format('Y-m-d');
+        $target = TaskTarget::where('assign_to', Auth::user()->id)->where('type', $type)->where('from', '<=', $date)->where('to', '>=', $date)->first();
+        if($target){
+            $achieved = $target->achieved + 1;
+            if ($achieved >= $target->target) {
+                $target->status = 'success';
+            }
+            $target->achieved = $achieved;
+            $target->save();
+        }
+        return true;
+    }
 }

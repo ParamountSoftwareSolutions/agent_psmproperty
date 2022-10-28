@@ -317,12 +317,12 @@ Route::group(['as' => 'property.'], function () {
         //});
         Route::get('hrm', 'HRMController@index');
         Route::resource('payment_plan', 'PaymentPlanController');
-        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
-            /*Route::get('/{type}', 'ReportController@index')->name('index');
-            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
-            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
-            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
-        });
+//        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
+//            /*Route::get('/{type}', 'ReportController@index')->name('index');
+//            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
+//            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
+//            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
+//        });
     });
     //=============//
     /* Sales Route */
@@ -341,7 +341,7 @@ Route::group(['as' => 'property.'], function () {
             Route::get('is-read/', 'LeadController@isread')->name('lead.isread');
             Route::get('meeting-read/', 'LeadController@meetingread')->name('lead.meetingread');
             Route::get('follow-up/', 'LeadController@followup')->name('lead.followup');
-
+            Route::post('connect-call/', 'LeadController@connect_call')->name('lead.connect_call');
             Route::resource('client', 'ClientController');
             Route::get('old-client/data/{id}', 'ClientController@old_client')->name('old_client');
             Route::post('client/filter', 'ClientController@filter')->name('client.filter');
@@ -368,6 +368,7 @@ Route::group(['as' => 'property.'], function () {
             route::post('lead/pushed', 'LeadController@pushed')->name('lead.push');
             route::post('lead/arrange', 'LeadController@arrange')->name('lead.arrange');
 
+            //});
         });
         Route::get('/webhook', 'WebHookController@index')->name('webhook.index');
         Route::get('/webhook/show', 'WebHookController@show')->name('webhook.show');
@@ -439,6 +440,16 @@ Route::group(['as' => 'property.'], function () {
         //==============//
         Route::get('income/report', 'IncomeController@incomesummary')->name('income.report');
         Route::resource('income', 'IncomeController');
+
+        //===============//
+        // Reports Route //
+        //===============//
+        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
+            /*Route::get('/{type}', 'ReportController@index')->name('index');
+            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
+            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
+            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
+        });
     });
 });
 
@@ -501,11 +512,6 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::resource('privacyPolicy', 'PrivacyPolicyController')->except(['show']);
         Route::resource('faq', 'FaqController');
         Route::resource('term', 'TermController');
-
-        // Email //
-        // Email //
-        Route::get('email/compose', 'EmailController@email_compose')->name('email.compose');
-        Route::post('email/compose/send', 'EmailController@email_compose_send')->name('email.compose.send');
     });
     //=============//
     /* Sales Route */
@@ -528,6 +534,7 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
             Route::get('is-read/', 'LeadController@isread')->name('lead.isread');
             Route::get('meeting-read/', 'LeadController@meetingread')->name('lead.meetingread');
             Route::get('follow-up/', 'LeadController@followup')->name('lead.followup');
+            Route::post('connect-call/', 'LeadController@connect_call')->name('lead.connect_call');
             //End New Routes
             Route::resource('client', 'ClientController');
 

@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title',  'Expense')
 @section('content')
     <div class="main-content">
@@ -25,14 +25,20 @@
                 </div>--}}
                 <div class="row">
                     <div class="col-12">
+                        <h2 class="h2">
+                            <img src="{{ asset('public/panel/assets/img/logo.png') }}" alt="" width="200px" class="logo">
+                        </h2>
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4>{{ ucwords(Request::segment(3)) }} Report</h4>
+                                <h4>{{ ucwords(str_replace("_report"," Report",Request::segment(3))) }}</h4>
+                                <div class="text-md-right">
+                                    <button class="btn btn-warning btn-icon icon-left print"><i class="fas fa-print"></i> Print</button>
+                                </div>
                                 {{--<a href="{{ route('property_manager.request.create') }}" class="btn btn-primary"
                                    style="margin-left: auto; display: block;">Add New</a>--}}
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('property_manager.report.expense_report') }}" method="get">
+                                <form action="{{ route('property.report.expense_report',['panel'=> Helpers::user_login_route()['panel']]) }}" method="get">
                                     @csrf
                                     <div class="row mt-3 mb-5">
                                         <div class="col-md-3 mt-sm-2">
@@ -141,4 +147,41 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(".logo").hide();
+        $(document).on('click', '.print', function () {
+            $(".title").hide();
+            $(".print").hide();
+            $(".logo").show();
+            $('.navbar').hide();
+            $('.main-sidebar').hide();
+            $('.main-footer').hide();
+            $('.action').hide();
+            $('.h2').css({
+                "margin-bottom": "-5.0rem !important"
+            });
+            $(".print_area").css({
+                "width": "100%",
+                "margin-top": '-180px'
+            });
+            window.print();
+            $(".title").show();
+            $(".print").show();
+            $(".logo").hide();
+            $('.navbar').show();
+            $('.main-sidebar').show();
+            $('.main-footer').show();
+            $('.action').show();
+            $(".print_area").css({
+                "width": "100%",
+                "margin-top": '-7px'
+            });
+        });
+        $('.changeStatus').on('click', function () {
+            var url = $(this).data('url');console.log(url)
+            $('#statusForm').attr('action', url);
+            $('#statusModal').modal('show');
+
+        });
+    </script>
 @endsection

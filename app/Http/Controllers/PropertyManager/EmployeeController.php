@@ -195,7 +195,6 @@ class EmployeeController extends Controller
         }
         $employee_detail->save();
         $assign = BuildingAssignUser::where('user_id', $employee->id)->first();
-	
         if (!empty($assign->building_id) == $request->building_id) {
             $assign->update(
                 [
@@ -243,9 +242,9 @@ class EmployeeController extends Controller
             $employee_payroll->delete();
         }
         if ($employee) {
-            return redirect()->route('property_manager.employee.index')->with($this->message('Employee Delete Successfully', 'success'));
+            return response()->json(['status' => 'success', 'message' => 'Employee Delete Successfully']);
         } else {
-            return redirect()->back()->with($this->message('Employee Delete Error', 'danger'));
+            return response()->json(['status' => 'error', 'message' => 'Employee Delete Error']);
         }
 
     }

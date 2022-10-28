@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends('property.layout.app')
 @section('title', 'Employee List')
 @section('content')
     <div class="main-content">
@@ -9,7 +9,6 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4>Employee Pay List</h4>
-                                {{--<a href="{{ route('property_manager.employee_payroll.create') }}" class="btn btn-primary" style="margin-left: auto; display: block;">Add New</a>--}}
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -37,7 +36,7 @@
                                                 <td>@if($data->building_employee_payroll !== null) {{ $data->building_employee_payroll->comments }} @else Null @endif</td>
                                                 <td>@if($data->building_employee_payroll !== null) {{ Carbon\Carbon::parse($data->building_employee_payroll->dates)->format('d F Y') }} @else Null @endif</td>
                                                 <td>
-                                                    <a href="{{ route('property_manager.employee_payroll.edit', $data->id) }}"
+                                                    <a href="{{ route('property.employee_payroll.edit', $data->id) }}"
                                                        class="btn btn-primary px-1 py-0">
                                                        <i class="fa fa-edit"></i>
                                                     </a>

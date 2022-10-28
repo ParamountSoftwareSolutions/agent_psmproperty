@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/app.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/panel/assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/panel/assets/bundles/datatables/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/panel/assets/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/panel/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('public/panel/assets/bundles/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/style.css') }}">
@@ -68,6 +70,8 @@
 <script src="{{ asset('public/panel/assets/bundles/datatables/datatables.min.js') }}"></script>
 <script src="{{ asset('public/panel/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('public/panel/assets/js/page/datatables.js') }}"></script>
+<script src="{{ asset('public/panel/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('public/panel/assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
 
 <!-- Page Specific JS File -->
 <script src="https://cdn.ckeditor.com/ckeditor5/31.1.0/classic/ckeditor.js"></script>

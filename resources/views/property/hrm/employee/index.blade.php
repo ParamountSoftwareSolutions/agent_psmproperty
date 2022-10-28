@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends('property.layout.app')
 @section('title', 'Employee List')
 @section('content')
     <div class="main-content">
@@ -9,7 +9,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4>Employee List</h4>
-                                <a href="{{ route('property_manager.employee.create') }}" class="btn btn-primary" style="margin-left: auto; display: block;">Add New</a>
+                                <a href="{{ route('property.employee.create') }}" class="btn btn-primary" style="margin-left: auto; display: block;">Add New</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -33,11 +33,11 @@
                                                 <td>{{ $data->email }}</td>
                                                 <td>{{ $data->phone_number }}</td>
                                                 <td>
-                                                    <a href="{{ route('property_manager.employee.edit', $data->id) }}"
+                                                    <a href="{{ route('property.employee.edit', $data->id) }}"
                                                        class="btn btn-primary px-1 py-0">
                                                        <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <button type="button" data-url="{{ route('property_manager.employee.destroy', $data->id) }}" title="Delete" data-token="{!! csrf_token() !!}" class="btn btn-danger px-1 py-0 deleteBtn">
+                                                    <button type="button" data-url="{{ route('property.employee.destroy', $data->id) }}" title="Delete" data-token="{!! csrf_token() !!}" class="btn btn-danger px-1 py-0 deleteBtn">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>

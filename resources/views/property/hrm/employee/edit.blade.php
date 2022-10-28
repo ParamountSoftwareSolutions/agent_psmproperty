@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends('property.layout.app')
 @section('title', 'Edit Building')
 @section('content')
     <div class="main-content">
@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <form method="post" action="{{ route('property_manager.employee.update', $employee->id) }}">
+                            <form method="post" action="{{ route('property.employee.update', $employee->id) }}">
                                 @csrf
                                 @method('put')
                                 <input type="hidden" name="role" value="{{ $employee->roles[0]->name }}">

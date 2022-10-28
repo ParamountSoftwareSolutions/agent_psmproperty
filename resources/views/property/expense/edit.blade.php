@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+@extends('property_manager.layout.app')
+=======
 @extends('property.layout.app')
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
 @section('title', 'Expense Edit')
 @section('content')
     <div class="main-content">
@@ -7,7 +11,11 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
+<<<<<<< HEAD
+                            <form method="post" action="{{ route('property_manager.expense.update', $expense->id) }}">
+=======
                             <form method="post" action="{{ route('property.expense.update', $expense->id) }}">
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                 @csrf
                                 @method('put')
                                 <div class="card-header">
@@ -68,16 +76,24 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Labor</label>
+<<<<<<< HEAD
+                                            <input name="labor" type="number" class="form-control" placeholder="Enter labor Number" value="{{ $expense->labor->labor }}">
+=======
                                             <input name="labor" type="number" class="form-control" placeholder="Enter labor Number" value="{{ ($expense->labor !==
                                             null) ?? $expense->labor->labor }}">
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                             @error('labor')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Labor Cost</label>
+<<<<<<< HEAD
+                                            <input name="labor_cost" type="number" class="form-control" placeholder="Enter Labour cost" value="{{ $expense->labor->cost }}">
+=======
                                             <input name="labor_cost" type="number" class="form-control" placeholder="Enter Labour cost" value="{{ $expense->labor !==
                                             null ?? $expense->labor->cost }}">
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                             @error('labor_cost')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror

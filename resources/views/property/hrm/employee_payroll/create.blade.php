@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends('property.layout.app')
 @section('title', 'Add New Employee')
 @section('content')
     <div class="main-content">
@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <form method="post" action="{{ route('property_manager.employee_payroll.store') }}">
+                            <form method="post" action="{{ route('property.employee_payroll.store') }}">
                                 @csrf
                                 <div class="card-header">
                                     <h4>Basic Information</h4>

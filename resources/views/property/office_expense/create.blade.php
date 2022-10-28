@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+@extends('property_manager.layout.app')
+=======
 @extends('property.layout.app')
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
 @section('title', 'Office Expense Create')
 @section('content')
     <div class="main-content">
@@ -7,7 +11,11 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
+<<<<<<< HEAD
+                            <form method="post" action="{{ route('property_manager.office_expense.store') }}">
+=======
                             <form method="post" action="{{ route('property.office_expense.store') }}">
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                 @csrf
                                 <div class="card-header">
                                     <h4>Basic Information</h4>
@@ -16,7 +24,11 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <div class="form-group">
+<<<<<<< HEAD
+                                                <label>Select Building</label>
+=======
                                                 <label>Select Project</label>
+>>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                                 <select name="building_id" class="form-control" required>
                                                     @foreach($building as $data)
                                                         <option value="{{ $data->id }}">{{ $data->name }}</option>

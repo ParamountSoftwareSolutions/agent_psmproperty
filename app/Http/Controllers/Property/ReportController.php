@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\PropertyManager;
+namespace App\Http\Controllers\Property;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
@@ -330,7 +330,7 @@ class ReportController extends Controller
         $filter['startDateRange'] = 'Jan-' . $year;
         $filter['endDateRange'] = 'Dec-' . $year;
 
-        return view('property_manager.report.expense', compact('filter', 'building_list', 'request'), $data);
+        return view('property.report.expense', compact('filter', 'building_list', 'request'), $data);
     }
 
     public function yearMonth()

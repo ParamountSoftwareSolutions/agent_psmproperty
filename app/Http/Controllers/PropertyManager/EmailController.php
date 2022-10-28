@@ -27,7 +27,7 @@ class EmailController extends Controller
             'subject' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => $validator->errors()->first()]);
+            return redirect()->back()->with($this->message($validator->errors()->first(), 'danger'));
         }
         $data = [];
         $data['subject'] = $request->subject;
@@ -37,7 +37,7 @@ class EmailController extends Controller
                 'email' => 'required|email',
             ]);
             if ($validator->fails()) {
-                return response()->json(['status' => 'error', 'message' => $validator->errors()->first()]);
+                return redirect()->back()->with($this->message($validator->errors()->first(), 'danger'));
             }
             $data['emails'] = [$request->email];
         }
@@ -80,17 +80,15 @@ class EmailController extends Controller
         try {
             foreach($data['emails'] as $email){
                 $data['email'] = $email;
-                Mail::to($email)->send(new SendMailable($data));
+                Mail::send('mail.email_template', $data, function($message) use($data) {
+                    $message->to($data['email'])->subject($data['subject']);
+                });
+//                Mail::send('mail.email_template')->send(new SendMailable($data));
             }
-//            $path = public_path('mail-media');
-//            if(file_exists($path)){
-//                File::deleteDirectory($path);
-//            }
-            return response()->json(['status' => 'success', 'message' => 'Email Sent Successfully']) ;
+            return redirect()->route('property_manager.email.compose',Helpers::user_login_route()['panel'])->with($this->message('Email Sent Successfully', 'success'));
         }
         catch(Exception $e) {
-            return response()->json(['status' => 'error', 'message' => 'Something went Wrong....']) ;
+            return redirect()->back()->with($this->message('Email Sent Error', 'danger'));
         }
     }
-
 }

@@ -38,7 +38,7 @@ class ReportController extends Controller
         return view('property_manager.report.index', compact('building', 'sale', 'req'));
     }*/
 
-    public function search(Request $req, $type, $time)
+    public function search(Request $req,$panel, $type, $time)
     {
         $req->validate([
             'building_id' => 'required',
@@ -55,7 +55,7 @@ class ReportController extends Controller
             foreach ($sale as $data) {
                 $total_sale[] = $data->building_installment_paid->sum('installment_amount');
             }
-            return view('property_manager.report.index', compact('building', 'sale', 'req', 'total_sale'));
+            return view('property.report.index', compact('building', 'sale', 'req', 'total_sale'));
 
         } elseif ($type == 'expenses') {
             dd($type, 'expe');
@@ -66,7 +66,7 @@ class ReportController extends Controller
         }
 
         if ($request) {
-            return redirect('property-manager/report/' . $type)->with(['alert' => 'success', 'message' => ucwords($type) . ' Report Update Successfully']);
+            return redirect(Helpers::user_login_route()['panel'].'/report/' . $type)->with(['alert' => 'success', 'message' => ucwords($type) . ' Report Update Successfully']);
         } else {
             return redirect()->back()->with(['alert' => 'error', 'message' => ucwords($type) . ' Update Error']);
         }
@@ -330,7 +330,7 @@ class ReportController extends Controller
         $filter['startDateRange'] = 'Jan-' . $year;
         $filter['endDateRange'] = 'Dec-' . $year;
 
-        return view('property_manager.report.expense', compact('filter', 'building_list', 'request'), $data);
+        return view('property.report.expense', compact('filter', 'building_list', 'request'), $data);
     }
 
     public function yearMonth()

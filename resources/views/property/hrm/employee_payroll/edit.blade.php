@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends('property.layout.app')
 @section('title', 'Edit Employee Pay')
 @section('content')
     <div class="main-content">
@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <form method="post" action="{{ route('property_manager.employee_payroll.update', $employee->id) }}">
+                            <form method="post" action="{{ route('property.employee_payroll.update', $employee->id) }}">
                                 @csrf
                                 @method('put')
                                 <div class="card-header">
@@ -28,11 +28,7 @@
                                         <div class="form-group col-md-4">
                                             <label>Salary Amount</label>
                                             <input type="number" class="form-control" name="amount"
-<<<<<<< HEAD
-                                                   value="{{ old('amount', $employee->building_employee_payroll->amount ?? null) }}">
-=======
                                                    value="{{ old('amount', $employee->building_employee->building_employee_payroll->amount ?? null) }}">
->>>>>>> e73d3dd94bd58f71271ee38c5a091babc3d277f5
                                             @error('amount')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -40,11 +36,7 @@
                                         <div class="form-group col-md-4">
                                             <label>Payment Method</label>
                                             <input type="text" class="form-control" name="payment_mode"
-<<<<<<< HEAD
-                                                   value="{{ old('payment_mode', $employee->building_employee_payroll->payment_mode ?? null) }}">
-=======
                                                    value="{{ old('payment_mode', $employee->building_employee->building_employee_payroll->payment_mode ?? null) }}">
->>>>>>> e73d3dd94bd58f71271ee38c5a091babc3d277f5
                                             @error('payment_mode')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -54,11 +46,7 @@
                                         <div class="form-group col-md-4">
                                             <label>Comments</label>
                                             <input type="text" class="form-control" name="comments"
-<<<<<<< HEAD
-                                                   value="{{ old('comments', $employee->building_employee_payroll->comments ?? null) }}">
-=======
                                                    value="{{ old('comments', $employee->building_employee->building_employee_payroll->comments ?? null) }}">
->>>>>>> e73d3dd94bd58f71271ee38c5a091babc3d277f5
                                             @error('comments')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -66,11 +54,7 @@
                                         <div class="form-group col-md-4">
                                             <label>Date</label>
                                             <input type="date" class="form-control" name="date"
-<<<<<<< HEAD
-                                                   value="{{ old('date', $employee->building_employee_payroll->date ?? null) }}">
-=======
                                                    value="{{ old('date', $employee->building_employee->building_employee_payroll->date ?? null) }}">
->>>>>>> e73d3dd94bd58f71271ee38c5a091babc3d277f5
                                             @error('date')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
