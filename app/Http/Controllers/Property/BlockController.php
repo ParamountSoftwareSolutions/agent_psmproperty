@@ -28,8 +28,8 @@ class BlockController extends Controller
      */
     public function create()
     {
-        $buildings = Helpers::building_detail();
-        return view('property.block.index', compact('buildings'));
+        $building = Helpers::building_detail();
+        return view('property.block.create', compact('building'));
     }
 
     /**
@@ -41,11 +41,13 @@ class BlockController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'block' => 'required',
+            'name' => 'required',
         ]);
         $block = new BuildingBlock();
-        $block->project_id = $request->project_id;
+        $block->building_id = $request->building_id;
         $block->name = $request->name;
+        $block->code = $request->code;
+        $block->start_date = $request->start_date;
         $block->save();
         if ($block) {
             //NotificationHelper::web_panel_notification('property_create', 'property_id', $building->id);
@@ -75,7 +77,8 @@ class BlockController extends Controller
     public function edit($id)
     {
         $block = BuildingBlock::findOrFail($id);
-        return view('property.block.edit', compact('block'));
+        $building = Building::get();
+        return view('property.block.edit', compact('block', 'building'));
     }
 
     /**
@@ -88,11 +91,15 @@ class BlockController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'block' => 'required',
+            'building_id' => 'required',
+            'name' => 'required',
+            'code' => 'required',
         ]);
         $block = BuildingBlock::findOrFail($id);
-        $block->project_id = $request->project_id;
+        $block->building_id = $request->building_id;
         $block->name = $request->name;
+        $block->code = $request->code;
+        $block->start_date = $request->start_date;
         $block->save();
         if ($block) {
             return redirect()->route('property.block.index')->with($this->message('Building update SuccessFully', 'success'));

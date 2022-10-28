@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-@extends('property_manager.layout.app')
-=======
 @extends('property.layout.app')
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
 @section('title', 'Expense Create')
 @section('content')
     <div class="main-content">
@@ -11,11 +7,7 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-<<<<<<< HEAD
-                            <form method="post" action="{{ route('property_manager.expense.store') }}">
-=======
                             <form method="post" action="{{ route('property.expense.store') }}">
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                 @csrf
                                 <div class="card-header">
                                     <h4>Basic Information</h4>
@@ -23,17 +15,15 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-md-6">
-                                            <div class="form-group">
                                                 <label>Select Building</label>
                                                 <select name="building_id" class="form-control" required>
                                                     @foreach($building as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                                        <option value="{{ $data->id }}" >{{ $data->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('building_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
-                                            </div>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <div class="form-group">

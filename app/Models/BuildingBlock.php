@@ -10,4 +10,9 @@ class BuildingBlock extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function project()
+    {
+        return $this->belongsTo(Building::class, 'building_id');
+    }
 }

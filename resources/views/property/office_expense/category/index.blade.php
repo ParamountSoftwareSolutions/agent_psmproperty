@@ -61,7 +61,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $data->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('property.office_expense_category.edit', ['category' => $data->id]) }}"
+                                                    <a href="{{ route('property.office_expense_category.edit', ['office_expense_category' => $data->id]) }}"
                                                        class="btn btn-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -74,7 +74,7 @@
                                                         </svg>
                                                     </a>
                                                     <form
-                                                        action="{{ route('property.office_expense_category.destroy', ['category' => $data->id]) }}"
+                                                        action="{{ route('property.office_expense_category.destroy', ['office_expense_category' => $data->id]) }}"
                                                         method="post" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')

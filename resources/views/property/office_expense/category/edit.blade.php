@@ -15,7 +15,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form method="post" action="{{ route('property.office_expense.category.update', $category->id) }}">
+                            <form method="post" action="{{ route('property.office_expense_category.update', $category->id) }}">
                                 @csrf
                                 @method('put')
                                 <div class="card-header">

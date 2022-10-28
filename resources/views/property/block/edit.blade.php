@@ -15,7 +15,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form method="post" action="{{ route('property.size.update', $size->id) }}">
+                            <form method="post" action="{{ route('property.block.update', $block->id) }}">
                                 @csrf
                                 @method('put')
                                 <div class="card-header">
@@ -24,11 +24,10 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>Project <sup style="color: red">*</sup></label>
-                                            <select class="form-control" name="building_id" required>
-                                                <option label="" disabled selected>Select Project</option>
-                                                @foreach($buildings as $data)
-                                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                            <label>Select Building</label>
+                                            <select name="building_id" class="form-control" required>
+                                                @foreach($building as $data)
+                                                    <option value="{{ $data->id }}" @if($block->building_id == $data->id) selected @endif>{{ $data->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('building_id')
@@ -36,9 +35,23 @@
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Name</label>
-                                            <input type="text" class="form-control" required="" name="name" value="{{ $name->name }}">
+                                            <label>Block Name</label>
+                                            <input type="text" class="form-control" required="" name="name" value="{{ $block->name }}">
                                             @error('name')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Block Code</label>
+                                            <input type="text" class="form-control" required="" name="code" value="{{ $block->code }}">
+                                            @error('code')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Start Date</label>
+                                            <input type="date" class="form-control" required="" name="start_date" value="{{ $block->start_date }}">
+                                            @error('start_date')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>

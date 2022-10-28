@@ -7,7 +7,7 @@ use App\Models\BuildingCategory;
 use App\Models\BuildingExpenseCategory;
 use Illuminate\Http\Request;
 
-class ExpesneCategoryController extends Controller
+class ExpenseCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,14 +39,14 @@ class ExpesneCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required',
+            'name' => 'required',
         ]);
-        $category = new BuildingCategory();
-        $category->category = $request->category;
+        $category = new BuildingExpenseCategory();
+        $category->name = $request->name;
         $category->save();
         if ($category) {
             //NotificationHelper::web_panel_notification('property_create', 'property_id', $building->id);
-            return redirect()->route('property.office_expense.category.index')->with($this->message('Category Create SuccessFully', 'success'));
+            return redirect()->route('property.office_expense_category.index')->with($this->message('Category Create SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Category Create Error", 'error'));
         }
@@ -71,7 +71,7 @@ class ExpesneCategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = BuildingCategory::findOrFail($id);
+        $category = BuildingExpenseCategory::findOrFail($id);
         return view('property.office_expense.category.edit', compact('category'));
     }
 
@@ -85,13 +85,13 @@ class ExpesneCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'category' => 'required',
+            'name' => 'required',
         ]);
         $category = BuildingExpenseCategory::findOrFail($id);
-        $category->category = $request->category;
+        $category->name = $request->name;
         $category->save();
         if ($category) {
-            return redirect()->route('property.office_expense.category.index')->with($this->message('Category update SuccessFully', 'success'));
+            return redirect()->route('property.office_expense_category.index')->with($this->message('Category update SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Category update Error", 'error'));
         }
@@ -105,10 +105,10 @@ class ExpesneCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = BuildingCategory::findOrFail($id);
+        $category = BuildingExpenseCategory::findOrFail($id);
         $category->delete();
         if ($category) {
-            return redirect()->route('property.office_expense.category.index')->with($this->message('Category delete SuccessFully', 'success'));
+            return redirect()->route('property.office_expense_category.index')->with($this->message('Category delete SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Building delete Error", 'error'));
         }

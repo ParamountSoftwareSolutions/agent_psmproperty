@@ -1,49 +1,15 @@
 @extends('property.layout.app')
-@section('title', 'Size List')
+@section('title', 'Block List')
 @section('content')
     <div class="main-content">
         <section class="section">
             <div class="section-body">
                 <div class="row">
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">@if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="list-unstyled">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            <form method="post" action="{{ route('property.size.store') }}">
-                                @csrf
-                                <div class="card-header">
-                                    <h4>Size Add</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-4">
-                                            <label>Size</label>
-                                            <input type="text" class="form-control" required="" name="size">
-                                            @error('size')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer text-right">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4>Size List</h4>
-                                {{-- <a href="{{ route('property.manager.create') }}" class="btn btn-primary" style="margin-left: auto; display: block;">Add New</a>--}}
+                                <h4>Block List</h4>
+                                 <a href="{{ route('property.block.create') }}" class="btn btn-primary" style="margin-left: auto; display: block;">Add New</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -51,17 +17,23 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center">#</th>
-                                            <th>Size</th>
+                                            <th>Project Name</th>
+                                            <th>Block Name</th>
+                                            <th>Block Code</th>
+                                            <th>Start Date</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @forelse($size as $data)
+                                        @forelse($block as $data)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $data->size }}</td>
+                                                <td>{{ $data->project->name }}</td>
+                                                <td>{{ $data->code }}</td>
+                                                <td>{{ $data->name }}</td>
+                                                <td>{{ $data->start_date }}</td>
                                                 <td>
-                                                    <a href="{{ route('property.size.edit', ['size' => $data->id]) }}"
+                                                    <a href="{{ route('property.block.edit', ['block' => $data->id]) }}"
                                                        class="btn btn-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -74,7 +46,7 @@
                                                         </svg>
                                                     </a>
                                                     <form
-                                                        action="{{ route('property.size.destroy', ['size' => $data->id]) }}"
+                                                        action="{{ route('property.block.destroy', ['block' => $data->id]) }}"
                                                         method="post" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')
