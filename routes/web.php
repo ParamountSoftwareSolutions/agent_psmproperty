@@ -307,6 +307,7 @@ Route::group(['as' => 'property.'], function () {
         Route::post('profile/password/update', 'ProfileController@updatePassword')->name('profile.password.update');
 
         Route::resource('expense', 'ExpenseController');
+        Route::resource('office_expense_category', 'ExpenseCategoryController');
         Route::post('expense_report', 'ExpenseController@expense_report')->name('expense_report');
         Route::resource('office_expense', 'OfficeExpenseController');
         /* Notification */

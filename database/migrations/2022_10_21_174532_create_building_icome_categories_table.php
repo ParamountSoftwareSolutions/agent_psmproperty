@@ -15,6 +15,7 @@ class CreateBuildingIcomeCategoriesTable extends Migration
     {
         Schema::create('building_icome_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }

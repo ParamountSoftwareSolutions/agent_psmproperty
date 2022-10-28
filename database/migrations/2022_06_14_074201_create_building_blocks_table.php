@@ -15,6 +15,10 @@ class CreateBuildingBlocksTable extends Migration
     {
         Schema::create('building_blocks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('building_id')->unsigned()->nullable()->constrained('buildings')->nullOnDelete();
+            $table->string('name');
+            $table->string('code');
+            $table->date('start_date');
             $table->timestamps();
         });
     }
