@@ -16,7 +16,7 @@ class CreateBuildingInventoriesTable extends Migration
         Schema::create('building_inventories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('building_id')->unsigned()->nullable()->constrained('buildings')->nullOnDelete();
-            $table->string('block');
+            $table->foreignId('block_id')->unsigned()->nullable()->constrained('building_blocks')->nullOnDelete();
             $table->string('unit_no');
             $table->foreignId('category_id')->unsigned()->nullable()->constrained('building_categories')->nullOnDelete();
             $table->foreignId('size_id')->unsigned()->nullable()->constrained('building_sizes')->nullOnDelete();

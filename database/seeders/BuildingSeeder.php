@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Building;
 use App\Models\BuildingAssignUser;
+use App\Models\BuildingBlock;
 use App\Models\BuildingCategory;
 use App\Models\BuildingEmployee;
 use App\Models\BuildingInventory;
@@ -81,10 +82,24 @@ class BuildingSeeder extends Seeder
             ],
         ]);
 
+        BuildingBlock::insert([
+            [
+                'building_id' => 1,
+                'name' => 'y block',
+                'code' => 'f001',
+            ],
+
+            [
+                'building_id' => 2,
+                'name' => 'z block',
+                'code' => 'f001',
+            ],
+        ]);
+
         BuildingInventory::insert([
             [
                 'building_id' => 1,
-                'block' => 'f001',
+                'block_id' => 1,
                 'unit_no' => 'kjh',
                 //'size_id' => 1,
                 'category_id' => 1,
@@ -93,7 +108,7 @@ class BuildingSeeder extends Seeder
             ],
             [
                 'building_id' => 2,
-                'block' => 'f001',
+                'block_id' => 1,
                 'unit_no' => 'kjh',
                 //'size_id' => 1,
                 'category_id' => 1,
@@ -102,7 +117,7 @@ class BuildingSeeder extends Seeder
             ],
             [
                 'building_id' => 3,
-                'block' => 'f001',
+                'block_id' => 2,
                 'unit_no' => 'kjh',
                 //'size_id' => 1,
                 'category_id' => 1,

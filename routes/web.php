@@ -276,6 +276,9 @@ Route::group(['as' => 'property.'], function () {
         Route::resource('category', 'CategoryController');
         Route::resource('block', 'BlockController');
 
+
+        Route::get('select/building/{id}', 'InventoryController@building')->name('select.building');
+        Route::get('floor/{id}/{building_id}', 'InventoryController@floor');
         /* Building Manager */
         Route::post('property_manager/password/update/{manager}', 'ManagerController@updatePassword')->name('manager.password.update');
         Route::get('property_manager/activate/{manager}', 'ManagerController@activate')->name('manager.activate');
@@ -388,7 +391,7 @@ Route::group(['as' => 'property.'], function () {
         Route::get('check-count-read', 'NotificationController@check_count_read')->name('check_count_read');
         Route::get('today-follow-up-count', 'NotificationController@today_follow_up_count')->name('today_follow_up_count');
 
-        //Route::resource('building', 'BuildingController');
+        /*//Route::resource('building', 'BuildingController');
         Route::get('building_detail/{id}', 'FloorController@index')->name('building_detail.index');
         Route::get('building_view/{id}', 'BuildingController@building_view')->name('building_view');
         // Flat Apartment and Shop Route
@@ -412,16 +415,16 @@ Route::group(['as' => 'property.'], function () {
         Route::post('building-detail/store/{id}', 'BuildingDetailController@store')->name('building_details.store');
         Route::get('building-detail/edit/{id}', 'BuildingDetailController@edit')->name('building_details.edit');
         Route::put('building-detail/update/{id}', 'BuildingDetailController@update')->name('building_details.update');
-        Route::post('banner-detail/payment-image/remove', 'BuildingDetailController@remove_image_payment')->name('building_detail/payment_image/remove');
+        Route::post('banner-detail/payment-image/remove', 'BuildingDetailController@remove_image_payment')->name('building_detail/payment_image/remove');*/
 
 
         //=============//
         /* More Route */
         //=============//
-        Route::resource('about', 'AboutController')->except(['show']);
+       /* Route::resource('about', 'AboutController')->except(['show']);
         Route::resource('privacyPolicy', 'PrivacyPolicyController')->except(['show']);
         Route::resource('faq', 'FaqController');
-        Route::resource('term', 'TermController');
+        Route::resource('term', 'TermController');*/
 
         //====================//
         // Task Targets Route //

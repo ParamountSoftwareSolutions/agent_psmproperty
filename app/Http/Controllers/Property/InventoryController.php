@@ -7,12 +7,15 @@ use App\Helpers\NotificationHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Building;
 use App\Models\BuildingAssignUser;
+use App\Models\BuildingBlock;
 use App\Models\BuildingCategory;
 use App\Models\BuildingCustomer;
 use App\Models\BuildingInventory;
 use App\Models\BuildingSale;
 use App\Models\BuildingSize;
 use App\Models\Country;
+use App\Models\Floor;
+use App\Models\FloorDetail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
@@ -51,6 +54,20 @@ class InventoryController extends Controller
         return view('property.inventory.create', compact('buildings', 'category', 'size'));
     }
 
+    public function building($id)
+    {
+        $building = Helpers::building_detail_single($id);
+        $block = BuildingBlock::where('building_id', $building->id)->get();
+        return json_encode($block);
+    }
+
+//    public function block($panel, $id, $building_id)
+//    {
+//        $floor = Floor::where('id', $id)->first();
+//        $floor_detail = FloorDetail::where(['floor_id' => $floor->id, 'building_id' => $building_id])->where('status', 'available')->get();
+//        return json_decode($floor_detail);
+//    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -67,7 +84,7 @@ class InventoryController extends Controller
         ]);
         $inventory = new BuildingInventory();
         $inventory->building_id = $request->building_id;
-        $inventory->block = $request->block;
+        $inventory->block_id = $request->block_id;
         $inventory->unit_no = $request->unit_no;
         $inventory->size_id = $request->size_id;
         $inventory->category_id = $request->category_id;
