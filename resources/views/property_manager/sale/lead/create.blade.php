@@ -32,11 +32,11 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Floor List </label>
-                                                <select class="form-control" name="floor_id">
+                                                <label>Block List </label>
+                                                <select class="form-control" name="block_id">
                                                     <option label="" disabled selected>Select Detail</option>
                                                 </select>
-                                                @error('floor_id')
+                                                @error('block_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -84,7 +84,7 @@
                                                     <label>Sales Person <small style="color: red">*</small></label>
                                                     <select class="form-control" name="sale_person_id" id="sale_person_id" required>
                                                         <option value="" >Select Sales Person</option>
-														
+
                                                         @foreach($sale_person as $employee)
                                                             <option value="{{ $employee->id }}">{{ $employee->username }}</option>
                                                         @endforeach
@@ -207,19 +207,19 @@
                 var building_id = $(this).val();
                 if (building_id) {
                     $.ajax({
-                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/building') }}/" + building_id,
+                        url: "{{ url('property/select/building') }}/" + building_id,
                         type: "GET",
                         dataType: "json",
                         success: function (data) {
-                            $('select[name="floor_id"]').empty();
+                            $('select[name="block_id"]').empty();
                             if (data.length === 0) {
-                                $('select[name="floor_id"]').append('<option value="">N/A</option>');
+                                $('select[name="block_id"]').append('<option value="">N/A</option>');
                             } else {
-                                $('select[name="floor_id"]').append('<option value=""> -- Select Floor -- </option>');
+                                $('select[name="block_id"]').append('<option value=""> -- Select Block -- </option>');
                                 $.each(data, function (key, value) {
                                     let oldFloorId = '{{ old('floor_id') }}';
                                     let selected = (value.id == oldFloorId) ? "selected" : "";
-                                    $('select[name="floor_id"]').append('<option '+selected+' value="' + value.id + '">' + value.name + '</option>');
+                                    $('select[name="block_id"]').append('<option ' + selected + ' value="' + value.id + '">' + value.name + '</option>');
 
                                 });
                             }

@@ -93,9 +93,9 @@ class LeadController extends Controller
 
     public function floor($panel, $id, $building_id)
     {
-        $floor = Floor::where('id', $id)->first();
-        $floor_detail = FloorDetail::where(['floor_id' => $floor->id, 'building_id' => $building_id])->where('status', 'available')->get();
-        return json_decode($floor_detail);
+        $building = Helpers::building_detail_single($id);
+        $block = BuildingBlock::where('building_id', $building->id)->get();
+        return json_encode($block);
     }
 
     /**
