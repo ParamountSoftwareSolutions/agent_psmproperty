@@ -1,8 +1,7 @@
-
 @extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title', 'Edit Sale')
 @section('content')
-<div class="main-content">
+    <div class="main-content">
     <section class="section">
         <div class="section-body">
             <div class="row">
@@ -21,28 +20,12 @@
                                         <div class="form-group">
                                             <label>Project List</label>
                                             <select class="form-control" name="building_id" required>
-<option value="">Select Detail</option>
+                                                <option value="">Select Detail</option>
                                                 @forelse($building as $data)
                                                     <option value="{{ $data->id }}" {{ $data->id == $building_sale->building_id ? 'selected' : '' }}>{{ $data->name }}</option>
                                                 @empty
                                                     <option value="">N/A</option>
                                                 @endforelse
-{{--                                                @if($building_sale->floor_detail !== null)--}}
-{{--                                                    <option value="{{ $building_sale->floor_detail->building_id }}" selected>{{ $building_sale->floor_detail->building->name }}</option>--}}
-{{--                                                    <option value="">Select Detail</option>--}}
-{{--                                                    @forelse($building as $data)--}}
-{{--                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>--}}
-{{--                                                    @empty--}}
-{{--                                                        <option value="">N/A</option>--}}
-{{--                                                    @endforelse--}}
-{{--                                                @else--}}
-{{--                                                    <option value="">Select Detail</option>--}}
-{{--                                                    @forelse($building as $data)--}}
-{{--                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>--}}
-{{--                                                    @empty--}}
-{{--                                                        <option value="">N/A</option>--}}
-{{--                                                    @endforelse--}}
-{{--                                                @endif--}}
                                             </select>
                                             @error('building_id')
                                             <div class="text-danger mt-2">{{ $message }}</div>
@@ -51,37 +34,34 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <div class="form-group">
-                                            <label>Floor List</label>
-                                            <select class="form-control" name="floor_id">
-                                                @if($building_sale->floor_detail !== null)
-                                                <option value="{{ $building_sale->floor_detail->floor_id }}" selected>{{ $building_sale->floor_detail->floor->name }}</option>
-                                                <option label="" disabled>Select Detail</option>
+                                            <label>Block</label>
+                                            <select class="form-control" name="block_id">
+                                                @if($building_sale->block_id)
+                                                    <option value="{{ $building_sale->block_id }}" selected>{{ $building_sale->block->name }}</option>
+                                                    <option label="" disabled>Select Detail</option>
                                                 @else
-                                                <option label="" disabled>Select Detail</option>
-
+                                                    <option label="" disabled>Select Detail</option>
                                                 @endif
                                             </select>
-                                            @error('floor_id')
+                                            @error('block_id')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <div class="form-group">
-                                            <label>Floor Details</label>
-                                            <select class="form-control" name="floor_detail_id">
-                                                @if($building_sale->floor_detail !== null)
-
-                                                <option value="{{ $building_sale->floor_detail_id }}" selected>Property
-                                                    Number: {{ $building_sale->floor_detail->number }} Property
-                                                    Type: {{ $building_sale->floor_detail->number }}</option>
-                                                <option label="" disabled>Select Detail</option>
-
+                                            <label>Inventory</label>
+                                            <select class="form-control" name="inventory_id">
+                                                @if($building_sale->inventory_id)
+                                                    <option value="{{ $building_sale->inventory_id }}" selected>Property
+                                                        Number: {{ $building_sale->inventory->unit_no }} Property
+                                                        Type: {{ $building_sale->inventory->type }}</option>
+                                                    <option label="" disabled>Select Detail</option>
                                                 @else
-                                                <option label="" disabled>Select Detail</option>
+                                                    <option label="" disabled>Select Detail</option>
                                                 @endif
                                             </select>
-                                            @error('floor_detail_id')
+                                            @error('inventory_id')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -114,13 +94,51 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-4">
+                                        <div class="form-group">
+                                            <label>Purpose</label>
+                                            <select class="form-control" name="purpose">
+                                                <option label="" disabled selected>Select Detail</option>
+                                                <option value="investment" {{$building_sale->purpose == 'investment' ? 'selected' : ''}}>Investment</option>
+                                                <option value="buy" {{$building_sale->purpose == 'buy' ? 'selected' : ''}}>Buy</option>
+                                            </select>
+                                            @error('purpose')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <?php
+                                        $budget[0] = '';
+                                        $budget[1] = '';
+                                        if($building_sale->budget !== ''){
+                                            $budget = explode(' - ',$building_sale->budget);
+                                        }
+                                    ?>
+                                    <div class="form-group col-md-4">
+                                        <div class="form-group">
+                                            <label>Budget From</label>
+                                            <input class="form-control" type="number" name="budget_from" value="{{$budget[0]}}">
+                                            @error('budget_from')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="number" class="form-control" name="budget_to" value="{{$budget[1]}}">
+                                            @error('budget_to')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     @if(!Helpers::isEmployee())
                                     <div class="form-group col-md-4">
                                         <div class="form-group">
                                             <label>Sales Person</label>
                                             <select class="form-control" name="sale_person_id" id="sale_person_id">
                                                 <option value="">Select Sales Person</option>
-												<option value="{{ auth()->id() }}">{{ auth()->user()->username }}</option>
+												<option value="{{ auth()->user()->id }}">{{ auth()->user()->username }}</option>
                                                 @foreach($sales_person as $employee)
                                                 <option value="{{ $employee->id }}" {{ $building_sale->user_id == $employee->id ? 'selected' : '' }}>{{ $employee->username }}</option>
                                                 @endforeach
@@ -178,13 +196,6 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label>Password (Optional)</label>
-                                        <input type="password" class="form-control" name="password" autocomplete="off">
-                                        @error('password')
-                                        <div class="text-danger mt-2">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-4">
                                         <label for="country">Country</label>
                                         <select class="form-control" name="country_id">
                                             <option value="">Select country</option>
@@ -238,53 +249,28 @@
 @section('script')
 <script>
     $(document).ready(function() {
+
+        var building_id = $('select[name="building_id"]').find(":selected").val();
+        if(building_id){
+            var block_id = $('select[name="block_id"]').find(":selected").val();
+            if(!block_id){
+                getBlock(building_id)
+            }
+            var inventory_id = $('select[name="inventory_id"]').find(":selected").val();
+            if(!inventory_id){
+                getInventory(building_id)
+            }
+        }
         $('select[name="building_id"]').on('change', function() {
             var building_id = $(this).val();
             if (building_id) {
-                $.ajax({
-                    url: "{{ url('property-manager/sale/building') }}/" + building_id,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $('select[name="floor_id"]').empty();
-                        if (data.length === 0) {
-                            $('select[name="floor_id"]').append('<option value="">N/A</option>');
-                        } else {
-                            $('select[name="floor_id"]').append('<option value="">Please Select</option>');
-                            $.each(data, function(key, value) {
-                                $('select[name="floor_id"]').append('<option value="' + value.id + '">' + value.name + '</option>');
-                            });
-                        }
-                    },
-                });
+                getInventory(building_id);
+                getBlock(building_id);
             } else {
                 alert('danger');
             }
         });
-        $('select[name="floor_id"]').on('change', function() {
-            var floor_id = $(this).val();
-            var building_id = $('select[name="building_id"]').find(":selected").val();
-            if (floor_id) {
-                $.ajax({
-                    url: "{{ url('property-manager/sale/floor') }}/" + floor_id + "/" + building_id,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $('select[name="floor_detail_id"]').empty();
-                        if (data.length === 0) {
-                            $('select[name="floor_detail_id"]').append('<option value="">N/A</option>');
-                        } else {
-                            $('select[name="floor_detail_id"]').append('<option value="">Please  Select</option>');
-                            $.each(data, function(key, value) {
-                                $('select[name="floor_detail_id"]').append('<option value="' + value.id + '">' + "Property Number: " + value.number + "  Property Type: " + value.type + '</option>');
-                            });
-                        }
-                    },
-                });
-            } else {
-                alert('danger');
-            }
-        });
+
         $('select[name="building_id"]').on('change', function() {
             var id = $(this).val();
             $.ajax({
@@ -375,5 +361,43 @@
             });
         });
     });
+    function getBlock(building_id){
+        $.ajax({
+            url: "{{ url('property-manager/sale/building') }}/" + building_id,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                $('select[name="block_id"]').empty();
+                if (data.length === 0) {
+                    $('select[name="block_id"]').append('<option value="">N/A</option>');
+                } else {
+                    $('select[name="block_id"]').append('<option value="">Please Select</option>');
+                    $.each(data, function(key, value) {
+                        $('select[name="block_id"]').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            },
+        });
+    }
+    function getInventory(building_id){
+        $.ajax({
+            url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/block') }}/" + building_id,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('select[name="inventory_id"]').empty();
+                if (data.length === 0) {
+                    $('select[name="inventory_id"]').append('<option value="">N/A</option>');
+                } else {
+                    $('select[name="inventory_id"]').append('<option value="">Please  Select</option>');
+                    $.each(data, function (key, value) {
+                        let oldFloorDetailId = '{{ old('inventory_id') }}';
+                        let selected = value.id == oldFloorDetailId ? "selected" : "";
+                        $('select[name="inventory_id"]').append('<option '+selected+' value="' + value.id + '">' + "Inventory Number: " + value.unit_no + "  Inventono Type: " + value.type + '</option>');
+                    });
+                }
+            },
+        });
+    }
 </script>
 @endsection

@@ -38,22 +38,22 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Floor List <small style="color: red">*</small></label>
-                                                <select class="form-control" name="floor_id" required>
+                                                <label>Block List</label>
+                                                <select class="form-control" name="block_id">
                                                     <option label="" disabled selected>Select Detail</option>
                                                 </select>
-                                                @error('floor_id')
+                                                @error('block_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Floor Details <small style="color: red">*</small></label>
-                                                <select class="form-control" name="floor_detail_id" required>
+                                                <label>Inventory <small style="color: red">*</small></label>
+                                                <select class="form-control" name="inventory_id" required>
                                                     <option label="" disabled selected>Select Detail</option>
                                                 </select>
-                                                @error('floor_detail_id')
+                                                @error('inventory_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -131,13 +131,13 @@
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label>Password <small style="color: red">*</small></label>
-                                            <input type="password" class="form-control" name="password_new" autocomplete="off" required>
-                                            @error('password_new')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+{{--                                        <div class="form-group col-md-4">--}}
+{{--                                            <label>Password <small style="color: red">*</small></label>--}}
+{{--                                            <input type="password" class="form-control" name="password_new" autocomplete="off" required>--}}
+{{--                                            @error('password_new')--}}
+{{--                                            <div class="text-danger mt-2">{{ $message }}</div>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
                                         <div class="form-group col-md-4">
                                             <label>Phone <small style="color: red">*</small></label>
                                             <input type="number" class="form-control" name="phone_number_new" required>
@@ -336,41 +336,38 @@
                 var building_id = $(this).val();
                 if (building_id) {
                     $.ajax({
-                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/building') }}/" + building_id,
+                        url: "{{ url('property/select/building') }}/" + building_id,
                         type: "GET",
                         dataType: "json",
                         success: function (data) {
-                            $('select[name="floor_id"]').empty();
+                            $('select[name="block_id"]').empty();
                             if (data.length === 0) {
-                                $('select[name="floor_id"]').append('<option value="">N/A</option>');
+                                $('select[name="block_id"]').append('<option value="">N/A</option>');
                             } else {
-                                $('select[name="floor_id"]').append('<option value="">Please Select</option>');
+                                $('select[name="block_id"]').append('<option value=""> -- Select Block -- </option>');
                                 $.each(data, function (key, value) {
-                                    $('select[name="floor_id"]').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                    let oldFloorId = '{{ old('floor_id') }}';
+                                    let selected = (value.id == oldFloorId) ? "selected" : "";
+                                    $('select[name="block_id"]').append('<option ' + selected + ' value="' + value.id + '">' + value.name + '</option>');
+
                                 });
                             }
                         },
                     });
-                } else {
-                    alert('danger');
-                }
-            });
-            $('select[name="floor_id"]').on('change', function () {
-                var floor_id = $(this).val();
-                var building_id = $('select[name="building_id"]').find(":selected").val();
-                if (floor_id) {
                     $.ajax({
-                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/floor') }}/" + floor_id + "/" + building_id,
+                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/block') }}/" + building_id,
                         type: "GET",
                         dataType: "json",
                         success: function (data) {
-                            $('select[name="floor_detail_id"]').empty();
+                            $('select[name="inventory_id"]').empty();
                             if (data.length === 0) {
-                                $('select[name="floor_detail_id"]').append('<option value="">N/A</option>');
+                                $('select[name="inventory_id"]').append('<option value="">N/A</option>');
                             } else {
-                                $('select[name="floor_detail_id"]').append('<option value="">Please  Select</option>');
+                                $('select[name="inventory_id"]').append('<option value="">Please  Select</option>');
                                 $.each(data, function (key, value) {
-                                    $('select[name="floor_detail_id"]').append('<option value="' + value.id + '">' + "Property Number: " + value.id + "  Property Type: " + value.type + '</option>');
+                                    let oldFloorDetailId = '{{ old('inventory_id') }}';
+                                    let selected = value.id == oldFloorDetailId ? "selected" : "";
+                                    $('select[name="inventory_id"]').append('<option '+selected+' value="' + value.id + '">' + "Inventory Number: " + value.unit_no + "  Inventono Type: " + value.type + '</option>');
                                 });
                             }
                         },
@@ -379,6 +376,7 @@
                     alert('danger');
                 }
             });
+
             // State Select
             $('select[name="country_id_new"]').on('change', function () {
                 var country_id = $(this).val();

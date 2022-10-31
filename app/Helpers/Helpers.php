@@ -234,9 +234,9 @@ class Helpers
         if (array_key_exists("address", $data)) {
             $customer->address = $data['address'];
         }
-        if (array_key_exists("password", $data)) {
-            $customer->password = Hash::make($data['password']);
-        }
+//        if (array_key_exists("password", $data)) {
+//            $customer->password = Hash::make($data['password']);
+//        }
         if (array_key_exists("phone_number", $data)) {
             $customer->phone_number = $data['phone_number'];
         }
@@ -275,22 +275,17 @@ class Helpers
 
         //lead
         $sale->building_id = $request->building_id;
-        //Sale
-
-        if ($request->inventory_id !== null) {
-            $sale->inventory_id = $request->inventory_id;
-//            if(isset($data['payment_plan_id'])){
-//                $sale->payment_plan_id = $data['payment_plan_id'];
-//            }
-        }
+        $sale->block_id = $request->block_id;
+        $sale->inventory_id = $request->inventory_id;
         $sale->customer_id = $customer->id;
         $sale->down_payment = $request->down_payment;
+        $sale->purpose = $request->purpose;
+        $sale->budget = $data['budget'];
         if (Auth::user()->roles[0]->name == 'sale_person') {
             $sale->user_id = Auth::id();
         } else {
             $sale->user_id = $request->sale_person_id;
         }
-
         $sale->save();
 
         if(isset($status) && $status == 'new'){
@@ -434,9 +429,9 @@ class Helpers
             ->whereHas('roles', function ($q) {
                 $q->where('name', 'sale_person');
             })
-            ->whereHas('building_employee', function ($q) use ($building) {
-                $q->whereIn('building_id', $building->pluck('id')->toArray());
-            })
+//            ->whereHas('building_employee', function ($q) use ($building) {
+//                $q->whereIn('building_id', $building->pluck('id')->toArray());
+//            })
             ->where('property_admin_id', Helpers::user_admin())->get();
         return $sale_person;
     }

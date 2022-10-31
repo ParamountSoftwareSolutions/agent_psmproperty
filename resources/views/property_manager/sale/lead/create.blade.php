@@ -16,8 +16,8 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Project List <small style="color: red">*</small></label>
-                                                <select class="form-control" name="building_id" reqiured>
+                                                <label>Project List</label>
+                                                <select class="form-control" name="building_id">
                                                     <option value=""> -- Select Project --</option>
                                                     @foreach($building as $data)
                                                         <option value="{{ $data->id }}" @if($data->id == old('building_id')) selected @endif>{{ $data->name }}</option>
@@ -72,6 +72,37 @@
                                                     <option value="social_media">Social Media</option>
                                                 </select>
                                                 @error('source')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <div class="form-group">
+                                                <label>Purpose</label>
+                                                <select class="form-control" name="purpose">
+                                                    <option label="" disabled selected>Select Detail</option>
+                                                    <option value="Investment">Investment</option>
+                                                    <option value="buy">Buy</option>
+                                                </select>
+                                                @error('purpose')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <div class="form-group">
+                                                <label>Budget From</label>
+                                                <input class="form-control" type="number" name="budget_from">
+                                                @error('budget_from')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <div class="form-group">
+                                                <label>To</label>
+                                                <input type="number" class="form-control" name="budget_to">
+                                                @error('budget_to')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -141,14 +172,14 @@
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label>Password (Optional)</label>
-                                            <input type="password" class="form-control" name="password"
-                                                   autocomplete="off">
-                                            @error('password')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+{{--                                        <div class="form-group col-md-4">--}}
+{{--                                            <label>Password (Optional)</label>--}}
+{{--                                            <input type="password" class="form-control" name="password"--}}
+{{--                                                   autocomplete="off">--}}
+{{--                                            @error('password')--}}
+{{--                                            <div class="text-danger mt-2">{{ $message }}</div>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
@@ -223,16 +254,8 @@
                             }
                         },
                     });
-                } else {
-                    alert('danger');
-                }
-            });
-            $('select[name="block_id"]').on('change', function () {
-                var block_id = $(this).val();
-                var building_id = $('select[name="building_id"]').find(":selected").val();
-                if (block_id) {
                     $.ajax({
-                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/block') }}/" + block_id + "/" + building_id,
+                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/block') }}/" + building_id,
                         type: "GET",
                         dataType: "json",
                         success: function (data) {

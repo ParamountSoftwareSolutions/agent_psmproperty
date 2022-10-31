@@ -55,14 +55,14 @@
                         {{--<li><a class="nav-link" href="{{ route('property_manager.building.detail_form') }}">Add Project Details</a></li>--}}
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.investor.*')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-sharp fa-solid fa-building-columns"></i><span>Investors</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property.investor.create', ['panel' => $panel]) }}">Add New Investor</a></li>
-                        <li><a class="nav-link" href="{{ route('property.investor.index', ['panel' => $panel]) }}">Investors List</a></li>
-                    </ul>
-                </li>
+{{--                <li class="dropdown @if (request()->routeIs('property.investor.*')) active @endif">--}}
+{{--                    <a href="#" class="menu-toggle nav-link has-dropdown">--}}
+{{--                        <i class="fa-sharp fa-solid fa-building-columns"></i><span>Investors</span></a>--}}
+{{--                    <ul class="dropdown-menu">--}}
+{{--                        <li><a class="nav-link" href="{{ route('property.investor.create', ['panel' => $panel]) }}">Add New Investor</a></li>--}}
+{{--                        <li><a class="nav-link" href="{{ route('property.investor.index', ['panel' => $panel]) }}">Investors List</a></li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
                 <li class="dropdown @if (request()->routeIs('property.size.*', 'property.category.*', 'property.block.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-building-columns"></i><span>Extra Data</span></a>
