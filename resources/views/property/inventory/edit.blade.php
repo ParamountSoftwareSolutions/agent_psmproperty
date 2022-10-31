@@ -31,12 +31,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Block</label>
-                                            <input type="text" class="form-control" name="block"
-                                                   value="{{ old('block', $inventory->block) }}">
-                                            @error('block')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
+                                            <div class="form-group">
+                                                <label>Block List </label>
+                                                <select class="form-control" name="block_id">
+                                                    <option value="{{ old('block_id', $inventory->block->name) }}" selected>{{ $inventory->block->name }}</option>
+                                                </select>
+                                                @error('block_id')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Plot/Unit No <sup style="color: red">*</sup></label>
@@ -172,6 +175,36 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function () {
+            $('select[name="building_id"]').on('change', function () {
+                var building_id = $(this).val();
+                if (building_id) {
+                    $.ajax({
+                        url: "{{ url('property/select/building') }}/" + building_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="block_id"]').empty();
+                            if (data.length === 0) {
+                                $('select[name="block_id"]').append('<option value="">N/A</option>');
+                            } else {
+                                $('select[name="block_id"]').append('<option value=""> -- Select Block -- </option>');
+                                $.each(data, function (key, value) {
+                                    let oldFloorId = '{{ old('block_id') }}';
+                                    let selected = (value.id == oldFloorId) ? "selected" : "";
+                                    $('select[name="block_id"]').append('<option ' + selected + ' value="' + value.id + '">' + value.name + '</option>');
+
+                                });
+                            }
+                        },
+                    });
+                } else {
+                    alert('danger');
+                }
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(function () {
             $("#coba-logo").spartanMultiImagePicker({

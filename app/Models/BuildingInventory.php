@@ -23,4 +23,9 @@ class BuildingInventory extends Model
     {
         return $this->belongsTo(BuildingSize::class, 'size_id');
     }
+
+    public function block()
+    {
+        return $this->belongsTo(BuildingBlock::class, 'block_id');
+    }
 }

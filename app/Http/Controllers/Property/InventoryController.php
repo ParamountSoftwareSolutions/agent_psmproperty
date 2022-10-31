@@ -142,7 +142,7 @@ class InventoryController extends Controller
         ]);
         $inventory = BuildingInventory::findOrFail($id);
         $inventory->building_id = $request->building_id;
-        $inventory->block = $request->block;
+        $inventory->block_id = $request->block_id;
         $inventory->unit_no = $request->unit_no;
         $inventory->size_id = $request->size_id;
         $inventory->category_id = $request->category_id;

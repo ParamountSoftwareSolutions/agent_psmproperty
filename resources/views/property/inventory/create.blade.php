@@ -26,14 +26,6 @@
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        {{--<div class="form-group col-md-4">
-                                            <label>Block</label>
-                                            <input type="text" class="form-control" name="block_id"
-                                                   value="{{ old('block_id') }}">
-                                            @error('block_id')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
-                                        </div>--}}
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
                                                 <label>Block List </label>
@@ -44,6 +36,21 @@
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <form class="form-horizontal">
+                                                <div class="form-inline">
+                                                    <label>Plot/Unit No <sup style="color: red">*</sup>
+
+                                                        <label class="align-right">Type</label>
+                                                    </label>
+                                                </div>
+                                            </form>
+                                            <input type="text" class="form-control" name="unit_no" required
+                                                   value="{{ old('unit_no') }}">
+                                            @error('unit_no')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Plot/Unit No <sup style="color: red">*</sup></label>

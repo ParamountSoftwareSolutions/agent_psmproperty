@@ -82,7 +82,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $data->building->name }}</td>
-                                                <td>{{ $data->block }}</td>
+                                                <td>{{ ($data->block !== null) ? $data->block->name : 'null' }}</td>
                                                 <td>{{ $data->unit_no }}</td>
                                                 <td>{{ ($data->size == null) ? 'null' : $data->size->size }}</td>
                                                 <td>{{ ($data->category == null) ? 'null' : $data->category->category }}</td>
