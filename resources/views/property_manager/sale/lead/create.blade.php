@@ -18,11 +18,9 @@
                                             <div class="form-group">
                                                 <label>Project List <small style="color: red">*</small></label>
                                                 <select class="form-control" name="building_id" reqiured>
-                                                    <option value=""> -- Select Building --</option>
+                                                    <option value=""> -- Select Project --</option>
                                                     @foreach($building as $data)
                                                         <option value="{{ $data->id }}" @if($data->id == old('building_id')) selected @endif>{{ $data->name }}</option>
-                                                        {{-- @empty --}}
-                                                        {{-- <option value="">N/A</option> --}}
                                                     @endforeach
                                                 </select>
                                                 @error('building_id')
@@ -43,11 +41,11 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Property Id</label>
-                                                <select class="form-control" name="floor_detail_id">
+                                                <label>Inventory</label>
+                                                <select class="form-control" name="inventory_id">
                                                     <option label="" disabled selected>Select Detail</option>
                                                 </select>
-                                                @error('floor_detail_id')
+                                                @error('inventory_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -55,8 +53,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>Interested In <small style="color: red">*</small></label>
-                                            <select name="interested_in" class="form-control" id="interested_in" value="{{ old('interested_in') }}" required>
+                                            <label>Interested In</label>
+                                            <select name="interested_in" class="form-control" id="interested_in" value="{{ old('interested_in') }}">
                                                 <option value=""> -- Please Select --</option>
                                             </select>
                                             @error('interested_in')
@@ -65,8 +63,8 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Source <small style="color: red">*</small></label>
-                                                <select class="form-control" name="source" required>
+                                                <label>Source</label>
+                                                <select class="form-control" name="source">
                                                     <option label="" disabled selected>Select Detail</option>
                                                     <option value="walk_in">Walk In</option>
                                                     <option value="call">Call</option>
@@ -81,8 +79,8 @@
                                         @if(!Helpers::isEmployee())
                                             <div class="form-group col-md-4">
                                                 <div class="form-group">
-                                                    <label>Sales Person <small style="color: red">*</small></label>
-                                                    <select class="form-control" name="sale_person_id" id="sale_person_id" required>
+                                                    <label>Sales Person</label>
+                                                    <select class="form-control" name="sale_person_id" id="sale_person_id">
                                                         <option value="" >Select Sales Person</option>
 
                                                         @foreach($sale_person as $employee)
@@ -229,24 +227,24 @@
                     alert('danger');
                 }
             });
-            $('select[name="floor_id"]').on('change', function () {
-                var floor_id = $(this).val();
+            $('select[name="block_id"]').on('change', function () {
+                var block_id = $(this).val();
                 var building_id = $('select[name="building_id"]').find(":selected").val();
-                if (floor_id) {
+                if (block_id) {
                     $.ajax({
-                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/floor') }}/" + floor_id + "/" + building_id,
+                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/block') }}/" + block_id + "/" + building_id,
                         type: "GET",
                         dataType: "json",
                         success: function (data) {
-                            $('select[name="floor_detail_id"]').empty();
+                            $('select[name="inventory_id"]').empty();
                             if (data.length === 0) {
-                                $('select[name="floor_detail_id"]').append('<option value="">N/A</option>');
+                                $('select[name="inventory_id"]').append('<option value="">N/A</option>');
                             } else {
-                                $('select[name="floor_detail_id"]').append('<option value="">Please  Select</option>');
+                                $('select[name="inventory_id"]').append('<option value="">Please  Select</option>');
                                 $.each(data, function (key, value) {
-                                    let oldFloorDetailId = '{{ old('floor_detail_id') }}';
+                                    let oldFloorDetailId = '{{ old('inventory_id') }}';
                                     let selected = value.id == oldFloorDetailId ? "selected" : "";
-                                    $('select[name="floor_detail_id"]').append('<option '+selected+' value="' + value.id + '">' + "Property Number: " + value.unit_id + "  Property Type: " + value.type + '</option>');
+                                    $('select[name="inventory_id"]').append('<option '+selected+' value="' + value.id + '">' + "Inventory Number: " + value.unit_no + "  Inventono Type: " + value.type + '</option>');
                                 });
                             }
                         },

@@ -7,10 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Building;
 use App\Models\BuildingCustomer;
 use App\Models\BuildingEmployee;
+use App\Models\BuildingInventory;
 use App\Models\BuildingMobileApplication;
 use App\Models\BuildingPaymentPlan;
 use App\Models\BuildingSale;
-use App\Models\BuildingSaleInstallment;
+use App\Models\BuildingBlock;
 use App\Models\BuildingSaleHistory;
 use App\Models\Floor;
 use App\Models\FloorDetail;
@@ -98,6 +99,14 @@ class LeadController extends Controller
         return json_encode($block);
     }
 
+    public function block($panel, $block_id, $building_id)
+    {
+        $building = Helpers::building_detail_single($building_id);
+        $block = BuildingBlock::findOrFail($block_id);
+        $inventories = BuildingInventory::where(['block_id'=> $block_id,'building_id'=> $building_id])->get();
+        return json_encode($inventories);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -108,8 +117,8 @@ class LeadController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'building_id' => 'required',
-            'interested_in' => 'required',
-            'source' => 'required',
+//            'interested_in' => 'required',
+//            'source' => 'required',
             'name' => 'required',
             'phone_number' => 'required|unique:users',
         ]);

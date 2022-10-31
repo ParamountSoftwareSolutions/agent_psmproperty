@@ -8,6 +8,7 @@ use App\Models\BuildingCustomer;
 use App\Models\BuildingMobileApplication;
 use App\Models\BuildingPaymentPlan;
 use App\Models\BuildingSale;
+use App\Models\TaskTarget;
 use App\Models\BuildingSaleInstallment;
 use App\Models\FloorDetail;
 use App\Models\User;
@@ -276,11 +277,11 @@ class Helpers
         $sale->building_id = $request->building_id;
         //Sale
 
-        if ($request->floor_detail_id !== null) {
-            $sale->floor_detail_id = $request->floor_detail_id;
-            if(isset($data['payment_plan_id'])){
-                $sale->payment_plan_id = $data['payment_plan_id'];
-            }
+        if ($request->inventory_id !== null) {
+            $sale->inventory_id = $request->inventory_id;
+//            if(isset($data['payment_plan_id'])){
+//                $sale->payment_plan_id = $data['payment_plan_id'];
+//            }
         }
         $sale->customer_id = $customer->id;
         $sale->down_payment = $request->down_payment;

@@ -363,6 +363,7 @@ Route::group(['as' => 'property.'], function () {
 
             Route::get('building/{id}', 'LeadController@building');
             Route::get('floor/{id}/{building_id}', 'LeadController@floor');
+            Route::get('block/{id}/{building_id}', 'LeadController@block');
 
             Route::get('state/{country_id}', 'ClientController@state');
             Route::get('city/{state_id}', 'ClientController@city');
