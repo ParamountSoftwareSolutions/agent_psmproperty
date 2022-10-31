@@ -31,6 +31,7 @@ class CreateBuildingSalesTable extends Migration
             $table->enum('order_type', ['lead', 'online_booking', 'sale']);
             $table->enum('priority', ['very_hot', 'hot', 'moderate','cold'])->nullable();
             $table->string('comment')->nullable();
+            $table->foreignId('created_by')->unsigned()->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }
