@@ -37,25 +37,37 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <form class="form-horizontal">
-                                                <div class="form-inline">
-                                                    <label>Plot/Unit No <sup style="color: red">*</sup>
-
-                                                        <label class="align-right">Type</label>
-                                                    </label>
-                                                </div>
-                                            </form>
-                                            <input type="text" class="form-control" name="unit_no" required
-                                                   value="{{ old('unit_no') }}">
+                                        <div class="form-group col-md-4 simple">
+                                            <label class="d-flex align-items-center">
+                                                <label>Plot/Unit No <sup style="color: red">*</sup></label>
+                                                <a href="#" style="margin-left: auto; display: block;" class="bluck-btn" data-value="bluck">Bluck Create</a>
+                                            </label>
+                                            <input type="text" class="form-control simple-input" name="simple_unit_no" value="{{ old('unit_no') }}">
                                             @error('unit_no')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label>Plot/Unit No <sup style="color: red">*</sup></label>
-                                            <input type="text" class="form-control" name="unit_no" required
-                                                   value="{{ old('unit_no') }}">
+                                        <div class="form-group col-md-4 bluck">
+                                            <label class="d-flex align-items-center">
+                                                <label>Plot/Unit No <sup style="color: red">*</sup></label>
+                                                <a href="#" style="margin-left: auto; display: block;" class="bluck-btn" data-value="simple">Simple Create</a>
+                                            </label>
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control bluck-input" name="bluck_unit_no" class="input-group-text" value="{{ old
+                                                ('unit_no') }}" placeholder="unit name">
+                                                <div class="input-group-prepend preselection-prepend">
+                                                    <div class="input-group-text">-</div>
+                                                </div>
+                                                <input type="number" class="form-control bluck-input" name="start_unit_no" value="{{ old('start_unit_no') }}"
+                                                       placeholder="start unit">
+                                                <div class="input-group-prepend preselection-prepend">
+                                                    <div class="input-group-text">-</div>
+                                                </div>
+                                                <input type="number" class="form-control bluck-input" name="end_unit_no" value="{{ old('end_unit_no') }}"
+                                                       placeholder="end
+                                                 unit">
+                                            </div>
+
                                             @error('unit_no')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -182,6 +194,85 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function () {
+            $('.bluck').hide();
+            $('select[name="building_id"]').on('change', function () {
+                var building_id = $(this).val();
+                if (building_id) {
+                    $.ajax({
+                        url: "{{ url('property/select/building') }}/" + building_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="block_id"]').empty();
+                            if (data.length === 0) {
+                                $('select[name="block_id"]').append('<option value="">N/A</option>');
+                            } else {
+                                $('select[name="block_id"]').append('<option value=""> -- Select Block -- </option>');
+                                $.each(data, function (key, value) {
+                                    let oldFloorId = '{{ old('block_id') }}';
+                                    let selected = (value.id == oldFloorId) ? "selected" : "";
+                                    $('select[name="block_id"]').append('<option ' + selected + ' value="' + value.id + '">' + value.name + '</option>');
+
+                                });
+                            }
+                        },
+                    });
+                } else {
+                    alert('danger');
+                }
+            });
+            $('.bluck-btn').on('click', function () {
+                var val = $(this).data('value');
+                console.log(val);
+                if(val == 'bluck'){
+                    /*$('.bluck-input').prop('required',true);
+                    $('.simple-input').prop('required',false);*/
+                    $('.simple-input').css('display', 'none');
+                    $('.bluck-input').css('display', 'block');
+                    $('.simple').hide();
+                    $('.bluck').show();
+
+                } else {
+                   /* $('.simple-input').prop('required',true);
+                    $('.bluck-input').css('required',false);*/
+                    $('.simple-input').css('display', 'block');
+                    $('.bluck-input').css('display', 'none');
+                    $('.simple').show();
+                    $('.bluck').hide();
+                }
+
+
+            });
+            /*$('select[name="floor_id"]').on('change', function () {
+                var floor_id = $(this).val();
+                var building_id = $('select[name="building_id"]').find(":selected").val();
+                if (floor_id) {
+                    $.ajax({
+                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/floor') }}/" + floor_id + "/" + building_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="floor_detail_id"]').empty();
+                            if (data.length === 0) {
+                                $('select[name="floor_detail_id"]').append('<option value="">N/A</option>');
+                            } else {
+                                $('select[name="floor_detail_id"]').append('<option value="">Please  Select</option>');
+                                $.each(data, function (key, value) {
+                                    let oldFloorDetailId = '{{ old('floor_detail_id') }}';
+                                    let selected = value.id == oldFloorDetailId ? "selected" : "";
+                                    $('select[name="floor_detail_id"]').append('<option ' + selected + ' value="' + value.id + '">' + "Property Number: " + value.unit_id + "  Property Type: " + value.type + '</option>');
+                                });
+                            }
+                        },
+                    });
+                } else {
+                    alert('danger');
+                }
+            });*/
+        });
+    </script>
     <script type="text/javascript">
         $(function () {
             $("#coba-banner").spartanMultiImagePicker({
@@ -217,63 +308,6 @@
                     });
                 }
             });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $('select[name="building_id"]').on('change', function () {
-                var building_id = $(this).val();
-                if (building_id) {
-                    $.ajax({
-                        url: "{{ url('property/select/building') }}/" + building_id,
-                        type: "GET",
-                        dataType: "json",
-                        success: function (data) {
-                            $('select[name="block_id"]').empty();
-                            if (data.length === 0) {
-                                $('select[name="block_id"]').append('<option value="">N/A</option>');
-                            } else {
-                                $('select[name="block_id"]').append('<option value=""> -- Select Block -- </option>');
-                                $.each(data, function (key, value) {
-                                    let oldFloorId = '{{ old('block_id') }}';
-                                    let selected = (value.id == oldFloorId) ? "selected" : "";
-                                    $('select[name="block_id"]').append('<option ' + selected + ' value="' + value.id + '">' + value.name + '</option>');
-
-                                });
-                            }
-                        },
-                    });
-                } else {
-                    alert('danger');
-                }
-            });
-            /*$('select[name="floor_id"]').on('change', function () {
-                var floor_id = $(this).val();
-                var building_id = $('select[name="building_id"]').find(":selected").val();
-                if (floor_id) {
-                    $.ajax({
-                        url: "{{ url((new App\Helpers\Helpers)->user_login_route()['panel'].'/sale/floor') }}/" + floor_id + "/" + building_id,
-                        type: "GET",
-                        dataType: "json",
-                        success: function (data) {
-                            $('select[name="floor_detail_id"]').empty();
-                            if (data.length === 0) {
-                                $('select[name="floor_detail_id"]').append('<option value="">N/A</option>');
-                            } else {
-                                $('select[name="floor_detail_id"]').append('<option value="">Please  Select</option>');
-                                $.each(data, function (key, value) {
-                                    let oldFloorDetailId = '{{ old('floor_detail_id') }}';
-                                    let selected = value.id == oldFloorDetailId ? "selected" : "";
-                                    $('select[name="floor_detail_id"]').append('<option ' + selected + ' value="' + value.id + '">' + "Property Number: " + value.unit_id + "  Property Type: " + value.type + '</option>');
-                                });
-                            }
-                        },
-                    });
-                } else {
-                    alert('danger');
-                }
-            });*/
         });
     </script>
     <script type="text/javascript">

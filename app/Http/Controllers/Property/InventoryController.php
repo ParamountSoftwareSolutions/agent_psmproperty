@@ -76,12 +76,25 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             'building_id' => 'required',
-            'unit_no' => 'required',
+
             'category_id' => 'required',
             'nature' => 'required',
         ]);
+        if ($request->simple_unit_no == null){
+            $request->validate([
+                'bluck_unit_no' => 'required',
+                'start_unit_no' => 'required',
+                'end_unit_no' => 'required',
+            ]);
+        } else {
+            $request->validate([
+                'simple_unit_no' => 'required',
+            ]);
+        }
+        dd($request->simple_unit_no, $request->bluck_unit_no);
         $inventory = new BuildingInventory();
         $inventory->building_id = $request->building_id;
         $inventory->block_id = $request->block_id;
