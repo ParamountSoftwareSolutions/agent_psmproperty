@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Property;
+namespace App\Http\Controllers\PropertyManager;
 
 use App\Helpers\Helpers;
 use App\Helpers\NotificationHelper;
@@ -38,7 +38,7 @@ class InventoryController extends Controller
         $sale_person = Helpers::sales_person();
         $buildings = Helpers::building_detail();
         $inventory = BuildingInventory::whereIn('building_id', $buildings->pluck('id')->toArray())->get();
-        return view('property.inventory.index', compact('inventory','client','country','sale_person'));
+        return view('property_manager.inventory.index', compact('inventory','client','country','sale_person'));
     }
 
     /**
@@ -51,7 +51,7 @@ class InventoryController extends Controller
         $buildings = Helpers::building_detail();
         $category = BuildingCategory::get();
         $size = BuildingSize::get();
-        return view('property.inventory.create', compact('buildings', 'category', 'size'));
+        return view('property_manager.inventory.create', compact('buildings', 'category', 'size'));
     }
 
     public function building($id)
@@ -107,10 +107,7 @@ class InventoryController extends Controller
                 $inventory->category_id = $request->category_id;
                 $inventory->nature = $request->nature;
                 $inventory->type = $request->type;
-                $inventory->purchased_price = $request->purchased_price;
-                $inventory->sold_price = $request->sold_price;
-                $inventory->down_payment = $request->down_payment;
-                $inventory->status = $request->status;
+                $inventory->price = $request->price;
                 $inventory->save();
                 //print_r($i. " " . $request->bulk_unit_no . $request->start_unit_no++ ."<br>");
             }
@@ -132,7 +129,7 @@ class InventoryController extends Controller
         }
         if ($inventory) {
             //NotificationHelper::web_panel_notification('property_create', 'property_id', $building->id);
-            return redirect()->route('property.inventory.index')->with($this->message('Inventory Create SuccessFully', 'success'));
+            return redirect()->route('property_manager.inventory.index')->with($this->message('Inventory Create SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Inventory Create Error", 'error'));
         }
@@ -161,7 +158,7 @@ class InventoryController extends Controller
         $inventory = BuildingInventory::whereIn('building_id', $buildings->pluck('id')->toArray())->findOrFail($id);
         $category = BuildingCategory::get();
         $size = BuildingSize::get();
-        return view('property.inventory.edit', compact('buildings', 'inventory', 'category', 'size'));
+        return view('property_manager.inventory.edit', compact('buildings', 'inventory', 'category', 'size'));
     }
 
     /**
@@ -194,7 +191,7 @@ class InventoryController extends Controller
         $inventory->save();
         if ($inventory) {
             //NotificationHelper::web_panel_notification('property_create', 'property_id', $building->id);
-            return redirect()->route('property.inventory.index')->with($this->message('Inventory update successFully', 'success'));
+            return redirect()->route('property_manager.inventory.index')->with($this->message('Inventory update successFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Inventory update error", 'error'));
         }
@@ -212,7 +209,7 @@ class InventoryController extends Controller
         $inventory = BuildingInventory::whereIn('building_id', $building->pluck('id')->toArray())->findOrFail($id);
         $inventory->delete();
         if ($inventory) {
-            return redirect()->route('property.inventory.index')->with($this->message('Inventory delete SuccessFully', 'success'));
+            return redirect()->route('property_manager.inventory.index')->with($this->message('Inventory delete SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Building delete Error", 'error'));
         }
@@ -233,7 +230,7 @@ class InventoryController extends Controller
             $inventory->where('status',$request->status);
         }
         $inventory = $inventory->get();
-        return view('property.inventory.index', compact('inventory','client','country','sale_person'));
+        return view('property_manager.inventory.index', compact('inventory','client','country','sale_person'));
     }
     public function change_status(Request $request)
     {

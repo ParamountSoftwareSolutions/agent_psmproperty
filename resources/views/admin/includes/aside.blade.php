@@ -46,6 +46,15 @@
                         {{--<li><a class="nav-link" href="{{ route('property.building.detail_form') }}">Add Project Details</a></li>--}}
                     </ul>
                 </li>
+                <li class="dropdown @if (request()->routeIs('property.size.*', 'property.category.*', 'property.block.*')) active @endif">
+                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                        <i class="fa-sharp fa-solid fa-building-columns"></i><span>Inventory Extra Data</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="nav-link" href="{{ route('property.block.index') }}">Block</a></li>
+                        <li><a class="nav-link" href="{{ route('property.size.index') }}">Size</a></li>
+                        <li><a class="nav-link" href="{{ route('property.category.index') }}">Category</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown @if (request()->routeIs('property.inventory.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-building-columns"></i><span>Inventory</span></a>
@@ -61,15 +70,6 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property.investor.create', ['panel' => $panel]) }}">Add New Investor</a></li>
                         <li><a class="nav-link" href="{{ route('property.investor.index', ['panel' => $panel]) }}">Investors List</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown @if (request()->routeIs('property.size.*', 'property.category.*', 'property.block.*')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-sharp fa-solid fa-building-columns"></i><span>Extra Data</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property.block.index') }}">Block</a></li>
-                        <li><a class="nav-link" href="{{ route('property.size.index') }}">Size</a></li>
-                        <li><a class="nav-link" href="{{ route('property.category.index') }}">Category</a></li>
                     </ul>
                 </li>
                 <li class="dropdown @if (request()->routeIs('property.manager.*')) active @endif">
@@ -125,61 +125,36 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                @if(App\Helpers\Helpers::building_detail()->count() > 1)
-                    <li class="dropdown @if (request()->routeIs('property_manager.custom_building.dashboard')) active @endif">
+                @if(Helpers::isPropertyManager() || Helpers::isSaleManager() || Helpers::isEmployee())
+                    <li class="menu-header">Project Management</li>
+                    <li class="dropdown @if (request()->routeIs('property_manager.building.*')) active @endif">
                         <a href="#" class="menu-toggle nav-link has-dropdown">
-                            <i class="fa-sharp fa-solid fa-building-columns"></i><span>Project Dashboard</span></a>
+                            <i class="fa-sharp fa-solid fa-building-columns"></i>
+                            <span>Project</span></a>
                         <ul class="dropdown-menu">
-                            @foreach(App\Helpers\Helpers::building_detail() as $data)
-                                <li><a class="nav-link" href="{{ route('property_manager.custom_building.dashboard', $data->id) }}">{{ $data->name }}</a></li>
-                            @endforeach
+                            <li><a class="nav-link" href="{{ route('property_manager.building.index') }}">All Projects</a></li>
                         </ul>
                     </li>
                 @endif
-                <li class="dropdown @if (request()->routeIs('property_manager.property.index', 'property_manager.property.create', 'property_manager.property.edit')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property_manager.size.*', 'property_manager.category.*', 'property_manager.block.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-sharp fa-solid fa-house-chimney"></i>
-                        <span>Property</span></a>
+                        <i class="fa-sharp fa-solid fa-building-columns"></i><span>Inventory Extra Data</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.property.index') }}">Property</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.block.index') }}">Block</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.size.index') }}">Size</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.category.index') }}">Category</a></li>
                     </ul>
                 </li>
-                {{--<li class="dropdown @if (request()->routeIs('property_manager.membership.index', 'property_manager.membership.create', 'property_manager.membership
-                .edit'))
-                active
-                @endif">
+                <li class="dropdown @if (request()->routeIs('property_manager.inventory.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-solid fa-file-lines"></i>
-                        <span>Forms</span></a>
+                        <i class="fa-sharp fa-solid fa-building-columns"></i><span>Inventory</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.membership.index') }}">Membership Form</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.inventory.create', ['panel' => $panel]) }}">Add New Inventory</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.inventory.index', ['panel' => $panel]) }}">Inventory List</a></li>
+                        {{--<li><a class="nav-link" href="{{ route('property_manager.building.detail_form') }}">Add Project Details</a></li>--}}
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property_manager.payment_plan.index', 'property_manager.payment_plan.create', 'property_manager.payment_plan
-                .edit'))
-                active
-                @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-solid fa-credit-card"></i>
-                        <span>Payment Plan</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.payment_plan.index') }}">Payment Plan</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown @if (request()->routeIs('property_manager.banner.index', 'property_manager.banner.update')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-solid fa-image"></i>
-                        <span>Banner</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.banner.index') }}">Banner List</a></li>
-                    </ul>
-                </li>--}}
-                <li class="dropdown @if (request()->routeIs('property_manager.expense.index', 'property_manager.expense.edit', 'property_manager.expense.create',
-                'property_manager
-                .office_expense
-                .index', 'property_manager.office_expense.create', 'property_manager.office_expense.edit')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property_manager.expense.*', 'property_manager.office_expense.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-sack-dollar"></i>
                         <span>Expense</span></a>
@@ -188,9 +163,7 @@
                         <li><a class="nav-link" href="{{ route('property_manager.expense.index') }}">Construction Expense</a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property_manager.employee.index', 'property_manager.employee.create', 'property_manager.employee.edit',
-                'property_manager
-                .employee_payroll.index', 'property_manager.employee_payroll.create', 'property_manager.employee_payroll.edit')) active @endif">
+                <li class="dropdown @if (request()->routeIs('property_manager.employee.index', 'property_manager.employee_payroll.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-solid fa-users"></i>
                         <span>HRM</span></a>
@@ -228,16 +201,6 @@
                         <li><a class="nav-link" href="">Employee</a></li>
                     </ul>
                 </li>
-                {{--<li class="dropdown @if (request()->routeIs('property_manager.update.index', 'property_manager.update.create', 'property_manager.update.edit'))
-                active
-                @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-solid fa-newspaper"></i>
-                        <span>News</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.update.index') }}">Project Update</a></li>
-                    </ul>
-                </li>--}}
             @elseif(Helpers::isEmployee())
                 <li class="dropdown @if (request()->routeIs('sale_person.dashboard')) active @endif">
                     <a href="{{ route('sale_person.dashboard') }}" class="nav-link"><i class="fa-solid fa-tv"></i>
@@ -255,23 +218,6 @@
                         <i class="fa-solid fa-user"></i><span>Sales Person</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('sale_manager.employee.index') }}">Employee</a></li>
-                    </ul>
-                </li>
-            @endif
-
-
-            @if(Helpers::isPropertyManager() || Helpers::isSaleManager() || Helpers::isEmployee())
-                <li class="menu-header">Project Management</li>
-                <li class="dropdown @if (request()->routeIs('property_manager.building.*', 'property_manager.building_details.*')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-sharp fa-solid fa-building-columns"></i>
-                        <span>Project</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.building.index',['panel' => \App\Helpers\Helpers::user_login_route()['panel']]) }}">All
-                                Projects</a></li>
-                        <li><a class="nav-link"
-                               href="{{ route('property_manager.building_details.index',['panel' => \App\Helpers\Helpers::user_login_route()['panel']]) }}">All Project
-                                Extra Detail</a></li>
                     </ul>
                 </li>
             @endif
@@ -298,12 +244,9 @@
                         <li><a class="nav-link " href="{{ route('property_manager.sale.client.index', App\Helpers\Helpers::user_login_route()) }}">Client</a></li>
                         <li><a class="nav-link " href="{{ route('property_manager.sale.client.history', App\Helpers\Helpers::user_login_route()) }}">Sale
                                 History</a></li>
-
-                        <li><a class="nav-link " href="{{ route('property_manager.sale.import.view', App\Helpers\Helpers::user_login_route()) }}">Bulk Import</a>
-                        </li>
-                        <?php if (!\Illuminate\Support\Facades\Auth::user()->hasRole('sale_person')) { ?>
-                        <li><a class="nav-link " href="{{ route('property_manager.sale.bulk.export', App\Helpers\Helpers::user_login_route()) }}">Bulk Export</a>
-                        </li>
+                    <?php if (\Illuminate\Support\Facades\Auth::user()->hasAnyRole('property_admin')) { ?>
+                        <li><a class="nav-link " href="{{ route('property_manager.sale.import.view', App\Helpers\Helpers::user_login_route()) }}">Bulk Import</a></li>
+                        <li><a class="nav-link " href="{{ route('property_manager.sale.bulk.export', App\Helpers\Helpers::user_login_route()) }}">Bulk Export</a></li>
                         <?php } ?>
                     </ul>
                 </li>

@@ -1,5 +1,8 @@
-@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
-@section('title', 'All Building List')
+@extends('property_manager.layout.app')
+@section('title', 'All Users List')
+@section('style')
+
+@endsection
 @section('content')
     <div class="main-content">
         <section class="section">
@@ -9,10 +12,12 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4>Project List</h4>
+                                <a href="{{ route('property_manager.building.create') }}" class="btn btn-primary"
+                                   style="margin-left: auto; display: block;">Add New</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table text-center table-striped" id="table-1">
+                                    <table class="table table-striped" id="table-1">
                                         <thead>
                                         <tr>
                                             <th class="text-center">#</th>
@@ -30,15 +35,10 @@
                                                     <div class="badge badge-success badge-shadow">Available</div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('property_manager.building_detail.index', ['panel' => Helpers::user_login_route()['panel'], 'id' => $data->id]) }}"
-                                                       class="btn btn-primary px-1 py-0" title="Detail">
+                                                    <a href="{{ route('property_manager.building.edit',$data->id) }}"
+                                                       class="btn btn-primary px-1 py-0" title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <a target="_blank" href="{{ route('property_manager.building_view', ['panel' => Helpers::user_login_route()['panel'], 'id' => $data->id]) }}"
-                                                           class="btn btn-primary px-1 py-0" title="View PDF">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                    @if(Helpers::isSuperAdmin() || Helpers::isPropertyAdmin())
                                                     <form
                                                         action="{{ route('property_manager.building.destroy',$data->id) }}"
                                                         method="post" style="display: inline-block;">
@@ -48,7 +48,6 @@
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </form>
-                                                    @endif
                                                 </td>
                                             </tr>
                                         @empty
@@ -66,4 +65,6 @@
             </div>
         </section>
     </div>
+@endsection
+@section('script')
 @endsection

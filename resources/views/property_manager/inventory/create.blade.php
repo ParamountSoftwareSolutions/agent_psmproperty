@@ -1,4 +1,4 @@
-@extends('property.layout.app')
+@extends('property_manager.layout.app')
 @section('title', 'Add New Project')
 @section('content')
     <div class="main-content">
@@ -6,7 +6,7 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
-                        <form method="post" action="{{ route('property.inventory.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('property_manager.inventory.store') }}" enctype="multipart/form-data">
                             <div class="card">
                                 @csrf
                                 <div class="card-header">
@@ -107,7 +107,7 @@
                                                 <select class="form-control" name="type">
                                                     <option label="" disabled selected>Select Type</option>
                                                     <option value="corner">Corner</option>
-                                                    <option value="front_facing">Front Facing</option>
+                                                    <option value="front_facing">front_facing</option>
                                                     <option value="main_boulevard">Main Boulevard</option>
                                                     <option value="park_facing">Park Facing</option>
                                                 </select>
@@ -126,7 +126,7 @@
                                                     <option value="{{ $data->id }}">{{ $data->size }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('size_id')
+                                            @error('size')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>

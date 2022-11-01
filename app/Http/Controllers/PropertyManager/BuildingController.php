@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\PropertyManager;
 
 use App\Helpers\Helpers;
+use App\Helpers\NotificationHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Building;
+use App\Models\BuildingAssignUser;
 use App\Models\BuildingCustomer;
+use App\Models\BuildingFile;
 use App\Models\Floor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,62 +34,74 @@ class BuildingController extends Controller
      */
     public function create()
     {
-        $floor = Floor::get();
-        return view('property_manager.building.create', compact('floor'));
+        $buildings = Helpers::building_detail();
+        return view('property_manager.building.create', compact('buildings'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'floor_list' => 'required',
-            'type' => 'required',
+            'code' => 'required',
+            //'start_date' => 'required',
         ]);
-        $images = [];
-        $property_admin_id = BuildingCustomer::where('manager_id', Auth::id())->first();
-        $building = Building::where('user_id', Auth::id())->count();
-        if (Auth::user()->building == $building){
+        $building = Helpers::building_detail()->count();
+        if (Auth::user()->building == $building) {
             return redirect()->back()->with($this->message('Building Limit Complete. Please Contact Super Admin', 'warning'));
         } else {
             $building = new Building();
-            $building->user_id = Auth::id();
             $building->name = $request->name;
-            $building->floor_list = json_encode($request->floor_list);
-            $building->type = json_encode($request->type);
-            if ($request->file('logo')){
-                $file = $request->file('logo');
-                $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
-                $file->move('images/building/logo/', $filename);
-                $building->logo = asset('images/building/logo/' . $filename);
-            }
-            if ($request->file('logo')){
-                $file = $request->file('logo');
-                $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
-                $file->move('images/building/logo/', $filename);
-                $building->logo = asset('images/building/logo/' . $filename);
-            }
-            if ($request->file('images')) {
-                foreach ($request->file('images') as $file) {
-                    $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
-                    $file->move('images/building/', $filename);
-                    $file = asset('images/building/' . $filename);
-                    $images[] = $file;
-                }
-                $building->images = json_encode($images);
-                if ($request->has('old_image')) {
-                    $old_image = $request->image;
-                    unlink($old_image);
-                }
-            }
+            $building->code = $request->code;
+            $building->start_date = $request->start_date;
             $building->save();
-
+            /*if ($request->has('logo_images')) {
+                foreach ($request->file('logo_images') as $file) {
+                    $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
+                    $file->move('public/images/building/logo/', $filename);
+                    $file = 'public/images/building/logo/' . $filename;
+                    BuildingFile::create([
+                        'building_id' => $building->id,
+                        'image' => $file,
+                        'type' => 'logo',
+                    ]);
+                }
+            }
+            if ($request->has('main_images')) {
+                foreach ($request->file('main_images') as $file) {
+                    $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
+                    $file->move('public/images/building/', $filename);
+                    $file = 'public/images/building/' . $filename;
+                    BuildingFile::create([
+                        'building_id' => $building->id,
+                        'image' => $file,
+                        'type' => 'main',
+                    ]);
+                }
+            }
+            if ($request->file('banner_images')) {
+                foreach ($request->file('banner_images') as $file) {
+                    $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
+                    $file->move('public/images/building/banner/', $filename);
+                    $file = 'public/images/building/banner/' . $filename;
+                    BuildingFile::create([
+                        'building_id' => $building->id,
+                        'image' => $file,
+                        'type' => 'normal',
+                    ]);
+                }
+            }*/
+            BuildingAssignUser::create([
+                'building_id' => $building->id,
+                'user_id' => Auth::id(),
+            ]);
             if ($building) {
+                NotificationHelper::web_panel_notification('property_create', 'property_id', $building->id);
                 return redirect()->route('property_manager.building.index')->with($this->message('Building Create SuccessFully', 'success'));
             } else {
                 return redirect()->back()->with($this->message("Building Create Error", 'error'));
@@ -97,7 +112,7 @@ class BuildingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
@@ -108,57 +123,67 @@ class BuildingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($panel,$id)
+    public function edit($id)
     {
-        $floor = Floor::get();
-        $building = Building::findOrFail($id);
-        return view('property_manager.building.edit', compact('floor', 'building'));
+        $building = Helpers::building_detail_single($id);
+        return view('property_manager.building.edit', compact('building'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request,$panel, $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
-            'floor_list' => 'required',
-            'type' => 'required',
+            'code' => 'required',
         ]);
         $building = Building::findOrFail($id);
-        $building->user_id = Auth::id();
         $building->name = $request->name;
-        $building->floor_list = json_encode($request->floor_list);
-        $building->type = json_encode($request->type);
-        if ($request->file('logo')){
-            $file = $request->file('logo');
-            $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
-            $file->move('public/images/building/logo/', $filename);
-            $file = 'public/images/building/logo/' . $filename;
-            $building->logo = $file;
+        $building->code = $request->code;
+        $building->start_date = $request->start_date;
+        $building->save();
+        /*if ($request->has('logo_images')) {
+            foreach ($request->file('logo_images') as $file) {
+                $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
+                $file->move('public/images/building/logo/', $filename);
+                $file = 'public/images/building/logo/' . $filename;
+                BuildingFile::updateOrCreate(['building_id' => $building->id, 'type' => 'logo'], [
+                    'image' => $file,
+                ]);
+            }
         }
-        if ($request->file('images')) {
-            foreach ($request->file('images') as $file) {
+        if ($request->has('main_images')) {
+            foreach ($request->file('main_images') as $file) {
                 $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
                 $file->move('public/images/building/', $filename);
                 $file = 'public/images/building/' . $filename;
-                $images[] = $file;
-            }
-            $building->images = json_encode($images);
-            if ($request->has('old_image')) {
-                $old_image = $request->image;
-                unlink($old_image);
+                BuildingFile::updateOrCreate(['building_id' => $id, 'type' => 'main'], [
+                    'image' => $file,
+                ]);
             }
         }
-        $building->save();
+        if ($request->file('banner_images')) {
+            foreach ($request->file('banner_images') as $file) {
+                $filename = hexdec(uniqid()) . '.' . strtolower($file->getClientOriginalExtension());
+                $file->move('public/images/building/banner/', $filename);
+                $file = 'public/images/building/banner/' . $filename;
+                BuildingFile::create([
+                    'building_id' => $building->id,
+                    'image' => $file,
+                    'type' => 'normal',
+                ]);
+            }
+        }*/
         if ($building) {
+            NotificationHelper::web_panel_notification('property_update', 'property_id', $building->id);
             return redirect()->route('property_manager.building.index')->with($this->message('Building update SuccessFully', 'success'));
         } else {
             return redirect()->back()->with($this->message("Building update Error", 'error'));
@@ -168,12 +193,13 @@ class BuildingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($panel,$id)
+    public function destroy($id)
     {
         $building = Building::findOrFail($id);
+        $assign_data = BuildingAssignUser::where('building_id', $id)->delete();
         $building->delete();
         if ($building) {
             return redirect()->route('property_manager.building.index')->with($this->message('Building delete SuccessFully', 'success'));
@@ -187,28 +213,21 @@ class BuildingController extends Controller
         return view('property_manager.building.building_extra_detail');
     }
 
-    public function building_view($panel,$building_id)
+    public function remove_image_banner(Request $request)
     {
-        $building = Helpers::building_detail_single($building_id);
-        $floors = Floor::with('floor_detail')->whereIn('id', json_decode($building->floor_list))->get();
-//        dd($floors);
-        return view('property_manager.building.view', compact('building','floors'));
-    }
+        $building_file = BuildingFile::where(['id' => $request->id, 'building_id' => $request->building_id])->first();
+        //$filename = explode('/', $request->name);dd($filename);
+        // $img_arr = [];
+        // foreach (json_decode($building_file->banner_images, true) as $img) {
+        //     if (strcmp($img, $request->name) != 0) {
+        //         array_push($img_arr, $img);
+        //     }
+        // }
 
-    public function generatePDF($panel,$building_id)
-    {
-        $building = Helpers::building_detail_single($building_id);
-        $floors = Floor::with('floor_detail')->whereIn('id', json_decode($building->floor_list))->get();
-        $pdf = PDF::loadView('property_manager.building.pdf-inventries', compact('building','floors'))->setOptions(['defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
-        return $pdf->download($building->name.'.pdf');
-    }
-
-    public function buildingInventries($building_id)
-    {
-//        $building = Building::building_detail_single($building_id);
-        $building = Building::findOrFail($building_id);
-        $floors = Floor::with('floor_detail')->whereIn('id', json_decode($building->floor_list))->get();
-        return view('property_manager.building.show-inventries', compact('building','floors'));
-
+        $building_file->delete();
+        if ($building_file !== null) {
+            unlink($building_file->image);
+        }
+        return json_encode('success');
     }
 }

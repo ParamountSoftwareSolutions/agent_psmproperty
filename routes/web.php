@@ -392,41 +392,6 @@ Route::group(['as' => 'property.'], function () {
         Route::get('check-count-read', 'NotificationController@check_count_read')->name('check_count_read');
         Route::get('today-follow-up-count', 'NotificationController@today_follow_up_count')->name('today_follow_up_count');
 
-        /*//Route::resource('building', 'BuildingController');
-        Route::get('building_detail/{id}', 'FloorController@index')->name('building_detail.index');
-        Route::get('building_view/{id}', 'BuildingController@building_view')->name('building_view');
-        // Flat Apartment and Shop Route
-        Route::get('generate-pdf/{id}', 'BuildingController@generatePDF')->name('generate-pdf');
-        Route::get('building/{building_id}/floor/{floor_id}/index', 'FloorDetailController@index')->name('floor_detail.index');
-        Route::get('building/{building_id}/floor/{floor_id}/create', 'FloorDetailController@create')->name('floor_detail.create');
-        Route::post('building/{building_id}/floor/{floor_id}/store', 'FloorDetailController@store')->name('floor_detail.store');
-        Route::get('building/{building_id}/floor/{floor_id}/edit/{id}', 'FloorDetailController@edit')->name('floor_detail.edit');
-        Route::post('building/{building_id}/floor/{floor_id}/update/{id}', 'FloorDetailController@update')->name('floor_detail.update');
-        Route::delete('building/{building_id}/floor/{floor_id}/delete/{id}', 'FloorDetailController@destroy')->name('floor_detail.destroy');
-        Route::get('building/{building_id}/floor/{floor_id}/comments/{id}', 'FloorDetailController@comments')->name('floor_detail.comments');
-        Route::post('building/{building_id}/floor/{floor_id}/index/filter', 'FloorDetailController@filter')->name('floor_detail.filter');
-        Route::post('building/{building_id}/floor/{floor_id}/index/search', 'FloorDetailController@search')->name('floor_detail.search');
-        Route::post('floor_detail/change_status', 'FloorDetailController@change_status')->name('floor_detail.change_status');
-        Route::post('floor_detail/change_type', 'FloorDetailController@change_type')->name('floor_detail.change_type');
-        Route::get('client/sale_person/{client_id}', 'FloorDetailController@get_sale_person')->name('floor_detail.get_sale_person');
-        Route::post('building/floor-detail/image/remove', 'FloorDetailController@remove_image');
-        // Building Detail
-        Route::get('building-detail', 'BuildingDetailController@index')->name('building_details.index');
-        Route::get('building_details/create/{id}', 'BuildingDetailController@create')->name('building_details.create');
-        Route::post('building-detail/store/{id}', 'BuildingDetailController@store')->name('building_details.store');
-        Route::get('building-detail/edit/{id}', 'BuildingDetailController@edit')->name('building_details.edit');
-        Route::put('building-detail/update/{id}', 'BuildingDetailController@update')->name('building_details.update');
-        Route::post('banner-detail/payment-image/remove', 'BuildingDetailController@remove_image_payment')->name('building_detail/payment_image/remove');*/
-
-
-        //=============//
-        /* More Route */
-        //=============//
-       /* Route::resource('about', 'AboutController')->except(['show']);
-        Route::resource('privacyPolicy', 'PrivacyPolicyController')->except(['show']);
-        Route::resource('faq', 'FaqController');
-        Route::resource('term', 'TermController');*/
-
         //====================//
         // Task Targets Route //
         //====================//
@@ -471,6 +436,19 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
 
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::get('/custom_dashboard/{id}', 'DashboardController@custom_dashboard')->name('custom_building.dashboard');
+
+        /* Building And Floor Route start */
+        Route::resource('building', 'BuildingController');
+        Route::resource('inventory', 'InventoryController');
+        Route::get('inventory-change-status', 'InventoryController@change_status')->name('inventory_change_status');
+        Route::post('inventory/filter', 'InventoryController@filter')->name('inventory.filter');
+        Route::resource('size', 'SizeController');
+        Route::resource('category', 'CategoryController');
+        Route::resource('block', 'BlockController');
+
+
+        Route::get('select/building/{id}', 'InventoryController@building')->name('select.building');
+        Route::get('floor/{id}/{building_id}', 'InventoryController@floor');
 
         // Property
         Route::resource('property', 'PropertyController');
@@ -596,7 +574,7 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::get('today-follow-up-count', 'NotificationController@today_follow_up_count')->name('today_follow_up_count');
     });
     Route::group(['middleware' => ['auth:web', 'isAuthType'], 'prefix' => '{panel}'], function () {
-        Route::resource('building', 'BuildingController');
+       /* Route::resource('building', 'BuildingController');
         Route::get('building_detail/{id}', 'FloorController@index')->name('building_detail.index');
         Route::get('building_view/{id}', 'BuildingController@building_view')->name('building_view');
         // Flat Apartment and Shop Route
@@ -620,7 +598,7 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::post('building-detail/store/{id}', 'BuildingDetailController@store')->name('building_details.store');
         Route::get('building-detail/edit/{id}', 'BuildingDetailController@edit')->name('building_details.edit');
         Route::put('building-detail/update/{id}', 'BuildingDetailController@update')->name('building_details.update');
-        Route::post('banner-detail/payment-image/remove', 'BuildingDetailController@remove_image_payment')->name('building_detail/payment_image/remove');
+        Route::post('banner-detail/payment-image/remove', 'BuildingDetailController@remove_image_payment')->name('building_detail/payment_image/remove');*/
 
         //==============//
         // Email Route //

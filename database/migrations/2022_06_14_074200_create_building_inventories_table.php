@@ -22,6 +22,9 @@ class CreateBuildingInventoriesTable extends Migration
             $table->foreignId('size_id')->unsigned()->nullable()->constrained('building_sizes')->nullOnDelete();
             //$table->enum('category', ['file', 'plot', 'villa', 'farmhouse', 'house', 'office', 'flat', 'studio', 'apartment', 'school', 'penthouse', 'shop',
             // 'upper_portion', 'lower_portion']);
+            $table->string('purchased_price')->nullable();
+            $table->string('sold_price')->nullable();
+            $table->string('down_payment')->nullable();
             $table->enum('nature', ['commercial', 'semi_commercial', 'residential']);
             $table->enum('type', ['corner', 'front_facing', 'main_boulevard', 'park_facing']);
             $table->enum('status', ['available', 'hold', 'sold','token','canceled']);
