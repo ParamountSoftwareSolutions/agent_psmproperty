@@ -270,7 +270,7 @@ Route::group(['as' => 'property.'], function () {
         /* Building And Floor Route start */
         Route::resource('building', 'BuildingController');
         Route::resource('inventory', 'InventoryController');
-        Route::get('inventory-change-status', 'InventoryController@change_status')->name('inventory_change_status');
+        Route::post('inventory-change-status', 'InventoryController@change_status')->name('inventory_change_status');
         Route::post('inventory/filter', 'InventoryController@filter')->name('inventory.filter');
         Route::resource('size', 'SizeController');
         Route::resource('category', 'CategoryController');

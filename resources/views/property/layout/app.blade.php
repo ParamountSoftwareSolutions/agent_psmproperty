@@ -230,7 +230,7 @@
         setInterval(function () {
             /*$("#signInButton").trigger('click');*/
             $.ajax({
-                url: "{{ url('property/notification/latest') }}",
+                url: "{{ url('property/notifications/latest') }}",
                 type: "GET",
                 dataType: "json",
                 success: function (data) {

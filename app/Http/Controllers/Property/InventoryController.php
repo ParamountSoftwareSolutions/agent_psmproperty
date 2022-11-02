@@ -12,13 +12,14 @@ use App\Models\BuildingCategory;
 use App\Models\BuildingCustomer;
 use App\Models\BuildingInventory;
 use App\Models\BuildingSale;
+use App\Models\BuildingSaleHistory;
 use App\Models\BuildingSize;
 use App\Models\Country;
 use App\Models\Floor;
 use App\Models\FloorDetail;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -64,8 +65,8 @@ class InventoryController extends Controller
 //    public function block($panel, $id, $building_id)
 //    {
 //        $floor = Floor::where('id', $id)->first();
-//        $floor_detail = FloorDetail::where(['floor_id' => $floor->id, 'building_id' => $building_id])->where('status', 'available')->get();
-//        return json_decode($floor_detail);
+//        $inventory = BuildingInventory::where(['floor_id' => $floor->id, 'building_id' => $building_id])->where('status', 'available')->get();
+//        return json_decode($inventory);
 //    }
 
     /**
@@ -246,14 +247,14 @@ class InventoryController extends Controller
             return response()->json(['status' => 'error', 'message' => $validator->errors()->first()]);
         }
 
-        $floor_detail = FloorDetail::findOrFail($request->id);
+        $inventory = BuildingInventory::findOrFail($request->id);
         if ($request->status == 'sold' || $request->status == 'hold' || $request->status == 'token') {
-            if ($floor_detail->status == 'sold' && ($request->status == 'hold' || $request->status == 'token')) {
+            if ($inventory->status == 'sold' && ($request->status == 'hold' || $request->status == 'token')) {
                 return response()->json(['status' => 'error', 'message' => 'You Have To First Cancelled the Status..']);
             }
             $validator = Validator::make($request->all(), [
                 'client_id' => 'required',
-                'sale_person_id' => 'required',
+                //'sale_person_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json(['status' => 'error', 'message' => $validator->errors()->first()]);
@@ -289,9 +290,6 @@ class InventoryController extends Controller
                 }
                 $user->phone_number = $request->phone_number;
             }
-            if (isset($request->password)) {
-                $user->address = Hash::make($request->password);
-            }
             if (isset($request->address)) {
                 $user->address = $request->address;
             }
@@ -303,11 +301,11 @@ class InventoryController extends Controller
             }
             $user->save();
             $building_sale = new BuildingSale();
-            $building_sale->building_id = $floor_detail->building_id;
-            $building_sale->floor_detail_id = $floor_detail->id;
+            $building_sale->building_id = $inventory->building_id;
+            $building_sale->block_id = $inventory->block_id;
+            $building_sale->inventory_id = $inventory->id;
             $building_sale->customer_id = $request->client_id;
             $building_sale->user_id = $request->sale_person_id;
-            $building_sale->payment_plan_id = $floor_detail->payment_plan_id;
             if ($request->status == 'sold') {
                 $building_sale->order_status = 'active';
                 $building_sale->order_type = 'sale';
@@ -320,11 +318,11 @@ class InventoryController extends Controller
             }
             $building_sale->save();
         }
-        if ($request->status == 'cancelled' && $floor_detail->status == 'available') {
+        if ($request->status == 'cancelled' && $inventory->status == 'available') {
             return response()->json(['status' => 'error', 'message' => 'Cannot Cancelled when Available']);
         }
         if (!isset($building_sale)) {
-            $building_sale = BuildingSale::where('floor_detail_id', $floor_detail->id)->latest('id')->first();
+            $building_sale = BuildingSale::where('inventory_id', $inventory->id)->latest('id')->first();
         }
         $data = [
             'status' => $request->status,
@@ -337,8 +335,9 @@ class InventoryController extends Controller
         $building_sale_histories->comment = $request->comment;
         $building_sale_histories->save();
 
-        $floor_detail->status = $request->status;
-        $floor_detail->save();
+        $inventory->status = $request->status;
+        $inventory->save();
+
         return response()->json(['status' => 'success', 'message' => 'Status Changed Successfully']);
     }
 }
