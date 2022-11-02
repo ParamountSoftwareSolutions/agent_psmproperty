@@ -31,6 +31,7 @@ class OfficeExpenseController extends Controller
      */
     public function create()
     {
+        dd('ee');
         $building = Helpers::building_detail();
         return view('property.office_expense.create', compact('building'));
     }

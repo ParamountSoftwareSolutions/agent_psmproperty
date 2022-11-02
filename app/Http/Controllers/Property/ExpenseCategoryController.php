@@ -108,9 +108,9 @@ class ExpenseCategoryController extends Controller
         $category = BuildingExpenseCategory::findOrFail($id);
         $category->delete();
         if ($category) {
-            return redirect()->route('property.office_expense_category.index')->with($this->message('Category delete SuccessFully', 'success'));
+            return response()->json(['status'=>'success','message'=>'Category Delete SuccessFully']);
         } else {
-            return redirect()->back()->with($this->message("Building delete Error", 'error'));
+            return response()->json(['status'=>'error','message'=>'Category Delete Error']);
         }
     }
 }

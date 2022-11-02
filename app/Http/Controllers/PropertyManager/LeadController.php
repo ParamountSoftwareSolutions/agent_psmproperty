@@ -738,17 +738,19 @@ class LeadController extends Controller
 
         foreach ($collections as $key => $collection) {
             $user = User::where('phone_number', $collection['phone_number'])->first();
-            if (!is_numeric($collection['building_id'])) {
-                return back()->with($this->message('Please fill row ' . ($key + 2) . ' must be number, field: building_id', 'error'));
-            } elseif ($collection['interested_in'] === "") {
-                return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: interested_in', 'error'));
-            } elseif ($collection['source'] === "") {
-                return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: source', 'error'));
-            } elseif (!is_numeric($collection['sale_person_id'])) {
-                return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: sale_person_id', 'error'));
-            } elseif ($collection['username'] === "") {
+//            if (!is_numeric($collection['building_id'])) {
+//                return back()->with($this->message('Please fill row ' . ($key + 2) . ' must be number, field: building_id', 'error'));
+//            } elseif ($collection['interested_in'] === "") {
+//                return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: interested_in', 'error'));
+//            } elseif ($collection['source'] === "") {
+//                return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: source', 'error'));
+//            } elseif (!is_numeric($collection['sale_person_id'])) {
+//                return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: sale_person_id', 'error'));
+//            } else
+            if ($collection['username'] === "") {
                 return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: username', 'error'));
-            } elseif ($collection['phone_number'] === "") {
+            }
+            if ($collection['phone_number'] === "") {
                 return back()->with($this->message('Please fill row:' . ($key + 2) . ' field: phone_number!', 'error'));
             }
         }
@@ -767,11 +769,12 @@ class LeadController extends Controller
                         'phone_number' => $collection['phone_number'],
                     ]);
                     BuildingSale::create([
-                        'building_id' => $collection['building_id'],
-                        //                        'user_id' => $property_admin_id,
+//                        'building_id' => $collection['building_id'],
+                        'user_id' => $collection['sale_person_id'],
                         'customer_id' => $user->id,
                         'interested_in' => $collection['interested_in'],
                         'source' => $collection['source'],
+                        'created_by' => Auth::user()->id,
                     ]);
                 } else {
                     $user->update([
@@ -779,7 +782,7 @@ class LeadController extends Controller
                         'phone_number' => $collection['phone_number'],
                     ]);
                     BuildingSale::where('customer_id', $user->id)->update([
-                        'building_id' => $collection['building_id'],
+//                        'building_id' => $collection['building_id'],
                         //'user_id' => $property_admin_id,
                         'customer_id' => $user->id,
                         'interested_in' => $collection['interested_in'],
@@ -789,7 +792,7 @@ class LeadController extends Controller
             } else {
                 BuildingSale::where('id', $collection['id'])->update([
                     'id' => $collection['id'],
-                    'building_id' => $collection['building_id'],
+//                    'building_id' => $collection['building_id'],
                     //'property_admin_id' => $property_admin_id,
                     'interested_in' => $collection['interested_in'],
                     'source' => $collection['source'],
@@ -807,7 +810,7 @@ class LeadController extends Controller
     public function bulk_export_data()
     {
         $building = Helpers::building_detail();
-        $sales = BuildingSale::with('customer')->whereIn('building_id', $building->pluck('id')->toArray());
+        $sales = BuildingSale::with('customer','sale_person');
         if (Auth::user()->hasRole('sale_person')) {
             $sales->where('user_id', Auth::id());
         }
@@ -815,14 +818,23 @@ class LeadController extends Controller
         // $sales = $sales->where(['order_type' => 'lead'])->get();
         $storage = [];
         foreach ($sales as $item) {
+//            $storage[] = [
+//                'id' => $item['id'],
+//                'building_id' => $item['building_id'],
+//                'interested_in' => $item['interested_in'],
+//                'source' => $item['source'],
+//                'sale_person_id' => $item['user_id'],
+//                'username' => $item['customer']['username'],
+//                'phone_number' => $item['customer']['phone_number'],
+//            ];
             $storage[] = [
                 'id' => $item['id'],
-                'building_id' => $item['building_id'],
-                'interested_in' => $item['interested_in'],
-                'source' => $item['source'],
-                'sale_person_id' => $item['user_id'],
                 'username' => $item['customer']['username'],
                 'phone_number' => $item['customer']['phone_number'],
+                'sale_person_id' => $item['user_id'],
+                'source' => $item['source'],
+                'interested_in' => $item['interested_in'],
+//                'date' => $item['created_at']->format('Y-m-d H:i:s'),
             ];
         }
         return (new FastExcel($storage))->download('/public/panel/assets/lead.xlsx');

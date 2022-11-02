@@ -5,6 +5,8 @@ namespace App\Http\Controllers\PropertyManager;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\BuildingExpense;
+use App\Models\BuildingIncomeCategory;
+use App\Models\IncomeCategory;
 use Carbon\Carbon;
 use App\Models\Income;
 use Illuminate\Http\Request;
@@ -18,7 +20,7 @@ class IncomeController extends Controller
      */
     public function index()
     {
-        $income = Income::all();
+        $income = Income::with('category')->get();
         return view('property.income.index', compact('income'));
     }
 
@@ -29,7 +31,8 @@ class IncomeController extends Controller
      */
     public function create()
     {
-        return view('property.income.create');
+        $categories = BuildingIncomeCategory::all();
+        return view('property.income.create',compact('categories'));
     }
 
     /**
@@ -41,11 +44,11 @@ class IncomeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required',
+            'category_id' => 'required',
             'cost' => 'required',
         ]);
         $income = new Income();
-        $income->category = $request->category;
+        $income->category_id = $request->category_id;
         $income->cost = $request->cost;
         $income->date = $request->date;
         $income->save();
@@ -76,7 +79,8 @@ class IncomeController extends Controller
     public function edit($panel,$id)
     {
         $income = Income::findOrFail($id);
-        return view('property.income.edit', compact('income'));
+        $categories = BuildingIncomeCategory::all();
+        return view('property.income.edit', compact('income','categories'));
     }
 
     /**
@@ -89,11 +93,11 @@ class IncomeController extends Controller
     public function update(Request $request,$panel, $id)
     {
         $request->validate([
-            'category' => 'required',
+            'category_id' => 'required',
             'cost' => 'required',
         ]);
         $income = Income::findOrFail($id);
-        $income->category = $request->category;
+        $income->category_id = $request->category_id;
         $income->cost = $request->cost;
         $income->date = $request->date;
         $income->save();
@@ -129,16 +133,16 @@ class IncomeController extends Controller
             $year = date('Y');
         }
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July ', 'August', 'September', 'October', 'November', 'December'];
-        $categories  = ['rent','personal_property_rent','group_a','group_b','file_income','property_income','others'];
         $incomes = [];
-        foreach($categories as $category){
+        $categories = BuildingIncomeCategory::pluck('name','id')->toArray();
+        foreach($categories as $id => $name){
             for($i = 1;$i<= 12;$i++) {
-                $income = Income::where('category', $category)->whereMonth('date', $i)->whereYear('date',$year);
+                $income = Income::where('category_id', $id)->whereMonth('date', $i)->whereYear('date',$year);
                 if (isset($request->start_month) && isset($request->last_month)){
                     $income->whereBetween('date',[$request->start_month,$request->last_month]);
                 }
                 $income = $income->sum('cost');
-                $incomes[$category][] = $income;
+                $incomes[$name][] = $income;
             }
         }
         $total = [];

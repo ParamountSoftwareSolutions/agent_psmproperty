@@ -14,4 +14,8 @@ class BuildingOfficeExpense extends Model
     {
         return $this->belongsTo(Building::class, 'building_id');
     }
+    public function category_name()
+    {
+        return $this->belongsTo(BuildingExpenseCategory::class, 'category');
+    }
 }

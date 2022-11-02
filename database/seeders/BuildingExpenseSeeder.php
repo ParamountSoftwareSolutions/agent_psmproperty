@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\BuildingExpense;
 use App\Models\BuildingExpenseLabor;
 use App\Models\BuildingOfficeExpense;
+use App\Models\BuildingExpenseCategory;
 use Illuminate\Database\Seeder;
 
 class BuildingExpenseSeeder extends Seeder
@@ -16,6 +17,24 @@ class BuildingExpenseSeeder extends Seeder
      */
     public function run()
     {
+        BuildingExpenseCategory::insert([
+            [
+                'name' => 'Landline',
+                'created_at' => '2022-05-07'
+            ],
+            [
+                'name' => 'Furniture',
+                'created_at' => '2022-05-07'
+            ],
+            [
+                'name' => 'Power',
+                'created_at' => '2022-05-07'
+            ],
+            [
+                'name' => 'Gas',
+                'created_at' => '2022-05-07'
+            ],
+        ]);
         BuildingExpense::insert([
             [
                 'building_id' => 1,
@@ -289,42 +308,42 @@ class BuildingExpenseSeeder extends Seeder
         BuildingOfficeExpense::insert([
             [
                 'building_id' => 1,
-                'category' => 'electricity_bill',
+                'category' => 1,
                 'cost' => 2000,
                 'date' => '2021-05-07',
                 'created_at' => '2021-05-07'
             ],
             [
                 'building_id' => 1,
-                'category' => 'electricity_bill',
+                'category' => 1,
                 'cost' => 2000,
                 'date' => '2021-05-07',
                 'created_at' => '2021-05-07'
             ],
             [
                 'building_id' => 1,
-                'category' => 'electricity_bill',
+                'category' => 2,
                 'cost' => 2000,
                 'date' => '2021-05-07',
                 'created_at' => '2021-05-07'
             ],
             [
                 'building_id' => 1,
-                'category' => 'utility_bill',
+                'category' => 2,
                 'cost' => 2000,
                 'date' => '2021-05-07',
                 'created_at' => '2021-05-07'
             ],
             [
                 'building_id' => 1,
-                'category' => 'utility_bill',
+                'category' => 2,
                 'cost' => 2000,
                 'date' => '2021-05-07',
                 'created_at' => '2021-05-07'
             ],
             [
                 'building_id' => 1,
-                'category' => 'utility_bill',
+                'category' => 2,
                 'cost' => 2000,
                 'date' => '2021-05-07',
                 'created_at' => '2021-05-07'
@@ -333,42 +352,42 @@ class BuildingExpenseSeeder extends Seeder
             //2
             [
                 'building_id' => 2,
-                'category' => 'utility_bill',
+                'category' => 2,
                 'cost' => 2000,
                 'date' => '2022-03-07',
                 'created_at' => '2022-03-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'utility_bill',
+                'category' => 2,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'landline',
+                'category' => 3,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'landline',
+                'category' => 3,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'landline',
+                'category' => 3,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'internet_bill',
+                'category' => 3,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
@@ -377,42 +396,42 @@ class BuildingExpenseSeeder extends Seeder
             //3
             [
                 'building_id' => 3,
-                'category' => 'internet_bill',
+                'category' => 3,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 3,
-                'category' => 'internet_bill',
+                'category' => 3,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 3,
-                'category' => 'internet_bill',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 3,
-                'category' => 'general',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 3,
-                'category' => 'general',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-07-07',
                 'created_at' => '2022-07-07'
             ],
             [
                 'building_id' => 3,
-                'category' => 'general',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-06-07',
                 'created_at' => '2022-06-07'
@@ -421,90 +440,45 @@ class BuildingExpenseSeeder extends Seeder
             //4
             [
                 'building_id' => 2,
-                'category' => 'general',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-06-07',
                 'created_at' => '2022-06-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'furniture',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-06-07',
                 'created_at' => '2022-06-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'furniture',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-06-07',
                 'created_at' => '2022-06-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'furniture',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-06-07',
                 'created_at' => '2022-06-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'furniture',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-04-07',
                 'created_at' => '2022-04-07'
             ],
             [
                 'building_id' => 2,
-                'category' => 'furniture',
+                'category' => 4,
                 'cost' => 2000,
                 'date' => '2022-04-07',
                 'created_at' => '2022-04-07'
-            ],
-
-
-            //5
-            [
-                'building_id' => 1,
-                'category' => 'furniture',
-                'cost' => 2000,
-                'date' => '2022-04-07',
-                'created_at' => '2022-04-07'
-            ],
-            [
-                'building_id' => 1,
-                'category' => 'furniture',
-                'cost' => 2000,
-                'date' => '2022-04-07',
-                'created_at' => '2022-04-07'
-            ],
-            [
-                'building_id' => 1,
-                'category' => 'furniture',
-                'cost' => 2000,
-                'date' => '2022-04-07',
-                'created_at' => '2022-04-07'
-            ],
-            [
-                'building_id' => 1,
-                'category' => 'furniture',
-                'cost' => 2000,
-                'date' => '2022-03-07',
-                'created_at' => '2022-03-07'
-            ],
-            [
-                'building_id' => 1,
-                'category' => 'furniture',
-                'cost' => 2000,
-                'date' => '2022-03-07',
-                'created_at' => '2022-03-07'
-            ],
-            [
-                'building_id' => 1,
-                'category' => 'furniture',
-                'cost' => 2000,
-                'date' => '2022-03-07',
-                'created_at' => '2022-03-07'
             ],
         ]);
     }

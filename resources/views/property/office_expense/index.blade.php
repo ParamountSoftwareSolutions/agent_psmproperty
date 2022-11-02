@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-@extends('property_manager.layout.app')
-=======
-@extends('property.layout.app')
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title', 'Expense List')
 @section('content')
     <div class="main-content">
@@ -13,11 +9,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4>Office Expense List</h4>
-<<<<<<< HEAD
-                                <a href="{{ route('property_manager.office_expense.create') }}" class="btn btn-primary"
-=======
-                                <a href="{{ route('property.office_expense.create') }}" class="btn btn-primary"
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
+                                <a href="{{ route('property.office_expense.create',['panel'=>Helpers::user_login_route()['panel']]) }}" class="btn btn-primary"
                                    style="margin-left: auto; display: block;">Add New</a>
                             </div>
                             <div class="card-body">
@@ -26,11 +18,7 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center">#</th>
-<<<<<<< HEAD
-                                            <th>Building Name</th>
-=======
                                             <th>Project Name</th>
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
                                             <th>Category</th>
                                             <th>Cost</th>
                                             <th>Date</th>
@@ -42,23 +30,15 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $data->building->name }}</td>
-                                                <td>{{ ucwords($data->category) }}</td>
+                                                <td>{{ $data->category_name->name }}</td>
                                                 <td>{{ $data->cost }}</td>
                                                 <td>{{ $data->date }}</td>
                                                 <td>
-<<<<<<< HEAD
-                                                    <a href="{{ route('property_manager.office_expense.edit',$data->id) }}"
+                                                    <a href="{{ route('property.office_expense.edit',['panel'=>Helpers::user_login_route()['panel'],'office_expense'=>$data->id]) }}"
                                                        class="btn btn-primary px-1 py-0" title="Edit">
                                                        <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <button type="button" data-url="{{ route('property_manager.office_expense.destroy',$data->id) }}" title="Delete" data-token="{!! csrf_token() !!}" class="btn btn-danger px-1 py-0 deleteBtn">
-=======
-                                                    <a href="{{ route('property.office_expense.edit',$data->id) }}"
-                                                       class="btn btn-primary px-1 py-0" title="Edit">
-                                                       <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <button type="button" data-url="{{ route('property.office_expense.destroy',$data->id) }}" title="Delete" data-token="{!! csrf_token() !!}" class="btn btn-danger px-1 py-0 deleteBtn">
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
+                                                    <button type="button" data-url="{{ route('property.office_expense.destroy',['panel'=>Helpers::user_login_route()['panel'],'office_expense'=>$data->id]) }}" title="Delete" data-token="{!! csrf_token() !!}" class="btn btn-danger px-1 py-0 deleteBtn">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>

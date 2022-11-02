@@ -349,12 +349,13 @@
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Hi {{$mailData['email']}},</p>
-                        <p>{{$mailData['body']}}</p>
+                        <p>Hi {{$email}},</p>
+                        <p>{!! $body !!}</p>
                         <p>Good luck! Hope it works.</p>
-                          @foreach($mailData['image'] as $img)
+                          @forelse($image as $img)
                             <img src="{{asset($img)}}">
-                          @endforeach
+                          @empty
+                          @endforelse
                       </td>
                     </tr>
                   </table>

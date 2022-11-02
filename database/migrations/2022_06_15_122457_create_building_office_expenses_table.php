@@ -16,7 +16,7 @@ class CreateBuildingOfficeExpensesTable extends Migration
         Schema::create('building_office_expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('building_id')->unsigned()->nullable()->constrained('buildings')->nullOnDelete();
-            $table->enum('category', ['electricity_bill', 'utility_bill', 'landline', 'internet_bill', 'general', 'accessories', 'stationary', 'equipments', 'furniture'])->nullable();
+            $table->foreignId('category')->unsigned()->nullable()->constrained('building_expense_categories')->nullOnDelete();
             $table->integer('cost')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
