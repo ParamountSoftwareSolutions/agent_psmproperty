@@ -75,8 +75,8 @@ class InvestorController extends Controller
      */
     public function edit($panel,$id)
     {
-        $income = Income::findOrFail($id);
-        return view('property.income.edit', compact('income'));
+        $investor = Investor::findOrFail($id);
+        return view('property.investor.edit', compact('investor'));
     }
 
     /**

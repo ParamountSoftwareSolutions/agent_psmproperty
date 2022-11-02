@@ -25,8 +25,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @forelse($investor as $data)
-                                            <tr>
+{{--                                        @forelse($investor as $data)--}}
+                                            {{-- <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $data->user->username }}</td>
                                                 <td>{{ $data->total_amount }}</td>
@@ -44,12 +44,31 @@
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
-                                            </tr>
-                                        @empty
+                                            </tr> --}}
                                             <tr>
-                                                <td colspan="7"> No More Data In this Table.</td>
+                                                <td>1</td>
+                                                <td>User</td>
+                                                <td>100</td>
+                                                <td>200</td>
+                                                <td>
+                                                    <a href="{{ route('property.investor.edit',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}"
+                                                       class="btn btn-primary px-1 py-0" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a href="{{ route('property.investor.show',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}"
+                                                       class="btn btn-primary px-1 py-0" title="Edit">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <button type="button" data-url="{{ route('property.investor.destroy',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}" data-token="{{ csrf_token() }}" title="Delete" class="btn btn-danger px-1 py-0 deleteBtn">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
-                                        @endforelse
+{{--                                        @empty--}}
+{{--                                            <tr>--}}
+{{--                                                <td colspan="7"> No More Data In this Table.</td>--}}
+{{--                                            </tr>--}}
+{{--                                        @endforelse--}}
                                         </tbody>
                                     </table>
                                 </div>

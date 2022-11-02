@@ -7,10 +7,73 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4>Investor</h4>
-                                <a href="{{ route('property.investor.create',Helpers::user_login_route()['panel']) }}" class="btn btn-primary"
-                                   style="margin-left: auto; display: block;">Add New</a>
+                            <div class="card-header">
+                                <h4>Investor Details</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Name: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">Ali Hassan: </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Email: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">ali@gmail.com: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Number: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">12345567: </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">CNIC: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Address: </label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Amount Received: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Invested Amount: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Remaining Amount: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Investor Details</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -18,15 +81,31 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center">#</th>
-                                            <th>Name</th>
-                                            <th>Amount</th>
-                                            <th>Remaining</th>
+                                            <th>Invested Amount</th>
+                                            <th>Invested In</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @dd($investor_history)
-                                        @forelse($investor_history as $data)
+                                        <tr>
+                                            <td>1</td>
+                                            <td>700</td>
+                                            <td>Zaitoon City</td>
+                                            <td>
+                                                <a href="{{ route('property.investor.edit',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}"
+                                                   class="btn btn-primary px-1 py-0" title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <a href="{{ route('property.investor.show',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}"
+                                                   class="btn btn-primary px-1 py-0" title="Edit">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <button type="button" data-url="{{ route('property.investor.destroy',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}" data-token="{{ csrf_token() }}" title="Delete" class="btn btn-danger px-1 py-0 deleteBtn">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {{--@forelse($investor_history as $data)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $data->user->username }}</td>
@@ -50,7 +129,7 @@
                                             <tr>
                                                 <td colspan="7"> No More Data In this Table.</td>
                                             </tr>
-                                        @endforelse
+                                        @endforelse --}}
                                         </tbody>
                                     </table>
                                 </div>

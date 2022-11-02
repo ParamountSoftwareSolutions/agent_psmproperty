@@ -19,6 +19,7 @@
                                     <tr>
                                         <th class="text-center">#</th>
                                         <th>To</th>
+                                        <th>Subject</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -28,6 +29,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $data->to }}</td>
+                                        <td>{{ $data->subject }}</td>
                                         <td>{{ $data->date }}</td>
                                         <td>
                                             <button data-url="{{ route('property_manager.email.forward',['panel'=>Helpers::user_login_route()['panel'],'id'=>$data->id]) }}"
