@@ -16,7 +16,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Name</label>
+                                                <label>Name <small style="color: red">*</small></label>
                                                 <input type="text" name="name" class="form-control" placeholder="Enter Name" required>
                                                 @error('name')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -32,7 +32,7 @@
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Number</label>
+                                            <label>Number <small style="color: red">*</small></label>
                                             <input name="phone_number" type="number" class="form-control"
                                                    placeholder="Enter Number" required>
                                             @error('phone_number')
@@ -66,7 +66,7 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Total Amount</label>
+                                                <label>Total Amount Received</label>
                                                 <input type="number" name="total_amount" class="form-control" placeholder="Enter Total Amount" required>
                                                 @error('total_amount')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -75,7 +75,7 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <div class="form-group">
-                                                <label>Investment Amount</label>
+                                                <label>Invested Amount</label>
                                                 <input type="number" name="invested_amount" class="form-control" placeholder="Enter Investment Amount" required>
                                                 @error('invested_amount')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -122,8 +122,16 @@
                                             <div class="form-group">
                                                 <label>Remaining Amount</label>
                                                 <input type="number" style="cursor: not-allowed" name="remaining_amount" class="form-control" placeholder="Enter Remaining Amount">
-{{--                                                <input type="hidden" name="remaining_amount">--}}
                                                 @error('remaining_amount')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <div class="form-group">
+                                                <label>Profit Percentage</label>
+                                                <input type="number" style="cursor: not-allowed" name="profit_percent" class="form-control" placeholder="Enter Profit Percentage">
+                                                @error('profit_percent')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>

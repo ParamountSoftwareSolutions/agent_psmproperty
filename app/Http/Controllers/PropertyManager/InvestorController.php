@@ -92,6 +92,7 @@ class InvestorController extends Controller
      */
     public function show($panel,$id)
     {
+        return view('property.investor.show');
         $investor = Investor::findOrFail($id);
         $investor_history = InvestorHistory::where('investor_id',$id)->get();
         return view('property.investor.show', compact('investor_history'));
@@ -106,8 +107,9 @@ class InvestorController extends Controller
      */
     public function edit($panel,$id)
     {
-        $income = Income::findOrFail($id);
-        return view('property.income.edit', compact('income'));
+//        $investor = Investor::findOrFail($id);
+//        return view('property.investor.edit', compact('investor'));
+        return view('property.investor.edit');
     }
 
     /**
