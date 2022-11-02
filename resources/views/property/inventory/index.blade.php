@@ -55,6 +55,7 @@
                                             <th>Size</th>
                                             <th>Category</th>
                                             <th>Type</th>
+                                            <th>Date</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -87,6 +88,7 @@
                                                 <td>{{ ($data->size == null) ? 'null' : $data->size->size }}</td>
                                                 <td>{{ ($data->category == null) ? 'null' : $data->category->category }}</td>
                                                 <td>{{ $data->type }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->created_at) }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <a href="#" data-toggle="dropdown" style="text-decoration: none" class="badge badge-{{$color}}" aria-expanded="false">

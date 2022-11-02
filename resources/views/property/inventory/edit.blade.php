@@ -59,9 +59,14 @@
                                                 <select class="form-control" name="category_id" required>
                                                     <option label="" disabled>Select Category</option>
                                                     @foreach($category as $data)
-                                                        <option value="{{ $data->id }}" @if($inventory->category_id == $data->id) selected @endif>{{ ucfirst
+                                                        @if($inventory->category_id !== null)
+                                                            <option value="{{ $data->id }}" @if($inventory->category_id == $data->id) selected @endif>{{ ucfirst
                                                         ($data->category)
                                                         }}</option>
+                                                        @else
+                                                            <option value="" selected >Select Category</option>
+                                                            <option value="{{ $data->id }}">{{ ucfirst($data->category) }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                                 @error('category')
@@ -113,14 +118,15 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Purchased Price</label>
-                                            <input type="text" class="form-control" name="purchased_price" value="{{ old('purchased_price') }}">
+                                            <input type="text" class="form-control" name="purchased_price" value="{{ old('purchased_price', $inventory->purchased_price)
+                                            }}">
                                             @error('purchased_price')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Sold Price</label>
-                                            <input type="text" class="form-control" name="sold_price" value="{{ old('sold_price') }}">
+                                            <input type="text" class="form-control" name="sold_price" value="{{ old('sold_price', $inventory->sold_price) }}">
                                             @error('sold_price')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
@@ -128,12 +134,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>Staus</label>
+                                            <label>Status</label>
                                             <select class="form-control" name="status">
-                                                <option label="" disabled selected>Status</option>
-                                                <option value="sold">sold</option>
-                                                <option value="available">Available</option>
-                                                <option value="hold">Hold</option>
+                                                <option label="" disabled>Status</option>
+                                                <option value="sold" @if($inventory->status == 'sold') selected @endif>sold</option>
+                                                <option value="available" @if($inventory->status == 'available') selected @endif>Available</option>
+                                                <option value="hold" @if($inventory->status == 'hold') selected @endif>Hold</option>
                                             </select>
                                             @error('status')
                                             <div class="text-danger mt-2">{{ $message }}</div>
@@ -141,7 +147,7 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Down Payment </label>
-                                            <input type="text" class="form-control" name="down_payment" value="{{ old('down_payment') }}">
+                                            <input type="text" class="form-control" name="down_payment" value="{{ old('down_payment', $inventory->down_payment) }}">
                                             @error('down_payment')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
