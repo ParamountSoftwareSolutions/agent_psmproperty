@@ -96,7 +96,7 @@ class EmailController extends Controller
                 });
                 if (!Mail::failures()) {
                     $email_history = new EmailHistory();
-                    $email_history->user_id = Auth::user()->id;
+                    $email_history->send_by = Auth::user()->id;
                     $email_history->to = $email;
                     $email_history->subject = $data['subject'];
                     $email_history->body = $data['body'];
@@ -187,7 +187,7 @@ class EmailController extends Controller
                 });
                 if (!Mail::failures()) {
                     $email_history = new EmailHistory();
-                    $email_history->user_id = Auth::user()->id;
+                    $email_history->send_by = Auth::user()->id;
                     $email_history->to = $email;
                     $email_history->subject = $data['subject'];
                     $email_history->body = $data['body'];

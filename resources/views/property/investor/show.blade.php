@@ -12,8 +12,61 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-3">
-                                        <label style="font-weight: bold;font-size: 23px;">Name: </label>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Name: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">Ali Hassan: </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Email: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">ali@gmail.com: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Number: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">12345567: </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">CNIC: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Address: </label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Amount Received: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Invested Amount: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-2">
+                                        <label style="font-weight: bold;font-size: 17px;">Remaining Amount: </label>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label style="font-size: 15px;">2345678: </label>
                                     </div>
                                 </div>
                             </div>
