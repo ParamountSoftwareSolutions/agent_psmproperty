@@ -95,6 +95,7 @@
                                                     <option label="" disabled selected>Select Nature</option>
                                                     <option value="commercial">Commercial</option>
                                                     <option value="semi_commercial">Semi Commercial</option>
+                                                    <option value="residential">Residential</option>
                                                 </select>
                                                 @error('nature')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -157,7 +158,7 @@
                                             <label>Staus</label>
                                             <select class="form-control" name="status">
                                                 <option label="" disabled selected>Status</option>
-                                                <option value="sold">sold</option>
+                                                <option value="sold">Sold</option>
                                                 <option value="available">Available</option>
                                                 <option value="hold">Hold</option>
                                             </select>
@@ -238,7 +239,7 @@
                 var building_id = $(this).val();
                 if (building_id) {
                     $.ajax({
-                        url: "{{ url('property/select/building') }}/" + building_id,
+                        url: "{{ url('property-manager/select/building') }}/" + building_id,
                         type: "GET",
                         dataType: "json",
                         success: function (data) {

@@ -95,6 +95,7 @@
                                                     <option label="" disabled selected>Select Nature</option>
                                                     <option value="commercial">Commercial</option>
                                                     <option value="semi_commercial">Semi Commercial</option>
+                                                    <option value="residential">Residential</option>
                                                 </select>
                                                 @error('nature')
                                                 <div class="text-danger mt-2">{{ $message }}</div>

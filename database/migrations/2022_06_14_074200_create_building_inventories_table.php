@@ -26,7 +26,7 @@ class CreateBuildingInventoriesTable extends Migration
             $table->string('sold_price')->nullable();
             $table->string('down_payment')->nullable();
             $table->enum('nature', ['commercial', 'semi_commercial', 'residential']);
-            $table->enum('type', ['corner', 'front_facing', 'main_boulevard', 'park_facing']);
+            $table->enum('type', ['corner', 'front_facing', 'main_boulevard', 'park_facing'])->nullable();
             $table->enum('status', ['available', 'hold', 'sold','token','canceled']);
             $table->timestamps();
         });

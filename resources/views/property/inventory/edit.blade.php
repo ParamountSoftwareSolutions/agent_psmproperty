@@ -81,6 +81,7 @@
                                                     <option label="" disabled>Select Nature</option>
                                                     <option value="commercial" @if($inventory->nature == 'commercial') selected @endif>Commercial</option>
                                                     <option value="semi_commercial" @if($inventory->nature == 'semi_commercial') selected @endif>Semi Commercial</option>
+                                                    <option value="residential" @if($inventory->nature == 'residential') selected @endif>Residential</option>
                                                 </select>
                                                 @error('nature')
                                                 <div class="text-danger mt-2">{{ $message }}</div>

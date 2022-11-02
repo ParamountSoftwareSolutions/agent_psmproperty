@@ -107,7 +107,10 @@ class InventoryController extends Controller
                 $inventory->category_id = $request->category_id;
                 $inventory->nature = $request->nature;
                 $inventory->type = $request->type;
-                $inventory->price = $request->price;
+                $inventory->purchased_price = $request->purchased_price;
+                $inventory->sold_price = $request->sold_price;
+                $inventory->down_payment = $request->down_payment;
+                $inventory->status = $request->status;
                 $inventory->save();
                 //print_r($i. " " . $request->bulk_unit_no . $request->start_unit_no++ ."<br>");
             }

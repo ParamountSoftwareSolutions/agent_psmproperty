@@ -1,18 +1,26 @@
+@php
+    if(!Helpers::isSuperAdmin()){
+        $panel = \App\Helpers\Helpers::user_login_route()['panel'];
+    }
+
+/*if(Helpers::isPropertyAdmin()){
+$user_permission = \App\Helpers\Helpers::user_permission('whats_app_module');
+} else{
+$user_permission = 1;
+}*/
+@endphp
 <div class="main-sidebar sidebar-style-2">
-    @php
-        if(!Helpers::isSuperAdmin()){
-            $panel = \App\Helpers\Helpers::user_login_route()['panel'];
-        }
-    @endphp
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
             @if(Helpers::isSuperAdmin())
-            <a href="{{ route('admin.dashboard') }}">
-                <img alt="image" src="{{ asset('public/panel/assets/img/logo.png') }}" class="header-logo" style="height:150px !important;margin-top: -20px !important;"/>
-            </a>
+                <a href="{{ route('admin.dashboard') }}">
+                    <img alt="image" src="{{ asset('public/panel/assets/img/logo.png') }}" class="header-logo"
+                         style="height:150px !important;margin-top: -20px !important;"/>
+                </a>
             @else
                 <a href="{{ route('property.dashboard', ['panel' => $panel]) }}">
-                    <img alt="image" src="{{ asset('public/panel/assets/img/logo.png') }}" class="header-logo" style="height:150px !important;margin-top: -20px !important;"/>
+                    <img alt="image" src="{{ asset('public/panel/assets/img/logo.png') }}" class="header-logo"
+                         style="height:150px !important;margin-top: -20px !important;"/>
                 </a>
             @endif
         </div>
@@ -72,14 +80,14 @@
                         {{--<li><a class="nav-link" href="{{ route('property_manager.building.detail_form') }}">Add Project Details</a></li>--}}
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.investor.*')) active @endif">
+                {{--<li class="dropdown @if (request()->routeIs('property.investor.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-building-columns"></i><span>Investors</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property.investor.create', ['panel' => $panel]) }}">Add New Investor</a></li>
                         <li><a class="nav-link" href="{{ route('property.investor.index', ['panel' => $panel]) }}">Investors List</a></li>
                     </ul>
-                </li>
+                </li>--}}
                 <li class="dropdown @if (request()->routeIs('property.manager.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-solid fa-user"></i><span>Manager</span></a>
@@ -204,7 +212,7 @@
                         <i class="fa-solid fa-user"></i>
                         <span>Accounts</span></a>
                     <ul class="dropdown-menu">
-                         <li><a class="nav-link" href="">Sales Report</a></li>
+                        <li><a class="nav-link" href="">Sales Report</a></li>
                         <li><a class="nav-link" href="{{ route('property_manager.report.expense_report') }}">Expenses Report</a></li>
                         <li><a class="nav-link" href="">Employee</a></li>
                     </ul>
@@ -252,7 +260,7 @@
                         <li><a class="nav-link " href="{{ route('property_manager.sale.client.index', App\Helpers\Helpers::user_login_route()) }}">Client</a></li>
                         <li><a class="nav-link " href="{{ route('property_manager.sale.client.history', App\Helpers\Helpers::user_login_route()) }}">Sale
                                 History</a></li>
-                    <?php if (\Illuminate\Support\Facades\Auth::user()->hasAnyRole('property_admin')) { ?>
+                        <?php if (\Illuminate\Support\Facades\Auth::user()->hasAnyRole('property_admin')) { ?>
                         <li><a class="nav-link " href="{{ route('property_manager.sale.import.view', App\Helpers\Helpers::user_login_route()) }}">Bulk Import</a></li>
                         <li><a class="nav-link " href="{{ route('property_manager.sale.bulk.export', App\Helpers\Helpers::user_login_route()) }}">Bulk Export</a></li>
                         <?php } ?>
@@ -267,15 +275,17 @@
                         <li><a class="nav-link" href="{{ route('property.task_reports', Helpers::user_login_route()) }}">Reports </a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property_manager.email.compose')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-sharp fa-solid fa-house-chimney"></i>
-                        <span>Email</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.email.compose',Helpers::user_login_route()['panel']) }}">Compose</a></li>
-                        <li><a class="nav-link" href="{{ route('property_manager.email.send_email',Helpers::user_login_route()['panel']) }}">Sent</a></li>
-                    </ul>
-                </li>
+                @if(\App\Helpers\Helpers::user_permission('email_module'))
+                    <li class="dropdown @if (request()->routeIs('property_manager.email.compose')) active @endif">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i class="fa-sharp fa-solid fa-house-chimney"></i>
+                            <span>Email</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="{{ route('property_manager.email.compose',Helpers::user_login_route()['panel']) }}">Compose</a></li>
+                            <li><a class="nav-link" href="{{ route('property_manager.email.send_email',Helpers::user_login_route()['panel']) }}">Sent</a></li>
+                        </ul>
+                    </li>
+                @endif
                 <li class="dropdown @if (request()->routeIs('property.income.index', 'property.income.edit', 'property.income.create','property.income.report')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-sack-dollar"></i>
@@ -287,16 +297,18 @@
                         <li><a class="nav-link" href="{{ route('property.income.report',Helpers::user_login_route()['panel']) }}">Report</a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('property.whatsappwebhook.index')) active @endif">
-                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                        <i class="fa-sharp fa-solid fa-sack-dollar"></i>
-                        <span>Whatsapp</span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property.whatsappwebhook.index',Helpers::user_login_route()['panel']) }}">Whatsapp</a></li>
-                    </ul>
-                </li>
+                @if(\App\Helpers\Helpers::user_permission('whats_app_module'))
+                    <li class="dropdown @if (request()->routeIs('property.whatsappwebhook.index')) active @endif">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i class="fa-sharp fa-solid fa-sack-dollar"></i>
+                            <span>Whatsapp</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="{{ route('property.whatsappwebhook.index',Helpers::user_login_route()['panel']) }}">Whatsapp</a></li>
+                        </ul>
+                    </li>
+                @endif
             @endif
-            @if(Helpers::isPropertyManager() || Helpers::isPropertyAdmin() || Helpers::isSaleManager())
+            @if(Helpers::isPropertyManager() || Helpers::isPropertyAdmin() && \App\Helpers\Helpers::user_permission('facebook_lead_module'))
                 <li class="dropdown @if (request()->routeIs('property_manager.webhook.index')) active @endif">
                     <a href="{{ route('property_manager.webhook.index', \App\Helpers\Helpers::user_login_route()['panel']) }}">
                         <i data-feather="facebook"></i><span>Facebook Leads</span>

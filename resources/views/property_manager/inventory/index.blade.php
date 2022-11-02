@@ -19,8 +19,6 @@
                                                     <a class="dropdown-item has-icon status" data-value="available">Available</a>
                                                     <a class="dropdown-item has-icon status" data-value="sold">Sold</a>
                                                     <a class="dropdown-item has-icon status" data-value="hold">Hold</a>
-                                                    <a class="dropdown-item has-icon status" data-value="token">Token</a>
-                                                    <a class="dropdown-item has-icon status" data-value="cancelled">Cancelled</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -55,6 +53,7 @@
                                             <th>Size</th>
                                             <th>Category</th>
                                             <th>Type</th>
+                                            <th>Date</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -63,11 +62,9 @@
                                         @forelse($inventory as $data)
                                             @php
                                                 switch($data->status){
-                                                    case 'token' : $color = 'primary';break;
                                                     case 'available' : $color = 'success';break;
-                                                    case 'hold' : $color = 'danger';break;
                                                     case 'sold' : $color = 'warning';break;
-                                                    case 'canceled' : $color = 'secondary';break;
+                                                    case 'hold' : $color = 'danger';break;
                                                     default : $color = 'light';
                                                 }
                                                 switch($data->type){
@@ -87,6 +84,7 @@
                                                 <td>{{ ($data->size == null) ? 'null' : $data->size->size }}</td>
                                                 <td>{{ ($data->category == null) ? 'null' : $data->category->category }}</td>
                                                 <td>{{ $data->type }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->created_at)->format('m-d-Y') }}</td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <a href="#" data-toggle="dropdown" style="text-decoration: none" class="badge badge-{{$color}}" aria-expanded="false">

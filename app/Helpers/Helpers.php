@@ -20,6 +20,17 @@ use Spatie\Permission\Models\Role;
 
 class Helpers
 {
+    public static function user_permission($key)
+    {
+        if(Helpers::isPropertyAdmin()){
+            $user_permission = \App\Models\UserSetting::where('user_id', \Illuminate\Support\Facades\Auth::id())->where('key', $key)->first()->status;
+        } else{
+            $user_permission = 1;
+        }
+        //$user_permission = \App\Models\UserSetting::where('user_id', \Illuminate\Support\Facades\Auth::id())->where('key', $key)->first()->status;
+        return $user_permission;
+    }
+
     public static function user_login_route()
     {
         if (Auth::user()->roles[0]->name == 'property_admin') {

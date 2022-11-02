@@ -17,8 +17,8 @@ class CreateBuildingBlocksTable extends Migration
             $table->id();
             $table->foreignId('building_id')->unsigned()->nullable()->constrained('buildings')->nullOnDelete();
             $table->string('name');
-            $table->string('code');
-            $table->date('start_date');
+            $table->string('code')->nullable();
+            $table->date('start_date')->nullable();
             $table->timestamps();
         });
     }

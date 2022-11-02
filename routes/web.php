@@ -314,20 +314,8 @@ Route::group(['as' => 'property.'], function () {
         Route::post('expense_report', 'ExpenseController@expense_report')->name('expense_report');
 //        Route::resource('office_expense', 'OfficeExpenseController');
         Route::resource('income_category', 'IncomeCategoryController');
-        /* Notification */
-        /*Route::get('notification/index', 'NotificationController@index');
-        Route::get('notification/latest', 'NotificationController@latest');
-        Route::get('notification/mark/read', 'NotificationController@mark_read_notification');
-        Route::get('notification/mark/single/read/{id}', 'NotificationController@mark_single_read_notification');*/
-        //});
         Route::get('hrm', 'HRMController@index');
         Route::resource('payment_plan', 'PaymentPlanController');
-//        Route::group(['prefix' => 'report', 'as' => 'report.'], function () {
-//            /*Route::get('/{type}', 'ReportController@index')->name('index');
-//            Route::post('/{type}/search/{time}', 'ReportController@search')->name('search');*/
-//            Route::get('/sale', 'ReportController@accountStatement')->name('sale');
-//            Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
-//        });
     });
     //=============//
     /* Sales Route */
