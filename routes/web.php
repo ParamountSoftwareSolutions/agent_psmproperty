@@ -312,7 +312,8 @@ Route::group(['as' => 'property.'], function () {
         Route::resource('expense', 'ExpenseController');
         Route::resource('office_expense_category', 'ExpenseCategoryController');
         Route::post('expense_report', 'ExpenseController@expense_report')->name('expense_report');
-        Route::resource('office_expense', 'OfficeExpenseController');
+//        Route::resource('office_expense', 'OfficeExpenseController');
+        Route::resource('income_category', 'IncomeCategoryController');
         /* Notification */
         /*Route::get('notification/index', 'NotificationController@index');
         Route::get('notification/latest', 'NotificationController@latest');
@@ -363,7 +364,7 @@ Route::group(['as' => 'property.'], function () {
 
             Route::get('building/{id}', 'LeadController@building');
             Route::get('floor/{id}/{building_id}', 'LeadController@floor');
-            Route::get('block/{id}/{building_id}', 'LeadController@block');
+            Route::get('block/{building_id}', 'LeadController@block');
 
             Route::get('state/{country_id}', 'ClientController@state');
             Route::get('city/{state_id}', 'ClientController@city');
@@ -426,6 +427,17 @@ Route::group(['as' => 'property.'], function () {
             Route::get('/sale', 'ReportController@accountStatement')->name('sale');
             Route::get('/expense_report', 'ReportController@expenseSummary')->name('expense_report');
         });
+
+        //===============//
+        // Whatsapp Route //
+        //===============//
+        Route::get('/whatsappwebhook', 'WhatsappWebhook@index')->name('whatsappwebhook.index');
+
+        //===============//
+        // Expense Route //
+        //===============//
+        Route::resource('office_expense', 'OfficeExpenseController');
+
     });
 });
 
@@ -491,7 +503,6 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::post('banner-image/remove', 'UpdateController@remove_image')->name('update.remove-image');
         Route::resource('expense', 'ExpenseController');
         Route::post('expense_report', 'ExpenseController@expense_report')->name('expense_report');
-        Route::resource('office_expense', 'OfficeExpenseController');
         /* Property Manager Profile */
         Route::get('profile', 'ProfileController@index')->name('profile.index');
         Route::post('profile/update', 'ProfileController@update')->name('profile.update');
@@ -605,6 +616,9 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         //==============//
         Route::get('email/compose', 'EmailController@email_compose')->name('email.compose');
         Route::post('email/compose/send', 'EmailController@email_compose_send')->name('email.compose.send');
+        Route::get('email/sent', 'EmailController@send_email')->name('email.send_email');
+        Route::post('email/forward/{id}', 'EmailController@email_forward')->name('email.forward');
+        Route::delete('email/destroy/{id}', 'EmailController@email_destroy')->name('email_destroy');
     });
 });
 

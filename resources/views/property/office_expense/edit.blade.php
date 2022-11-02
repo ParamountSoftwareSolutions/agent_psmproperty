@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-@extends('property_manager.layout.app')
-=======
-@extends('property.layout.app')
->>>>>>> 0e5054f4838c84b65fe8f558a899f852d169cda1
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title', 'Expense Edit')
 @section('content')
     <div class="main-content">
@@ -11,7 +7,7 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <form method="post" action="{{ route('property.office_expense.update', $office_expense->id) }}">
+                            <form method="post" action="{{ route('property.office_expense.update', ['panel'=>Helpers::user_login_route()['panel'],'office_expense'=>$office_expense->id]) }}">
                                 @csrf
                                 @method('put')
                                 <div class="card-header">
@@ -34,17 +30,11 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Category</label>
-                                            <select name="category" class="form-control" id="">
-                                                <option value="{{ $office_expense->category_id }}" selected>{{ ucwords($office_expense->category->name) }}</option>
-                                                <option value="furniture">furniture</option>
-                                                <option value="equipments">equipments</option>
-                                                <option value="stationary">stationary</option>
-                                                <option value="accessories">accessories</option>
-                                                <option value="general">general</option>
-                                                <option value="internet_bill">internet_bill</option>
-                                                <option value="landline">landline</option>
-                                                <option value="utility_bill">utility_bill</option>
-                                                <option value="electricity_bill">electricity_bill</option>
+                                            <select name="category" class="form-control">
+                                                <option value="" selected>Select Category</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{$category->id}}" {{$category->id == $office_expense->category ? 'selected' : ''}}>{{$category->name}}</option>
+                                                @endforeach
                                             </select>
                                             @error('category')
                                             <div class="text-danger mt-2">{{ $message }}</div>

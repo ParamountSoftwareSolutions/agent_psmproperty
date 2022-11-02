@@ -26,21 +26,9 @@
                                         </thead>
                                         <tbody>
                                         @forelse($income as $data)
-                                            @php
-                                                switch($data->category){
-                                                    case 'rent' : $cat = 'Rent';break;
-                                                    case 'personal_property_rent' : $cat = ' Personal Property Rent';break;
-                                                    case 'group_a' : $cat = 'Group A';break;
-                                                    case 'group_b' : $cat = 'Group B';break;
-                                                    case 'file_income' : $cat = 'File Income';break;
-                                                    case 'property_income' : $cat = 'Property Income';break;
-                                                    case 'others' : $cat = 'Others';break;
-                                                    default:$cat = '';
-                                                }
-                                            @endphp
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $cat }}</td>
+                                                <td>{{ $data->category->name }}</td>
                                                 <td>{{ $data->cost }}</td>
                                                 <td>{{ $data->date }}</td>
                                                 <td>

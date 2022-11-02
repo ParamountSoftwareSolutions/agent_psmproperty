@@ -91,8 +91,7 @@ class ClientController extends Controller
         $data = [];
         $validator = Validator::make($request->all(), [
             'building_id' => 'required',
-            'floor_id' => 'required',
-            'floor_detail_id' => 'required',
+            'inventory_id' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['status' => 'error', 'message' => $validator->errors()->first()]);
@@ -114,7 +113,6 @@ class ClientController extends Controller
                 'name_new.required' => 'Name is Required',
                 'father_name_new.required' => 'Father Name is Required',
                 'cnic_new.required' => 'CNIC is Required',
-                'password_new.required' => 'Password is Required',
                 'address_new.required' => 'Address is Required',
                 'dob_new.required' => 'Date of Birth is Required',
                 'country_id_new.required' => 'Country is Required',
@@ -125,7 +123,6 @@ class ClientController extends Controller
                 'father_name_new' => 'required',
                 'cnic_new' => 'required|unique:users,cnic',
                 'email_new' => 'required|email|unique:users,email',
-                'password_new' => 'required',
                 'phone_number_new' => 'required|unique:users,phone_number',
                 'address_new' => 'required',
                 'dob_new' => 'required',
@@ -141,7 +138,6 @@ class ClientController extends Controller
             $data['email'] = $request->email_new;
             $data['cnic'] = $request->cnic_new;
             $data['address'] = $request->address_new;
-            $data['password'] = $request->password_new;
             $data['phone_number'] = $request->phone_number_new;
             $data['alt_phone'] = $request->alt_phone_new;
             $data['dob'] = $request->dob_new;
@@ -165,9 +161,6 @@ class ClientController extends Controller
                 if (isset($request->address)) {
                     $data['address'] = $request->address;
                 }
-                if (isset($request->password)) {
-                    $data['password'] = $request->password;
-                }
                 if (isset($request->phone_number)) {
                     $data['phone_number'] = $request->phone_number;
                 }
@@ -188,25 +181,19 @@ class ClientController extends Controller
                 }
             }
         }
+        $budget = null;
+        if(isset($request->budget_from) && isset($request->budget_to)){
+            $budget = $request->budget_from.' - '.$request->budget_to;
+        }
+        $data['budget'] = $budget;
         $building = Helpers::building_detail_single($request->building_id);
-        $installment = Helpers::installment($request);
-        $payment_plan_id = $installment['payment_plan']->id;
-        $data['payment_plan_id'] = $payment_plan_id;
-        if ($installment['total_price'] == $installment['payment_plan']->total_price) {
-            FloorDetail::where('id', $request->floor_detail_id)->update(['status' => 'sold']);
-            $sale = Helpers::sale_and_customer($request, $building, 'sale', $data);
-            if ($sale) {
-                //Notification Create
-                //NotificationHelper::web_panel_notification('sale_update');
-                //NotificationHelper::web_panel_notification($request->status);
-                Helpers::customer_create($sale);
-                Helpers::create_installment_plan($sale['sale'], $installment, $request);
-                return response()->json(['status' => 'success', 'message' => 'Property Sale Client Create Successfully']);
-            } else {
-                return response()->json(['status' => 'error', 'message' => 'Property Sale Client Receipt Create Error']);
-            }
+        $sale = Helpers::sale_and_customer($request, $building, 'sale', $data);
+        if ($sale) {
+            NotificationHelper::web_panel_notification('sale_add', 'sale_id', $sale['sale']['id']);
+            Helpers::customer_create($sale);
+            return response()->json(['status' => 'success', 'message' => 'Property Sale Client Create Successfully']);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'Property installment plan calculation problem Please check your plan calculation!']);
+            return response()->json(['status' => 'error', 'message' => 'Property Sale Client Receipt Create Error']);
         }
 
     }
@@ -248,9 +235,9 @@ class ClientController extends Controller
                        $q->where('name', 'sale_person');
                         $q->orWhere('name', 'sale_manager');
                     })->get();
- 
+
             } else {
-				
+
                 $sales_person = Helpers::sales_person();
             }
         //dd($building_sale, $client, $panel);
@@ -269,7 +256,8 @@ class ClientController extends Controller
         $sale = BuildingSale::findOrFail($id);
         $user = User::findOrFail($sale->customer_id);
         $validator = Validator::make($request->all(), [
-            'floor_detail_id' => 'required',
+            'building_id' => 'required',
+            'inventory_id' => 'required',
             'sale_person_id' => 'required',
             'name' => 'required',
             'fathername' => 'required',
@@ -301,9 +289,6 @@ class ClientController extends Controller
         if ($request->has('address')) {
             $data['address'] = $request->address;
         }
-        if ($request->has('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
         if ($request->has('phone_number')) {
             $data['phone_number'] = $request->phone_number;
         }
@@ -322,26 +307,21 @@ class ClientController extends Controller
         if ($request->has('city_id')) {
             $data['city_id'] = $request->city_id;
         }
+        $budget = null;
+        if(isset($request->budget_from) && isset($request->budget_to)){
+            $budget = $request->budget_from.' - '.$request->budget_to;
+        }
+        $data['budget'] = $budget;
         $building = Helpers::building_detail_single($sale->building_id);
-        $installment = Helpers::installment($request);
-        $payment_plan_id = $installment['payment_plan']->id;
-        $data['payment_plan_id'] = $payment_plan_id;
-        if ($installment['total_price'] == $installment['payment_plan']->total_price) {
-            FloorDetail::where('id', $request->floor_detail_id)->update(['status' => 'sold']);
             $sale = Helpers::sale_and_customer($request, $building, 'sale',$data, $id);
             if ($sale) {
                 //Notification Create
-                NotificationHelper::web_panel_notification('sale_update');
-                NotificationHelper::web_panel_notification($request->status);
+                NotificationHelper::web_panel_notification('sale_update', 'sale_id', $sale['sale']['id']);
                 Helpers::customer_create($sale);
-                Helpers::create_installment_plan($sale['sale'], $installment, $request);
                 return response()->json(['status' => 'success', 'message' => 'Property Sale Client Update Successfully']);
             } else {
                 return response()->json(['status' => 'error', 'message' => 'Property Sale Client Receipt Update Error']);
             }
-        } else {
-            return response()->json(['status' => 'error', 'message' => 'Property installment plan calculation problem Please check your plan calculation!']);
-        }
     }
 
     /**
@@ -610,7 +590,21 @@ class ClientController extends Controller
         $history->data = json_encode($data);
         $history->comment = $request->comment;
         $history->save();
+
+        if ($request->status == 'active') {
+            $key = 'sale_active';
+        }  elseif ($request->status == 'suspended') {
+            $key = 'sale_suspended';
+        } elseif ($request->status == 'cancelled') {
+            $key = 'sale_cancel';
+        } elseif ($request->status == 'transferred') {
+            $key = 'sale_transfer';
+        } else {
+            $key = null;
+        }
+        NotificationHelper::web_panel_notification($key, 'sale_id', $sale->id);
         MessageHelpers::sendMessage('login_detail_message', $sale);
+
         if ($sale && $history) {
             return response()->json(['status' => 'success', 'message' => 'Status Updated Successfully']);
         }

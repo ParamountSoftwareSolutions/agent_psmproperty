@@ -22,6 +22,16 @@ class BuildingSale extends Model
         return $this->belongsTo(FloorDetail::class, 'floor_detail_id')->with('building', 'floor');
     }
 
+    public function block()
+    {
+        return $this->belongsTo(BuildingBlock::class, 'block_id');
+    }
+
+    public function inventory()
+    {
+        return $this->belongsTo(BuildingInventory::class, 'inventory_id');
+    }
+
     public function sale_person()
     {
         return $this->belongsTo(User::class, 'user_id');

@@ -1,12 +1,20 @@
 <div class="main-sidebar sidebar-style-2">
     @php
-        $panel = \App\Helpers\Helpers::user_login_route()['panel'];
+        if(!Helpers::isSuperAdmin()){
+            $panel = \App\Helpers\Helpers::user_login_route()['panel'];
+        }
     @endphp
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('property.dashboard', ['panel' => $panel]) }}">
+            @if(Helpers::isSuperAdmin())
+            <a href="{{ route('admin.dashboard') }}">
                 <img alt="image" src="{{ asset('public/panel/assets/img/logo.png') }}" class="header-logo" style="height:150px !important;margin-top: -20px !important;"/>
             </a>
+            @else
+                <a href="{{ route('property.dashboard', ['panel' => $panel]) }}">
+                    <img alt="image" src="{{ asset('public/panel/assets/img/logo.png') }}" class="header-logo" style="height:150px !important;margin-top: -20px !important;"/>
+                </a>
+            @endif
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
@@ -22,11 +30,11 @@
                         <li><a class="nav-link " href="{{ route('admin.society_admin.index') }}">Society Admin</a></li>
                     </ul>
                 </li>
-                <li class="dropdown @if (request()->routeIs('admin.property.*')) active @endif">
+                <li class="dropdown @if (request()->routeIs('admin.property_admin.*')) active @endif">
                     <a href="#" class="menu-toggle nav-link has-dropdown">
                         <i class="fa-sharp fa-solid fa-house-chimney"></i><span>Property Data</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link " href="{{ route('admin.property.index') }}">Property Admin</a></li>
+                        <li><a class="nav-link " href="{{ route('admin.property_admin.index') }}">Property Admin</a></li>
                     </ul>
                 </li>
             @elseif(Helpers::isPropertyAdmin())
@@ -94,7 +102,7 @@
                         <span>Expense</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property.office_expense_category.index') }}">Expense Category</a></li>
-                        <li><a class="nav-link" href="{{ route('property.office_expense.index') }}">Office Expense</a></li>
+                        <li><a class="nav-link" href="{{ route('property.office_expense.index',$panel) }}">Office Expense</a></li>
                         <li><a class="nav-link" href="{{ route('property.expense.index') }}">Construction Expense</a></li>
                     </ul>
                 </li>
@@ -265,6 +273,7 @@
                         <span>Email</span></a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property_manager.email.compose',Helpers::user_login_route()['panel']) }}">Compose</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.email.send_email',Helpers::user_login_route()['panel']) }}">Sent</a></li>
                     </ul>
                 </li>
                 <li class="dropdown @if (request()->routeIs('property.income.index', 'property.income.edit', 'property.income.create','property.income.report')) active @endif">
@@ -274,7 +283,16 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property.income.index',Helpers::user_login_route()['panel']) }}">Income</a></li>
                         <li><a class="nav-link" href="{{ route('property.income.create',Helpers::user_login_route()['panel']) }}">Add New</a></li>
+                        <li><a class="nav-link" href="{{ route('property.income_category.index') }}">Add Category</a></li>
                         <li><a class="nav-link" href="{{ route('property.income.report',Helpers::user_login_route()['panel']) }}">Report</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown @if (request()->routeIs('property.whatsappwebhook.index')) active @endif">
+                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                        <i class="fa-sharp fa-solid fa-sack-dollar"></i>
+                        <span>Whatsapp</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="nav-link" href="{{ route('property.whatsappwebhook.index',Helpers::user_login_route()['panel']) }}">Whatsapp</a></li>
                     </ul>
                 </li>
             @endif

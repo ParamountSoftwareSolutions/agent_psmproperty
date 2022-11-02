@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBuildingIcomeCategoriesTable extends Migration
+class CreateBuildingIncomeCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateBuildingIcomeCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('building_icome_categories', function (Blueprint $table) {
+        Schema::create('building_income_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();

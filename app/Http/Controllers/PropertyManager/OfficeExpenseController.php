@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PropertyManager;
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Building;
+use App\Models\BuildingExpenseCategory;
 use App\Models\BuildingExpenseLabor;
 use App\Models\BuildingOfficeExpense;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class OfficeExpenseController extends Controller
     {
         $building = Helpers::building_detail();
         $office_expenses = BuildingOfficeExpense::with('building')->whereIn('building_id', $building->pluck('id')->toArray())->get();
-        return view('property_manager.office_expense.index', compact('office_expenses'));
+        return view('property.office_expense.index', compact('office_expenses'));
     }
 
     /**
@@ -31,8 +32,9 @@ class OfficeExpenseController extends Controller
      */
     public function create()
     {
+        $categories = BuildingExpenseCategory::all();
         $building = Helpers::building_detail();
-        return view('property_manager.office_expense.create', compact('building'));
+        return view('property.office_expense.create', compact('building','categories'));
     }
 
     /**
@@ -54,7 +56,7 @@ class OfficeExpenseController extends Controller
         $expense->date = $request->date;
         $expense->save();
         if($expense){
-            return redirect()->route('property_manager.office_expense.index')->with(['alert' => 'success', 'message' =>  'Expense Create Successfully']);
+            return redirect()->route('property.office_expense.index',Helpers::user_login_route()['panel'])->with(['alert' => 'success', 'message' =>  'Expense Create Successfully']);
         } else{
             return redirect()->back()->with(['alert' => 'error', 'message' =>  'Expense Create Error']);
         }
@@ -77,11 +79,12 @@ class OfficeExpenseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit($panel, $id)
     {
+        $categories = BuildingExpenseCategory::all();
         $office_expense = BuildingOfficeExpense::findOrFail($id);
         $building = Helpers::building_detail();
-        return view('property_manager.office_expense.edit', compact('office_expense', 'building'));
+        return view('property.office_expense.edit', compact('office_expense', 'building','categories'));
     }
 
     /**
@@ -91,7 +94,7 @@ class OfficeExpenseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$panel,  $id)
     {
         $request->validate([
             'category' => 'required',
@@ -103,7 +106,7 @@ class OfficeExpenseController extends Controller
         $office_expense->date = $request->date;
         $office_expense->save();
         if($office_expense){
-            return redirect()->route('property_manager.office_expense.index')->with(['alert' => 'success', 'message' => 'Office Expense Update Successfully']);
+            return redirect()->route('property.office_expense.index',Helpers::user_login_route()['panel'])->with(['alert' => 'success', 'message' => 'Office Expense Update Successfully']);
         } else{
             return redirect()->back()->with(['alert' => 'error', 'message' => 'Office Expense Update Error']);
         }
@@ -115,14 +118,14 @@ class OfficeExpenseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($panel, $id)
     {
         $office_expense = BuildingOfficeExpense::findOrFail($id);
         $office_expense->delete();
         if($office_expense){
-            return redirect()->back()->with(['alert' => 'success', 'message' =>  'Office Expense Delete Successfully']);
-        } else{
-            return redirect()->back()->with(['alert' => 'error', 'message' =>  'Office Expense Delete Error']);
+            return response()->json(['status' => 'success', 'message' => 'Office Expense Delete Successfully']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Office Expense Delete Error']);
         }
     }
 }

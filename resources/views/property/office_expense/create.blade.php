@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <form method="post" action="{{ route('property.office_expense.store') }}">
+                            <form method="post" action="{{ route('property.office_expense.store',Helpers::user_login_route()['panel']) }}">
                                 @csrf
                                 <div class="card-header">
                                     <h4>Basic Information</h4>
@@ -30,17 +30,11 @@
                                         <div class="form-group col-md-6">
                                             <div class="form-group">
                                                 <label>Category</label>
-                                                <select name="category" class="form-control" id="">
+                                                <select name="category" class="form-control">
                                                     <option value="" selected>Select Category</option>
-                                                    <option value="furniture">furniture</option>
-                                                    <option value="equipments">equipments</option>
-                                                    <option value="stationary">stationary</option>
-                                                    <option value="accessories">accessories</option>
-                                                    <option value="general">general</option>
-                                                    <option value="internet_bill">internet_bill</option>
-                                                    <option value="landline">landline</option>
-                                                    <option value="utility_bill">utility_bill</option>
-                                                    <option value="electricity_bill">electricity_bill</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('category')
                                                 <div class="text-danger mt-2">{{ $message }}</div>

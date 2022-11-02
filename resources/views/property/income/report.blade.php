@@ -1,4 +1,4 @@
-@extends('property_manager.layout.app')
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title',  'Expense')
 @section('content')
     <div class="main-content">
@@ -61,20 +61,8 @@
                                             </thead>
                                             <tbody>
                                             @foreach($incomes as $key => $val)
-                                                @php
-                                                    switch($key){
-                                                        case 'rent' : $cat = 'Rent';break;
-                                                        case 'personal_property_rent' : $cat = ' Personal Property Rent';break;
-                                                        case 'group_a' : $cat = 'Group A';break;
-                                                        case 'group_b' : $cat = 'Group B';break;
-                                                        case 'file_income' : $cat = 'File Income';break;
-                                                        case 'property_income' : $cat = 'Property Income';break;
-                                                        case 'others' : $cat = 'Others';break;
-                                                        default:$cat = '';
-                                                    }
-                                                @endphp
                                                 <tr>
-                                                    <th>{{$cat}}</th>
+                                                    <th>{{$key}}</th>
                                                     @foreach($val as $income)
                                                         <td>{{$income}}</td>
                                                     @endforeach

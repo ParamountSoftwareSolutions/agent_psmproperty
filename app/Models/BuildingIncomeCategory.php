@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BuildingIcomeCategory extends Model
+class BuildingIncomeCategory extends Model
 {
     use HasFactory;
 }

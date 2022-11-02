@@ -17,17 +17,13 @@
                                         <div class="form-group col-md-6">
                                             <div class="form-group">
                                                 <label>Category</label>
-                                                <select name="category" class="form-control" id="">
-                                                    <option value="" selected>Select Category</option>
-                                                    <option value="rent">Rent</option>
-                                                    <option value="personal_property_rent">Personal Property Rent</option>
-                                                    <option value="group_a">Group A</option>
-                                                    <option value="group_b">Group B</option>
-                                                    <option value="file_income">File Income</option>
-                                                    <option value="property_income">Property Income</option>
-                                                    <option value="others">Others</option>
+                                                <select name="category_id" class="form-control">
+                                                    <option value="">Select Category</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    @endforeach
                                                 </select>
-                                                @error('category')
+                                                @error('category_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
                                                 @enderror
                                             </div>

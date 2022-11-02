@@ -15,7 +15,7 @@ class CreateIncomesTable extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->enum('category', ['rent','personal_property_rent','group_a','group_b','file_income','property_income','others'])->nullable();
+            $table->foreignId('category_id')->unsigned()->nullable()->constrained('building_income_categories')->nullOnDelete();
             $table->integer('cost')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
