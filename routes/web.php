@@ -84,6 +84,10 @@ Route::group(['middleware' => ['auth:web', 'isAdmin'], 'namespace' => 'Admin', '
     Route::get('property_admin/deactivate/{property_admin}', 'PropertyAdminController@deactivate')->name('property_admin.deactivate');
     Route::resource('property_admin', 'PropertyAdminController');
 
+    /* Admin Profile */
+    Route::get('profile', 'ProfileController@index')->name('profile.index');
+    Route::post('profile/update', 'ProfileController@update')->name('profile.update');
+    Route::post('profile/password/update', 'ProfileController@updatePassword')->name('profile.password.update');
     /*Route::group(['prefix' => 'status'], function () {
         Route::get('user', 'StatusController@user');
         Route::get('society', 'StatusController@society');
@@ -450,7 +454,7 @@ Route::group(['as' => 'property.'], function () {
         //================//
         // Investor Route //
         //================//
-        Route::get('investor/report', 'InvestorController@investorSummary')->name('investor.report');
+        Route::post('add_investment/{id}', 'InvestorController@add_investment')->name('investor.add_investment');
         Route::resource('investor', 'InvestorController');
 
         //===============//

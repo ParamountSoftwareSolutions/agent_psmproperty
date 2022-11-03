@@ -192,8 +192,8 @@
                         <i class="fa-sharp fa-solid fa-sack-dollar"></i>
                         <span>Expense</span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="nav-link" href="{{ route('property_manager.office_expense.index') }}">Office Expense</a></li>
-                        <li><a class="nav-link" href="{{ route('property_manager.expense.index') }}">Construction Expense</a></li>
+                        <li><a class="nav-link" href="{{ route('property.office_expense.index',$panel) }}">Office Expense</a></li>
+                        <li><a class="nav-link" href="{{ route('property_manager.expense.index',$panel) }}">Construction Expense</a></li>
                     </ul>
                 </li>
                 <li class="dropdown @if (request()->routeIs('property_manager.employee.index', 'property_manager.employee.create', 'property_manager.employee.edit',
@@ -321,7 +321,6 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property.my_targets', Helpers::user_login_route()) }}">My Targets </a></li>
                         <li><a class="nav-link" href="{{ route('property.staff_targets', Helpers::user_login_route()) }}">Staff Targets </a></li>
-                        <li><a class="nav-link" href="{{ route('property.task_reports', Helpers::user_login_route()) }}">Reports </a></li>
                     </ul>
                 </li>
                 <li class="dropdown @if (request()->routeIs('property_manager.email.compose')) active @endif">
@@ -340,8 +339,9 @@
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href="{{ route('property.income.index',Helpers::user_login_route()['panel']) }}">Income</a></li>
                         <li><a class="nav-link" href="{{ route('property.income.create',Helpers::user_login_route()['panel']) }}">Add New</a></li>
-                        <li><a class="nav-link" href="{{ route('property.income_category.index') }}">Add Category</a></li>
-                        <li><a class="nav-link" href="{{ route('property.income.report',Helpers::user_login_route()['panel']) }}">Report</a></li>
+                        @if(Helpers::isPropertyAdmin())
+                            <li><a class="nav-link" href="{{ route('property.income_category.index') }}">Add Category</a></li>
+                        @endif
                     </ul>
                 </li>
                 <li class="dropdown @if (request()->routeIs('property.whatsappwebhook.index')) active @endif">

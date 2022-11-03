@@ -17,7 +17,11 @@ class CreateInvestorHistoriesTable extends Migration
             $table->id();
             $table->foreignId('investor_id')->unsigned()->constrained('investors')->onDelete(null);
             $table->integer('invested_amount');
-            $table->string('invested_in');
+            $table->foreignId('invested_in')->unsigned()->constrained('buildings')->onDelete(null);
+            $table->foreignId('category_id')->unsigned()->nullable()->constrained('building_categories')->nullOnDelete()->nullOnDelete();
+            $table->foreignId('size_id')->unsigned()->nullable()->constrained('building_sizes')->nullOnDelete();
+            $table->integer('quantity')->nullable();
+            $table->integer('profit_percentage')->nullable();
             $table->timestamps();
         });
     }

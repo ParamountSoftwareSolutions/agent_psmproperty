@@ -17,4 +17,8 @@ class Investor extends Model
     {
         return $this->belongsTo(User::class, 'invest_to');
     }
+    public function history()
+    {
+        return $this->hasMany(InvestorHistory::class, 'investor_id');
+    }
 }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class InvestorHistory extends Model
 {
     use HasFactory;
+
+    public function building()
+    {
+        return $this->belongsTo(Building::class, 'invested_in');
+    }
 }

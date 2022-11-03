@@ -137,7 +137,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
                 <div class="dropdown-title">Hello Sarah Smith</div>
-                <a href="profile.html" class="dropdown-item has-icon"> <i class="far
+                <a href="{{ route('admin.profile.index') }}" class="dropdown-item has-icon"> <i class="far
 										fa-user"></i> Profile
                 </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
                     Activities

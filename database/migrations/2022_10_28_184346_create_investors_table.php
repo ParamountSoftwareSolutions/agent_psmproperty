@@ -21,8 +21,10 @@ class CreateInvestorsTable extends Migration
             $table->integer('profit')->nullable();
             $table->integer('loss')->nullable();
             $table->integer('investor_profit_amount')->nullable();
+            $table->integer('profit_percentage')->nullable();
             $table->integer('remaining_amount')->nullable();
             $table->integer('return_amount')->nullable();
+            $table->date('return_date')->nullable();
             $table->timestamps();
         });
     }

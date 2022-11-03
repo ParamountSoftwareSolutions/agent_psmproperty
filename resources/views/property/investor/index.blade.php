@@ -14,23 +14,23 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="table-1">
+                                    <table class="table table-striped text-center" id="table-1">
                                         <thead>
                                         <tr>
-                                            <th class="text-center">#</th>
+                                            <th>#</th>
                                             <th>Name</th>
-                                            <th>Amount</th>
-                                            <th>Remaining</th>
+                                            <th>Total Amount</th>
+                                            <th>Remaining Amount</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-{{--                                        @forelse($investor as $data)--}}
-                                            {{-- <tr>
+                                        @forelse($investor as $data)
+                                            <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $data->user->username }}</td>
-                                                <td>{{ $data->total_amount }}</td>
-                                                <td>{{ $data->remaining_amount }}</td>
+                                                <td>{{ number_format($data->total_amount) }}</td>
+                                                <td>{{ number_format($data->remaining_amount) }}</td>
                                                 <td>
                                                     <a href="{{ route('property.investor.edit',['panel'=>Helpers::user_login_route()['panel'],'investor'=>$data->id]) }}"
                                                        class="btn btn-primary px-1 py-0" title="Edit">
@@ -44,31 +44,12 @@
                                                         <i class="fa fa-trash"></i>
                                                     </button>
                                                 </td>
-                                            </tr> --}}
-                                            <tr>
-                                                <td>1</td>
-                                                <td>User</td>
-                                                <td>100</td>
-                                                <td>200</td>
-                                                <td>
-                                                    <a href="{{ route('property.investor.edit',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}"
-                                                       class="btn btn-primary px-1 py-0" title="Edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a href="{{ route('property.investor.show',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}"
-                                                       class="btn btn-primary px-1 py-0" title="Edit">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                    <button type="button" data-url="{{ route('property.investor.destroy',['panel'=>Helpers::user_login_route()['panel'],'investor'=>1]) }}" data-token="{{ csrf_token() }}" title="Delete" class="btn btn-danger px-1 py-0 deleteBtn">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </td>
                                             </tr>
-{{--                                        @empty--}}
-{{--                                            <tr>--}}
-{{--                                                <td colspan="7"> No More Data In this Table.</td>--}}
-{{--                                            </tr>--}}
-{{--                                        @endforelse--}}
+                                        @empty
+                                            <tr>
+                                                <td colspan="7"> No More Data In this Table.</td>
+                                            </tr>
+                                        @endforelse
                                         </tbody>
                                     </table>
                                 </div>
