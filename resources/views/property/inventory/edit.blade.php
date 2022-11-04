@@ -34,7 +34,9 @@
                                             <div class="form-group">
                                                 <label>Block List </label>
                                                 <select class="form-control" name="block_id">
-                                                    <option value="{{ old('block_id', $inventory->block->name) }}" selected>{{ $inventory->block->name }}</option>
+                                                    <option value="{{ old('block_id', ($inventory->block !== null)? $inventory->block->name : '') }}" selected>{{
+                                                   ($inventory->block !== null)? $inventory->block->name : ''
+                                                    }}</option>
                                                 </select>
                                                 @error('block_id')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -57,9 +59,14 @@
                                                 <select class="form-control" name="category_id" required>
                                                     <option label="" disabled>Select Category</option>
                                                     @foreach($category as $data)
-                                                        <option value="{{ $data->id }}" @if($inventory->category_id == $data->id) selected @endif>{{ ucfirst
+                                                        @if($inventory->category_id !== null)
+                                                            <option value="{{ $data->id }}" @if($inventory->category_id == $data->id) selected @endif>{{ ucfirst
                                                         ($data->category)
                                                         }}</option>
+                                                        @else
+                                                            <option value="" selected >Select Category</option>
+                                                            <option value="{{ $data->id }}">{{ ucfirst($data->category) }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                                 @error('category')
@@ -74,6 +81,7 @@
                                                     <option label="" disabled>Select Nature</option>
                                                     <option value="commercial" @if($inventory->nature == 'commercial') selected @endif>Commercial</option>
                                                     <option value="semi_commercial" @if($inventory->nature == 'semi_commercial') selected @endif>Semi Commercial</option>
+                                                    <option value="residential" @if($inventory->nature == 'residential') selected @endif>Residential</option>
                                                 </select>
                                                 @error('nature')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -102,71 +110,55 @@
                                             <select class="form-control" name="size_id">
                                                 <option label="" disabled>Select Size</option>
                                                 @foreach($size as $data)
-                                                    <option value="{{ $data->id }}" @if($inventory->size_id == $data->id) selected  @endif>{{ $data->size }}</option>
+                                                    <option value="{{ $data->id }}" @if($inventory->size_id == $data->id) selected @endif>{{ $data->size }}</option>
                                                 @endforeach
                                             </select>
                                             @error('size')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
-
+                                        <div class="form-group col-md-4">
+                                            <label>Purchased Price</label>
+                                            <input type="text" class="form-control" name="purchased_price" value="{{ old('purchased_price', $inventory->purchased_price)
+                                            }}">
+                                            @error('purchased_price')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Sold Price</label>
+                                            <input type="text" class="form-control" name="sold_price" value="{{ old('sold_price', $inventory->sold_price) }}">
+                                            @error('sold_price')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Status</label>
+                                            <select class="form-control" name="status">
+                                                <option label="" disabled>Status</option>
+                                                <option value="sold" @if($inventory->status == 'sold') selected @endif>sold</option>
+                                                <option value="available" @if($inventory->status == 'available') selected @endif>Available</option>
+                                                <option value="hold" @if($inventory->status == 'hold') selected @endif>Hold</option>
+                                            </select>
+                                            @error('status')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Down Payment </label>
+                                            <input type="text" class="form-control" name="down_payment" value="{{ old('down_payment', $inventory->down_payment) }}">
+                                            @error('down_payment')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-footer text-right">
                                     <button class="btn btn-primary" type="submit">Submit</button>
                                 </div>
                             </div>
-
-                            {{--<!-- Multi Image Upload -->
-                            <div class="card card-primary">
-                                <div class="card-header ui-sortable-handle">
-                                    <h4>Project Logo <small style="color: red">* (ratio 1:1)</small></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div>
-                                            <div class="row" id="coba-logo"></div>
-                                        </div>
-                                    </div>
-                                    @error('logo_images')
-                                    <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="card card-primary">
-                                <div class="card-header ui-sortable-handle">
-                                    <h4>Main Images <small style="color: red">* (ratio 1:1)</small></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div>
-                                            <div class="row" id="coba"></div>
-                                        </div>
-                                    </div>
-                                    @error('main_images')
-                                    <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="card card-primary">
-                                <div class="card-header ui-sortable-handle">
-                                    <h4>Banner Plan Images <small style="color: red">* (ratio 1:1)</small></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div>
-                                            <div class="row" id="coba-banner"></div>
-                                        </div>
-                                    </div>
-                                    @error('banner_images')
-                                    <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="card-footer text-right">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </div>
-                            </div>--}}
                         </form>
                     </div>
                 </div>

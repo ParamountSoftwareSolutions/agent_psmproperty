@@ -40,35 +40,35 @@
                                         <div class="form-group col-md-4 simple">
                                             <label class="d-flex align-items-center">
                                                 <label>Plot/Unit No <sup style="color: red">*</sup></label>
-                                                <a href="#" style="margin-left: auto; display: block;" class="bluck-btn" data-value="bluck">Bluck Create</a>
+                                                <a href="#" style="margin-left: auto; display: block;" class="bulk-btn" data-value="bulk">Bluck Create</a>
                                             </label>
                                             <input type="text" class="form-control simple-input" name="simple_unit_no" value="{{ old('unit_no') }}">
                                             @error('unit_no')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="form-group col-md-4 bluck">
+                                        <div class="form-group col-md-4 bulk">
                                             <label class="d-flex align-items-center">
                                                 <label>Plot/Unit No <sup style="color: red">*</sup></label>
-                                                <a href="#" style="margin-left: auto; display: block;" class="bluck-btn" data-value="simple">Simple Create</a>
+                                                <a href="#" style="margin-left: auto; display: block;" class="bulk-btn" data-value="simple">Simple Create</a>
                                             </label>
                                             <div class="input-group mb-2">
-                                                <input type="text" class="form-control bluck-input" name="bluck_unit_no" class="input-group-text" value="{{ old
+                                                <input type="text" class="form-control bulk_unit_no" name="bulk_unit_no" class="input-group-text" value="{{ old
                                                 ('unit_no') }}" placeholder="unit name">
                                                 <div class="input-group-prepend preselection-prepend">
                                                     <div class="input-group-text">-</div>
                                                 </div>
-                                                <input type="number" class="form-control bluck-input" name="start_unit_no" value="{{ old('start_unit_no') }}"
+                                                <input type="number" class="form-control start_unit_no" name="start_unit_no" value="{{ old('start_unit_no') }}"
                                                        placeholder="start unit">
                                                 <div class="input-group-prepend preselection-prepend">
                                                     <div class="input-group-text">-</div>
                                                 </div>
-                                                <input type="number" class="form-control bluck-input" name="end_unit_no" value="{{ old('end_unit_no') }}"
+                                                <input type="number" class="form-control end_unit_no" name="end_unit_no" value="{{ old('end_unit_no') }}"
                                                        placeholder="end
                                                  unit">
                                             </div>
 
-                                            @error('unit_no')
+                                            @error('simple_unit_no')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -95,6 +95,7 @@
                                                     <option label="" disabled selected>Select Nature</option>
                                                     <option value="commercial">Commercial</option>
                                                     <option value="semi_commercial">Semi Commercial</option>
+                                                    <option value="residential">Residential</option>
                                                 </select>
                                                 @error('nature')
                                                 <div class="text-danger mt-2">{{ $message }}</div>
@@ -107,7 +108,7 @@
                                                 <select class="form-control" name="type">
                                                     <option label="" disabled selected>Select Type</option>
                                                     <option value="corner">Corner</option>
-                                                    <option value="front_facing">front_facing</option>
+                                                    <option value="front_facing">Front Facing</option>
                                                     <option value="main_boulevard">Main Boulevard</option>
                                                     <option value="park_facing">Park Facing</option>
                                                 </select>
@@ -126,7 +127,42 @@
                                                     <option value="{{ $data->id }}">{{ $data->size }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('size')
+                                            @error('size_id')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Purchased Price</label>
+                                            <input type="text" class="form-control" name="purchased_price" value="{{ old('purchased_price') }}">
+                                            @error('purchased_price')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Sold Price</label>
+                                            <input type="text" class="form-control" name="sold_price" value="{{ old('sold_price') }}">
+                                            @error('sold_price')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Down Payment </label>
+                                            <input type="text" class="form-control" name="down_payment" value="{{ old('down_payment') }}">
+                                            @error('down_payment')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Staus</label>
+                                            <select class="form-control" name="status">
+                                                <option label="" disabled selected>Status</option>
+                                                <option value="sold">sold</option>
+                                                <option value="available">Available</option>
+                                                <option value="hold">Hold</option>
+                                            </select>
+                                            @error('status')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -196,7 +232,9 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            $('.bluck').hide();
+            $('.bulk').hide();
+            $('.simple-input').attr('required', true);
+
             $('select[name="building_id"]').on('change', function () {
                 var building_id = $(this).val();
                 if (building_id) {
@@ -223,24 +261,46 @@
                     alert('danger');
                 }
             });
-            $('.bluck-btn').on('click', function () {
+            $('.bulk-btn').on('click', function () {
                 var val = $(this).data('value');
                 console.log(val);
-                if(val == 'bluck'){
-                    /*$('.bluck-input').prop('required',true);
-                    $('.simple-input').prop('required',false);*/
+                if (val == 'bulk') {
+                    $('.bulk_unit_no').attr('required', true);
+                    $('.start_unit_no').attr('required', true);
+                    $('.end_unit_no').attr('required', true);
+
+                    $('.simple-input').removeAttr('required', false);
                     $('.simple-input').css('display', 'none');
-                    $('.bluck-input').css('display', 'block');
+                    $('.simple-input').val('');
+
+                    $('.bulk_unit_no').css('display', 'block');
+                    $('.start_unit_no').css('display', 'block');
+                    $('.end_unit_no').css('display', 'block');
+
+                    $('.bulk').css('display', 'block');
+
                     $('.simple').hide();
-                    $('.bluck').show();
+                    $('.bulk').show();
 
                 } else {
-                   /* $('.simple-input').prop('required',true);
-                    $('.bluck-input').css('required',false);*/
+                    $('.simple-input').attr('required', true);
+
+                    $('.bulk_unit_no').removeAttr('required', false);
+                    $('.start_unit_no').removeAttr('required', false);
+                    $('.end_unit_no').removeAttr('required', false);
+
                     $('.simple-input').css('display', 'block');
-                    $('.bluck-input').css('display', 'none');
+
+                    $('.bulk_unit_no').css('display', 'none');
+                    $('.start_unit_no').css('display', 'none');
+                    $('.end_unit_no').css('display', 'none');
+
+                    $('.bulk_unit_no').val('');
+                    $('.start_unit_no').val('');
+                    $('.end_unit_no').val('');
+
                     $('.simple').show();
-                    $('.bluck').hide();
+                    $('.bulk').hide();
                 }
 
 

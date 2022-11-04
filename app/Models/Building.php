@@ -26,5 +26,15 @@ class Building extends Model
         return $this->hasOne(BuildingDetail::class, 'building_id')->with('building_detail_image');
     }
 
+    public function block()
+    {
+        return $this->hasMany(BuildingBlock::class, 'building_id');
+    }
+
+    public function inventory()
+    {
+        return $this->hasMany(BuildingInventory::class, 'building_id');
+    }
+
 
 }

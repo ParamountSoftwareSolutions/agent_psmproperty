@@ -1,4 +1,4 @@
-@extends('property.layout.app')
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title', 'Add New Project')
 @section('content')
     <div class="main-content">
@@ -6,7 +6,7 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
-                        <form method="post" action="{{ route('property.building.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('property.building.store',Helpers::user_login_route()['panel']) }}" enctype="multipart/form-data">
                             <div class="card">
                                 @csrf
                                 <div class="card-header">
@@ -45,56 +45,6 @@
                                     <button class="btn btn-primary" type="submit">Submit</button>
                                 </div>
                             </div>
-
-                            {{--<!-- Multi Image Upload -->
-                            <div class="card card-primary">
-                                <div class="card-header ui-sortable-handle">
-                                    <h4>Project Logo <small style="color: red">* (ratio 1:1)</small></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div>
-                                            <div class="row" id="coba-logo"></div>
-                                        </div>
-                                    </div>
-                                    @error('logo_images')
-                                    <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="card card-primary">
-                                <div class="card-header ui-sortable-handle">
-                                    <h4>Main Images <small style="color: red">* (ratio 1:1)</small></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div>
-                                            <div class="row" id="coba"></div>
-                                        </div>
-                                    </div>
-                                    @error('main_images')
-                                    <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="card card-primary">
-                                <div class="card-header ui-sortable-handle">
-                                    <h4>Banner Plan Images <small style="color: red">* (ratio 1:1)</small></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div>
-                                            <div class="row" id="coba-banner"></div>
-                                        </div>
-                                    </div>
-                                    @error('banner_images')
-                                    <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="card-footer text-right">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </div>
-                            </div>--}}
                         </form>
                     </div>
                 </div>

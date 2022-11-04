@@ -21,6 +21,7 @@ class CreateEmailHistoriesTable extends Migration
             $table->text('body');
             $table->text('images');
             $table->dateTime('date');
+            $table->enum('status',['sent','draft']);
             $table->timestamps();
         });
     }

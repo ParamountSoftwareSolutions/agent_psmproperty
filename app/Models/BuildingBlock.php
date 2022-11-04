@@ -15,4 +15,9 @@ class BuildingBlock extends Model
     {
         return $this->belongsTo(Building::class, 'building_id');
     }
+
+    public function inventory()
+    {
+        return $this->hasMany(BuildingInventory::class, 'block_id');
+    }
 }

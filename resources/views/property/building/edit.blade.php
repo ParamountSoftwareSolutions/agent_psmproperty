@@ -1,4 +1,4 @@
-@extends('property.layout.app')
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title', 'Edit Building')
 @section('style')
     <style>
@@ -13,7 +13,7 @@
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
-                        <form method="post" action="{{ route('property.building.update', $building->id) }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('property.building.update', ['panel'=>Helpers::user_login_route()['panel'],'building'=>$building->id]) }}" enctype="multipart/form-data">
                             <div class="card">
                                 @csrf
                                 @method('put')

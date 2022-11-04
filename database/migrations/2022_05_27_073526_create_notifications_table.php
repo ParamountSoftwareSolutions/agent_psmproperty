@@ -17,6 +17,7 @@ class CreateNotificationsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->unsigned()->nullable()->constrained('users')->onDelete(null);
             $table->string('user_type')->nullable();
+            $table->foreignId('receiver_id')->unsigned()->nullable()->constrained('users')->onDelete(null);
             $table->string('type');
             $table->string('title')->nullable();
             $table->string('description')->nullable();

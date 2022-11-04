@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="row form_area">
                                     <div class="col-lg-12">
-                                        <form class="composeForm" action="{{ route('property_manager.email.compose.send',['panel' => Helpers::user_login_route()['panel']]) }}" method="post" enctype="multipart/form-data">
+                                        <form class="composeForm" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="form-group">
                                                 <div class="form-line">
@@ -63,19 +63,32 @@
                                             @error('body')
                                             <div class="text-danger mt-2">{{ $message }}</div>
                                             @enderror
-                                            <div class="compose-editor m-t-20">
-                                                <div id="summernote"></div>
-                                                <label>Select Images</label><br>
-                                                <input name="images[]" type="file" class="default" multiple>
+                                            <div class="card">
+                                                <div class="card-header ui-sortable-handle">
+                                                    <h4>Select Images</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <div>
+                                                            <div class="row" id="coba"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            @error('images')
-                                            <div class="text-danger mt-2">{{ $message }}</div>
-                                            @enderror
+{{--                                            <div class="compose-editor m-t-20">--}}
+{{--                                                <div id="summernote"></div>--}}
+{{--                                                <label>Select Images</label><br>--}}
+{{--                                                <input name="images[]" type="file" class="default" multiple>--}}
+{{--                                            </div>--}}
+{{--                                            @error('images')--}}
+{{--                                            <div class="text-danger mt-2">{{ $message }}</div>--}}
+{{--                                            @enderror--}}
                                         </form>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="m-l-25 m-b-20">
-                                            <button type="button" id="send_email" class="btn btn-info btn-border-radius waves-effect">Send</button>
+                                            <button type="button" data-url="{{ route('property_manager.email.compose.save',['panel' => Helpers::user_login_route()['panel']]) }}" id="save_email" class="btn btn-success btn-border-radius waves-effect">Save</button>
+                                            <button type="button" data-url="{{ route('property_manager.email.compose.send',['panel' => Helpers::user_login_route()['panel']]) }}" id="send_email" class="btn btn-info btn-border-radius waves-effect">Send</button>
                                             <button type="button" class="btn btn-danger btn-border-radius waves-effect">Discard</button>
                                         </div>
                                     </div>
@@ -89,6 +102,44 @@
     </div>
 @endsection
 @section('script')
+    <script type="text/javascript" src="{{ asset('public/panel/assets/js/spartan-multi-image-picker.js') }}"></script>
+    <script>
+        $(function () {
+            $("#coba").spartanMultiImagePicker({
+                fieldName: 'images[]',
+                maxCount: 4,
+                rowHeight: '215px',
+                groupClassName: 'col-3',
+                maxFileSize: '2048',
+                placeholderImage: {
+                    image: '{{asset("public/panel/assets/img/img2.jpg")}}',
+                    width: '100%'
+                },
+                dropFileLabel: "Drop Here",
+                onAddRow: function (index, file) {
+
+                },
+                onRenderedPreview: function (index) {
+
+                },
+                onRemoveRow: function (index) {
+
+                },
+                onExtensionErr: function (index, file) {
+                    toastr.error('Please only input png or jpg type file', {
+                        CloseButton: true,
+                        ProgressBar: true
+                    });
+                },
+                onSizeErr: function (index, file) {
+                    toastr.error('File size too big', {
+                        CloseButton: true,
+                        ProgressBar: true
+                    });
+                }
+            });
+        });
+    </script>
     <script>
         ClassicEditor
             .create(document.querySelector('#body'))
@@ -145,6 +196,13 @@
                 $('.form_area').show();
             });
             $('#send_email').click(function (e) {
+                let url = $(this).data('url');
+                $('.composeForm').attr('action',url);
+                $('.composeForm').submit();
+            });
+            $('#save_email').click(function (e) {
+                let url = $(this).data('url');
+                $('.composeForm').attr('action',url);
                 $('.composeForm').submit();
             });
         })

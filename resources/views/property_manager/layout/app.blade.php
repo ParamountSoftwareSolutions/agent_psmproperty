@@ -16,14 +16,12 @@
     <link rel="stylesheet" href="{{ asset('public/panel/assets/bundles/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/components.css') }}">
+
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/all.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
-    <!-- Custom style CSS -->
+
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/custom.css') }}">
     <link rel='shortcut icon' type='image/x-icon' href='{{ asset('public/panel/assets/img/favicon.ico') }}'/>
     <link rel="stylesheet" href="{{  asset('public/panel/assets/css/alertify.min.css') }}" />
-    <!-- include a theme -->
-    <link rel="stylesheet" href="{{  asset('public/panel/assets/css/default.min.css') }}" />
     @yield('style')
     <style>
         .video-preview, .progress {
@@ -214,6 +212,7 @@
 </script>
 <script>
     $(document).ready(function () {
+        playAudio()
         $(document).on('click', '#notification-mark-read',function () {
             $.ajax({
                 url: "{{ url('property-manager/notification/mark/read') }}",
@@ -250,35 +249,6 @@
                 },
             });
         });
-     //   setInterval(function () {
-     //       /*$("#signInButton").trigger('click');*/
-     //       $.ajax({
-     //           url: "{{ url('property-manager/notifications/latest') }}",
-     //           type: "GET",
-     //           dataType: "json",
-     //           success: function (data) {
-     //               console.log(data)
-     //               if (data.length > 0) {
-     //                   $('#notification-list').empty();
-     //                   $.each(data, function (key, value) {
-     //                       console.log(key, value.id)
-     //                       showData(data);
-     //                       /*playAudio();*/
-     //                   });
-     //               } else {
-     //                   pauseAudio();
-     //               }
-     //           },
-     //       });
-		//	$.ajax({
-     //           url: "{{ route('property_manager.meeting_alert',Helpers::user_login_route()['panel']) }}",
-     //           type: "GET",
-     //           dataType: "json",
-     //           success: function (data) {
-     //               meetingAlert(data.time,data.id);
-     //           },
-     //       });
-     //   }, 5000);
         function showData(data){
             $.each(data, function (key, value) {
                 /*console.log(key, value.id)*/
@@ -291,32 +261,6 @@
             });
         }
     });
-	function meetingAlert(time,id){
-        alertify.confirm('Reminder', 'You Have A Meeting at '+time+'. ', function(){
-            $.ajax({
-                url: "{{ route('property_manager.sale.lead.meetingread',['panel' => (new App\Helpers\Helpers)->user_login_route()['panel']]) }}?id="+id,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    return;
-                },
-            });
-        }, function(){
-            $.ajax({
-                url: "{{ route('property_manager.sale.lead.isread',['panel' => (new App\Helpers\Helpers)->user_login_route()['panel']]) }}?id="+id,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data.status);
-                    if(!data.status){
-                        meetingAlert(data.time,data.id);
-                    }
-                },
-            });
-            //console.log('modal-hide');
-        });
-    }
 </script>
 	@include('property.includes.defaultJs')
 </body>

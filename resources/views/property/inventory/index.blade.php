@@ -19,8 +19,6 @@
                                                     <a class="dropdown-item has-icon status" data-value="available">Available</a>
                                                     <a class="dropdown-item has-icon status" data-value="sold">Sold</a>
                                                     <a class="dropdown-item has-icon status" data-value="hold">Hold</a>
-                                                    <a class="dropdown-item has-icon status" data-value="token">Token</a>
-                                                    <a class="dropdown-item has-icon status" data-value="cancelled">Cancelled</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -55,6 +53,7 @@
                                             <th>Size</th>
                                             <th>Category</th>
                                             <th>Type</th>
+                                            <th>Date</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -63,21 +62,19 @@
                                         @forelse($inventory as $data)
                                             @php
                                                 switch($data->status){
-                                                    case 'token' : $color = 'primary';break;
-                                                    case 'available' : $color = 'success';break;
-                                                    case 'hold' : $color = 'danger';break;
-                                                    case 'sold' : $color = 'warning';break;
-                                                    case 'canceled' : $color = 'secondary';break;
-                                                    default : $color = 'light';
-                                                }
-                                                switch($data->type){
-                                                    case 'office' : $type = 'primary';break;
-                                                    case 'apartment' : $type = 'success';break;
-                                                    case 'penthouse' : $type = 'danger';break;
-                                                    case 'flat' : $type = 'warning';break;
-                                                    case 'shop' : $type = 'secondary';break;
-                                                    default : $type = 'light';
-                                                }
+                                                     case 'available' : $color = 'success';break;
+                                                     case 'sold' : $color = 'warning';break;
+                                                     case 'hold' : $color = 'danger';break;
+                                                     default : $color = 'light';
+                                                 }
+                                                 switch($data->type){
+                                                     case 'office' : $type = 'primary';break;
+                                                     case 'apartment' : $type = 'success';break;
+                                                     case 'penthouse' : $type = 'danger';break;
+                                                     case 'flat' : $type = 'warning';break;
+                                                     case 'shop' : $type = 'secondary';break;
+                                                     default : $type = 'light';
+                                                 }
                                             @endphp
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -87,17 +84,25 @@
                                                 <td>{{ ($data->size == null) ? 'null' : $data->size->size }}</td>
                                                 <td>{{ ($data->category == null) ? 'null' : $data->category->category }}</td>
                                                 <td>{{ $data->type }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($data->created_at)->format('m-d-Y') }}</td>
                                                 <td>
                                                     <div class="dropdown">
-                                                        <a href="#" data-toggle="dropdown" style="text-decoration: none" class="badge badge-{{$color}}" aria-expanded="false">
+                                                        <a href="#" data-toggle="dropdown" style="text-decoration: none" class="badge badge-{{$color}}"
+                                                           aria-expanded="false">
                                                             {{  ucwords(Illuminate\Support\Str::replace('_', ' ', $data->status)) }}
                                                         </a>
-                                                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}" data-value="available">Available</a>
-                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}" data-value="sold">Sold</a>
-                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}" data-value="hold">Hold</a>
-                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}" data-value="token">Token</a>
-                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}" data-value="canceled">Canceled</a>
+                                                        <div class="dropdown-menu" x-placement="bottom-start"
+                                                             style="position: absolute; transform: translate3d(0px, 26px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}"
+                                                               data-value="available">Available</a>
+                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}"
+                                                               data-value="sold">Sold</a>
+                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}"
+                                                               data-value="hold">Hold</a>
+                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}"
+                                                               data-value="token">Token</a>
+                                                            <a href="#" class="dropdown-item has-icon change_status" data-id="{{$data->id}}" data-old="{{$data->status}}"
+                                                               data-value="canceled">Canceled</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -276,18 +281,20 @@
                 $('input[name="status"]').val($(this).attr('data-value'));
                 submit();
             });
+
             function submit() {
                 $('.filter_form').submit();
             }
-            $("body").on("click", ".change_status", function(){
+
+            $("body").on("click", ".change_status", function () {
                 var oldStatus = $(this).attr('data-old');
                 var status = $(this).attr('data-value');
                 if (oldStatus == 'sold' && status != 'cancelled') {
                     errorMsg('First Cancelled the Status');
                     return;
                 }
-                if(oldStatus == status){
-                    errorMsg('You Status is Already '+capitalize(status));
+                if (oldStatus == status) {
+                    errorMsg('You Status is Already ' + capitalize(status));
                     return;
                 }
                 var id = $(this).attr('data-id');
@@ -404,13 +411,13 @@
                     data: formData,
                     success: function (data) {
                         hideLoader();
-                        if(data.status == 'success'){
+                        if (data.status == 'success') {
                             successMsg(data.message);
                             setTimeout(function () {
                                 location.reload();
-                            },1000);
+                            }, 1000);
                         }
-                        if(data.status == 'error'){
+                        if (data.status == 'error') {
                             errorMsg(data.message);
                         }
                     },

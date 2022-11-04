@@ -54,13 +54,13 @@ class PropertyAdminController extends Controller
             'password' => 'required',
             'building' => 'required',
         ]);
-        foreach(explode(",", $request->floor) as $floorName) {
-            if (Floor::where('name', $floorName)->exists()) {
-                return redirect()->back()->with($this->message('Floor Name Already Exist', 'error'));
-            } else{
-                continue;
-            }
-        }
+//        foreach(explode(",", $request->floor) as $floorName) {
+//            if (Floor::where('name', $floorName)->exists()) {
+//                return redirect()->back()->with($this->message('Floor Name Already Exist', 'error'));
+//            } else{
+//                continue;
+//            }
+//        }
         $property_admin = new User();
         $property_admin->username = $request->username;
         $property_admin->email = $request->email;
@@ -126,13 +126,6 @@ class PropertyAdminController extends Controller
             'email' => 'required',
             'building' => 'required',
         ]);
-        foreach(explode(",", $request->floor) as $floorName) {
-            if (Floor::where('name', $floorName)->exists()) {
-                return redirect()->back()->with($this->message('Floor Name Already Exist', 'error'));
-            } else{
-                continue;
-            }
-        }
         $property_admin = User::findOrFail($id);
         $property_admin->username = $request->username;
         $property_admin->email = $request->email;

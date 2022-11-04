@@ -200,9 +200,9 @@ class BuildingController extends Controller
         $assign_data = BuildingAssignUser::where('building_id', $id)->delete();
         $building->delete();
         if ($building) {
-            return redirect()->route('property.building.index')->with($this->message('Building delete SuccessFully', 'success'));
+            return response()->json(['message'=>'Building delete SuccessFully','status'=> 'success']);
         } else {
-            return redirect()->back()->with($this->message("Building delete Error", 'error'));
+            return response()->json(['message'=>'Building delete Error','status'=> 'error']);
         }
     }
 

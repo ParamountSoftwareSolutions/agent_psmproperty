@@ -65,6 +65,9 @@
 <script src="{{ asset('public/panel/assets/js/custom.js') }}"></script>
 <script type="text/javascript" src="{{ asset('public/panel/assets/js/spartan-multi-image-picker.js') }}"></script>
 <!-- Sweet Alert -->
+
+
+<!--Admin-->
 @yield('script')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -230,7 +233,7 @@
         setInterval(function () {
             /*$("#signInButton").trigger('click');*/
             $.ajax({
-                url: "{{ url('property/notification/latest') }}",
+                url: "{{ url('property/notifications/latest') }}",
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -247,7 +250,7 @@
         function showData(data){
             $.each(data, function (key, value) {
                 /*console.log(key, value.id)*/
-                /*playAudio();*/
+                playAudio();
                 $('#notification-list').append('<a href="#" class="dropdown-item " id="notification-mark-single-read" data-id="'+ value.id +'"><span ' +
                     'class="dropdown-item-icon bg-info text-white"> <i class="fas ' +
                     'fa-bell"></i></span> <span class="dropdown-item-desc">' +

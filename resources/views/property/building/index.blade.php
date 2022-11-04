@@ -1,4 +1,4 @@
-@extends('property.layout.app')
+@extends((new App\Helpers\Helpers)->user_login_route()['file'].'.layout.app')
 @section('title', 'All Users List')
 @section('style')
 
@@ -12,7 +12,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4>Project List</h4>
-                                <a href="{{ route('property.building.create') }}" class="btn btn-primary"
+                                <a href="{{ route('property.building.create',Helpers::user_login_route()['panel']) }}" class="btn btn-primary"
                                    style="margin-left: auto; display: block;">Add New</a>
                             </div>
                             <div class="card-body">
@@ -35,19 +35,17 @@
                                                     <div class="badge badge-success badge-shadow">Available</div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('property.building.edit',$data->id) }}"
+                                                    <a href="{{ route('property.building.edit',['panel'=>Helpers::user_login_route()['panel'],'building'=>$data->id]) }}"
                                                        class="btn btn-primary px-1 py-0" title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <form
-                                                        action="{{ route('property.building.destroy',$data->id) }}"
-                                                        method="post" style="display: inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" title="Delete" class="btn btn-danger px-1 py-0">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <a target="_blank" href="{{ route('property.building_view', ['panel' => Helpers::user_login_route()['panel'], 'id' => $data->id]) }}"
+                                                       class="btn btn-primary px-1 py-0" title="View PDF">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <button type="button" data-url="{{ route('property.building.destroy',['panel'=>Helpers::user_login_route()['panel'],'building'=>$data->id]) }}" data-token="{{ csrf_token() }}" title="Delete" class="btn btn-danger px-1 py-0 deleteBtn">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty

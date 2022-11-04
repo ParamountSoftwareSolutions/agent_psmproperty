@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PropertyManager;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
+use App\Models\BuildingDetailFile;
 use App\Models\BuildingSale;
 use App\Models\User;
 use App\Models\EmailHistory;
@@ -54,8 +55,8 @@ class EmailController extends Controller
                 $leads->where('user_id', Auth::id());
                 $clients->where('user_id', Auth::id());
             }
-            $leads->pluck('customer_id')->toArray();
-            $clients->pluck('customer_id')->toArray();
+            $leads = $leads->pluck('customer_id')->toArray();
+            $clients = $clients->pluck('customer_id')->toArray();
             $both = array_merge($leads,$clients);
 
             if($request->email == 'leads'){
@@ -74,16 +75,13 @@ class EmailController extends Controller
             $data['total'] = count($email_list);
             $data['emails'] = array_filter($email_list);
             $data['sent'] = count($data['emails']);
+//            dd($users,$data);
         }
         if(isset($request->images)){
-            $images = $request->images;
-            foreach($images as $img){
-                $ext = $img->getClientOriginalExtension();
-                $name = time().'-'.rand().'.'.$ext;
-                $path = 'mail-media';
-                $img->move(public_path($path),$name);
-                $data['image'][] = 'public/'.$path."/".$name;
-            }
+            $img = $request->images;
+            $name = time().'-'.rand().'.'.$img->getClientOriginalExtension();
+            $img->move('public/mail-media/images/',$name);
+            $data['image'][] = 'public/mail-media/images/'.$name;
         }
         else{
             $data['image'] = [];
@@ -101,6 +99,7 @@ class EmailController extends Controller
                     $email_history->subject = $data['subject'];
                     $email_history->body = $data['body'];
                     $email_history->images = implode(',',$data['image']);
+                    $email_history->status = 'sent';
                     $email_history->date = date('Y-m-d H:i:s');
                     $email_history->save();
                 }
@@ -113,7 +112,7 @@ class EmailController extends Controller
     }
     public function send_email()
     {
-        $email_histories = EmailHistory::where('send_by',Auth::user()->id)->get();
+        $email_histories = EmailHistory::where(['send_by'=>Auth::user()->id,'status'=>'sent'])->get();
         return view('property.email.sent',compact('email_histories'));
     }
     public function email_destroy($panel,$id)
@@ -158,8 +157,8 @@ class EmailController extends Controller
                 $leads->where('user_id', Auth::id());
                 $clients->where('user_id', Auth::id());
             }
-            $leads->pluck('customer_id')->toArray();
-            $clients->pluck('customer_id')->toArray();
+            $leads = $leads->pluck('id')->toArray();
+            $clients = $clients->pluck('customer_id')->toArray();
             $both = array_merge($leads,$clients);
 
             if($request->email == 'leads'){
@@ -192,6 +191,7 @@ class EmailController extends Controller
                     $email_history->subject = $data['subject'];
                     $email_history->body = $data['body'];
                     $email_history->images = implode(',',$data['image']);
+                    $email_history->status = 'sent';
                     $email_history->date = date('Y-m-d H:i:s');
                     $email_history->save();
                 }
@@ -201,6 +201,66 @@ class EmailController extends Controller
         catch(Exception $e) {
             return redirect()->back()->with($this->message('Email Sent Error', 'danger'));
         }
-
     }
+    public function email_detail($panel,$id)
+    {
+        $email = EmailHistory::findOrFail($id);
+        return view('property.email.detail',compact('email'));
+    }
+
+    public function email_view($panel,$id)
+    {
+        $email = EmailHistory::findOrFail($id);
+        return view('property.email.compose_draft',compact('email'));
+    }
+
+    public function draft_email()
+    {
+        $email_histories = EmailHistory::where(['send_by'=>Auth::user()->id,'status'=>'draft'])->get();
+        return view('property.email.draft',compact('email_histories'));
+    }
+
+    public function email_compose_save(Request $request)
+    {
+        if(isset($request->id) && $request->id !== null){
+            $email_history = EmailHistory::findOrFail($request->id);
+        }else{
+
+            $email_history = new EmailHistory();
+        }
+        if(isset($request->images)){
+            $images = $request->images;
+            foreach($images as $img){
+                $ext = $img->getClientOriginalExtension();
+                $name = time().'-'.rand().'.'.$ext;
+                $path = 'mail-media';
+                $img->move(public_path($path),$name);
+                $data['image'][] = 'public/'.$path."/".$name;
+            }
+        }
+        else{
+            $data['image'] = [];
+        }
+        $email_history->send_by = Auth::user()->id;
+        $email_history->to = $request->email;
+        $email_history->subject = $request->subject;
+        $email_history->body = $request->body;
+        $email_history->images = implode(',',$data['image']);
+        $email_history->status = 'draft';
+        $email_history->date = date('Y-m-d H:i:s');
+        $email_history->save();
+        return redirect()->route('property_manager.email.compose',Helpers::user_login_route()['panel'])->with($this->message('Email Saved', 'success'));
+    }
+
+    public function remove_image_email(Request $request)
+    {
+
+        $building_detail_file = BuildingDetailFile::where(['building_detail_id' => $request->building_detail_id, 'type' => $request->type])->first();
+        $building_detail_file->delete();
+        if($building_detail_file !== null){
+            unlink($building_detail_file->image);
+        }
+        return json_encode($request->name);
+    }
+
 }

@@ -28,7 +28,7 @@
                                     @forelse($email_histories as $data)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $data->to }}</td>
+                                        <td><a href="{{ route('property_manager.email.detail',['panel'=>Helpers::user_login_route()['panel'],'id'=>$data->id]) }}">{{ $data->to }}</a></td>
                                         <td>{{ $data->subject }}</td>
                                         <td>{{ $data->date }}</td>
                                         <td>

@@ -272,7 +272,7 @@ Route::group(['as' => 'property.'], function () {
     Route::group(['middleware' => ['auth:web', 'isPropertyAdmin'], 'namespace' => 'Property', 'prefix' => 'property'], function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
         /* Building And Floor Route start */
-        Route::resource('building', 'BuildingController');
+//        Route::resource('building', 'BuildingController');
         Route::resource('inventory', 'InventoryController');
         Route::get('inventory-change-status', 'InventoryController@change_status')->name('inventory_change_status');
         Route::post('inventory/filter', 'InventoryController@filter')->name('inventory.filter');
@@ -477,6 +477,13 @@ Route::group(['as' => 'property.'], function () {
         //===============//
         Route::resource('office_expense', 'OfficeExpenseController');
 
+        //===============//
+        // Project Route //
+        //===============//
+        Route::resource('building', 'BuildingController');
+        Route::get('building_view/{id}', 'BuildingController@building_view')->name('building_view');
+        Route::get('generate-pdf/{id}', 'BuildingController@generatePDF')->name('generate-pdf');
+
     });
 });
 
@@ -611,11 +618,11 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         Route::get('today-follow-up-count', 'NotificationController@today_follow_up_count')->name('today_follow_up_count');
     });
     Route::group(['middleware' => ['auth:web', 'isAuthType'], 'prefix' => '{panel}'], function () {
-        Route::resource('building', 'BuildingController');
-        Route::get('building_detail/{id}', 'FloorController@index')->name('building_detail.index');
-        Route::get('building_view/{id}', 'BuildingController@building_view')->name('building_view');
+//        Route::resource('building', 'BuildingController');
+//        Route::get('building_detail/{id}', 'FloorController@index')->name('building_detail.index');
+//        Route::get('building_view/{id}', 'BuildingController@building_view')->name('building_view');
         // Flat Apartment and Shop Route
-        Route::get('generate-pdf/{id}', 'BuildingController@generatePDF')->name('generate-pdf');
+//        Route::get('generate-pdf/{id}', 'BuildingController@generatePDF')->name('generate-pdf');
         Route::get('building/{building_id}/floor/{floor_id}/index', 'FloorDetailController@index')->name('floor_detail.index');
         Route::get('building/{building_id}/floor/{floor_id}/create', 'FloorDetailController@create')->name('floor_detail.create');
         Route::post('building/{building_id}/floor/{floor_id}/store', 'FloorDetailController@store')->name('floor_detail.store');
@@ -642,9 +649,15 @@ Route::group(['namespace' => 'PropertyManager', 'as' => 'property_manager.'], fu
         //==============//
         Route::get('email/compose', 'EmailController@email_compose')->name('email.compose');
         Route::post('email/compose/send', 'EmailController@email_compose_send')->name('email.compose.send');
+        Route::post('email/compose/save', 'EmailController@email_compose_save')->name('email.compose.save');
         Route::get('email/sent', 'EmailController@send_email')->name('email.send_email');
+        Route::get('email/detail/{id}', 'EmailController@email_detail')->name('email.detail');
+        Route::get('email/draft', 'EmailController@draft_email')->name('email.draft_email');        Route::get('email/detail/{id}', 'EmailController@email_detail')->name('email.detail');
+        Route::get('email/view/{id}', 'EmailController@email_view')->name('email.view');
+//        Route::get('email/detail/{id}', 'EmailController@email_detail')->name('email.detail');
         Route::post('email/forward/{id}', 'EmailController@email_forward')->name('email.forward');
         Route::delete('email/destroy/{id}', 'EmailController@email_destroy')->name('email_destroy');
+        Route::post('email/remove/image', 'EmailController@remove_image_email')->name('remove_image_email');
     });
 });
 

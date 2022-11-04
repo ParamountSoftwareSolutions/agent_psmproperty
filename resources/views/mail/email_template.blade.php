@@ -349,7 +349,7 @@
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Hi {{$email}},</p>
+{{--                        <p>Hi {{$email}},</p>--}}
                         <p>{!! $body !!}</p>
                         <p>Good luck! Hope it works.</p>
                           @forelse($image as $img)
